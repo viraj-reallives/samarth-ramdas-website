@@ -1,0 +1,285 @@
+.page {
+  background-color: #ffffff;
+}
+
+.banner {
+  width: 100%;
+  background-color: #f5f0e8;
+  line-height: 0;
+}
+
+.bannerImage {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.content {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 56px 72px 64px;
+}
+
+.pageTitle {
+  margin: 0 0 24px;
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: #e8661a;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 32px;
+  align-items: start;
+}
+
+.mainColumn {
+  min-width: 0;
+}
+
+.tabBar {
+  display: flex;
+  gap: 0;
+}
+
+.tab,
+.tabActive {
+  padding: 12px 20px;
+  border: none;
+  background: transparent;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: #e8661a;
+  cursor: pointer;
+}
+
+.tabActive {
+  background-color: #fff9e3;
+  border: 1px solid #dddddd;
+  border-bottom: none;
+}
+
+.panel {
+  min-height: 280px;
+  padding: 24px;
+  background-color: #fff9e3;
+  border: 1px solid #dddddd;
+}
+
+.breadcrumb {
+  margin: 0 0 20px;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #333333;
+}
+
+.emptyMessage {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.5;
+  color: #666666;
+}
+
+.literatureGrid,
+.downloadGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.downloadGridWide {
+  grid-template-columns: repeat(5, 1fr);
+}
+
+.literatureCard,
+.downloadCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 14px 18px;
+  border: 1px solid #dddddd;
+  border-radius: 2px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.literatureCard:hover,
+.downloadCard:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+.pdfIcon,
+.mp3Icon {
+  width: 56px;
+  height: 70px;
+  flex-shrink: 0;
+}
+
+.cardText {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.cardTitleMr,
+.cardTitleEn {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.45;
+  color: #333333;
+}
+
+.cardTitleEn {
+  font-size: 13px;
+  color: #444444;
+}
+
+.downloadButton {
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 3px;
+  background: linear-gradient(to bottom, #f08a2a, #e8661a);
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  transition: background 0.2s ease;
+}
+
+.downloadButton:hover {
+  background: linear-gradient(to bottom, #e8661a, #d45a14);
+}
+
+.sidebar {
+  border: 1px solid #dddddd;
+  background-color: #ffffff;
+}
+
+.sidebarHeader {
+  padding: 14px 16px;
+  background-color: #e8661a;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.sidebarNav {
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebarLink {
+  padding: 14px 16px;
+  border-bottom: 1px solid #e5e5e5;
+  font-size: 15px;
+  line-height: 1.45;
+  color: #333333;
+  text-decoration: none;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.sidebarLink:last-child {
+  border-bottom: none;
+}
+
+.sidebarLink:hover {
+  background-color: #fff8f0;
+  color: #e8661a;
+}
+
+.sidebarEmpty {
+  margin: 0;
+  padding: 16px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #888888;
+}
+
+.notFound {
+  margin: 0 0 16px;
+  font-size: 18px;
+  color: #333333;
+}
+
+.backLink {
+  color: #e8661a;
+  text-decoration: none;
+}
+
+.backLink:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 1200px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .literatureGrid,
+  .downloadGrid,
+  .downloadGridWide {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .content {
+    padding: 24px 20px 40px;
+  }
+
+  .pageTitle {
+    font-size: 18px;
+    margin-bottom: 20px;
+  }
+
+  .tab,
+  .tabActive {
+    font-size: 14px;
+    padding: 10px 14px;
+  }
+
+  .panel {
+    min-height: 220px;
+    padding: 20px 16px;
+  }
+
+  .breadcrumb {
+    font-size: 15px;
+  }
+
+  .literatureGrid,
+  .downloadGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .literatureCard,
+  .downloadCard {
+    padding: 16px 12px;
+  }
+
+  .cardTitleMr {
+    font-size: 13px;
+  }
+
+  .cardTitleEn {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .literatureGrid,
+  .downloadGrid {
+    grid-template-columns: 1fr;
+  }
+}

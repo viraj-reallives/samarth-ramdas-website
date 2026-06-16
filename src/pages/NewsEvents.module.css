@@ -1,0 +1,132 @@
+.page {
+  background-color: #ffffff;
+}
+
+.banner {
+  width: 100%;
+  background-color: #f5f0e8;
+  line-height: 0;
+}
+
+.bannerImage {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.content {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 20px;
+}
+
+.grid:last-child {
+  grid-template-columns: repeat(5, 1fr);
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 14px 18px;
+  border: 1px solid #dddddd;
+  border-radius: 2px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
+
+.pdfIcon {
+  width: 56px;
+  height: 70px;
+  flex-shrink: 0;
+}
+
+.cardText {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.titleMr,
+.titleEn {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.45;
+  color: #333333;
+}
+
+.titleEn {
+  font-size: 13px;
+  color: #444444;
+}
+
+.downloadButton {
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 3px;
+  background: linear-gradient(to bottom, #f08a2a, #e8661a);
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  transition: background 0.2s ease;
+}
+
+.downloadButton:hover {
+  background: linear-gradient(to bottom, #e8661a, #d45a14);
+}
+
+@media (max-width: 1200px) {
+  .grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .grid:last-child {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .content {
+    padding: 24px 20px 40px;
+    gap: 24px;
+  }
+
+  .grid,
+  .grid:last-child {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .card {
+    padding: 16px 12px;
+  }
+
+  .titleMr {
+    font-size: 13px;
+  }
+
+  .titleEn {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .grid,
+  .grid:last-child {
+    grid-template-columns: 1fr;
+  }
+}
