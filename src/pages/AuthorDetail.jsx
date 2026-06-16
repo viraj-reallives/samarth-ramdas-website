@@ -1,4 +1,6 @@
 import { useEffect } from 'react'
+import InnerBanner from '../components/InnerBanner'
+import pageUi from '../styles/pageUi.module.css'
 import { Link, useParams } from 'react-router-dom'
 import {
   getAuthorBySlug,
@@ -65,7 +67,7 @@ function AuthorDetail() {
   if (!author) {
     return (
       <div className={styles.page}>
-        <div className={styles.content}>
+        <div className={`${styles.content} ${pageUi.content}`} id="author-detail-content">
           <p className={styles.notFound}>Author not found.</p>
           <Link to="/author" className={styles.backLink}>
             Back to Author
@@ -77,15 +79,9 @@ function AuthorDetail() {
 
   return (
     <div className={styles.page}>
-      <div className={styles.banner}>
-        <img
-          src="/assets/inner-banner.png"
-          alt="|| जय जय रघुवीर समर्थ ||"
-          className={styles.bannerImage}
-        />
-      </div>
+      <InnerBanner contentId="author-detail-content" />
 
-      <div className={styles.content}>
+      <div className={`${styles.content} ${pageUi.content}`} id="author-detail-content">
         <nav className={styles.breadcrumb} aria-label="Breadcrumb">
           <Link to="/author" className={styles.breadcrumbLink}>
             लेखक / Author

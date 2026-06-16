@@ -1,4 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
+import InnerBanner from '../components/InnerBanner'
+import pageUi from '../styles/pageUi.module.css'
 import { Link } from 'react-router-dom'
 import { FiSearch, FiUsers } from 'react-icons/fi'
 import { authors, getAuthorUrl, getSubjectsForAuthor } from '../data/authors'
@@ -25,9 +27,13 @@ function AuthorAvatar({ titleMr, image }) {
   )
 }
 
-function AuthorCard({ slug, titleMr, titleEn, image, subjectCount }) {
+function AuthorCard({ slug, titleMr, titleEn, image, subjectCount, index }) {
   return (
-    <Link to={getAuthorUrl(slug)} className={styles.card}>
+    <Link
+      to={getAuthorUrl(slug)}
+      className={`${styles.card} ${pageUi.cardAnim}`}
+      style={{ animationDelay: `${Math.min(index, 8) * 45}ms` }}
+    >
       <div className={styles.cardBorder} aria-hidden="true" />
       <div className={styles.cardContent}>
         <AuthorAvatar titleMr={titleMr} image={image} />
@@ -86,15 +92,9 @@ function Author() {
 
   return (
     <div className={styles.page}>
-      <div className={styles.banner}>
-        <img
-          src="/assets/inner-banner.png"
-          alt="|| जय जय रघुवीर समर्थ ||"
-          className={styles.bannerImage}
-        />
-      </div>
+      <InnerBanner contentId="author-content" />
 
-      <div className={styles.content}>
+      <div className={`${styles.content} ${pageUi.content}`} id="author-content">
         <header className={styles.pageHeader}>
           <h1 className={styles.pageTitle}>
             लेखकानुसार वर्गीकरण / Author-wise Classification
@@ -107,20 +107,20 @@ function Author() {
           </p>
         </header>
 
-        <div className={styles.steps} aria-label="How to use this page">
-          <div className={styles.step}>
+        <div className={`${styles.steps} ${pageUi.steps}`} aria-label="How to use this page">
+          <div className={`${styles.step} ${pageUi.step}`}>
             <span className={styles.stepNum}>१</span>
             <span className={styles.stepText}>लेखक निवडा</span>
             <span className={styles.stepSub}>Choose Author</span>
           </div>
           <span className={styles.stepArrow} aria-hidden="true">→</span>
-          <div className={styles.step}>
+          <div className={`${styles.step} ${pageUi.step}`}>
             <span className={styles.stepNum}>२</span>
             <span className={styles.stepText}>विषय पहा</span>
             <span className={styles.stepSub}>Browse Subjects</span>
           </div>
           <span className={styles.stepArrow} aria-hidden="true">→</span>
-          <div className={styles.step}>
+          <div className={`${styles.step} ${pageUi.step}`}>
             <span className={styles.stepNum}>३</span>
             <span className={styles.stepText}>साहित्य पहा</span>
             <span className={styles.stepSub}>View Content</span>
@@ -150,11 +150,17 @@ function Author() {
         </div>
 
         {filteredAuthors.length === 0 ? (
-          <p className={styles.empty}>कोणताही लेखक सापडला नाही.</p>
+          <div className={pageUi.empty}>
+            <p>कोणताही लेखक सापडला नाही.</p>
+            <p className={pageUi.emptySub}>No authors found. Try a different search.</p>
+            <button type="button" className={pageUi.emptyReset} onClick={() => setSearch('')}>
+              सर्व लेखक पहा / View all authors
+            </button>
+          </div>
         ) : (
-          <div className={styles.grid}>
-            {filteredAuthors.map((author) => (
-              <AuthorCard key={author.slug} {...author} />
+          <div className={styles.grid} key={search}>
+            {filteredAuthors.map((author, index) => (
+              <AuthorCard key={author.slug} {...author} index={index} />
             ))}
           </div>
         )}

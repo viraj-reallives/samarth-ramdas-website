@@ -2,18 +2,6 @@
   background-color: #ffffff;
 }
 
-.banner {
-  width: 100%;
-  background-color: #f5f0e8;
-  line-height: 0;
-}
-
-.bannerImage {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
 .content {
   max-width: 1280px;
   margin: 0 auto;
@@ -60,12 +48,24 @@
   border-radius: 12px;
   background: linear-gradient(135deg, #fff8ef 0%, #fdf3e4 100%);
   border: 1px solid #edd9c0;
+  transition: box-shadow 0.25s ease;
+}
+
+.steps:hover {
+  box-shadow: 0 6px 20px rgba(232, 102, 26, 0.1);
 }
 
 .step {
   display: flex;
   flex-direction: column;
   gap: 2px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+}
+
+.step:hover {
+  background: rgba(255, 255, 255, 0.55);
 }
 
 .stepNum {
@@ -99,6 +99,86 @@
   font-weight: 700;
 }
 
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.searchWrap {
+  position: relative;
+  flex: 1;
+  min-width: 220px;
+  max-width: 420px;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  color: #9a8a78;
+  pointer-events: none;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 12px 14px 12px 42px;
+  border: 1px solid #e0d0bc;
+  border-radius: 12px;
+  background: #ffffff;
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  color: #3d2a18;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.searchInput::placeholder {
+  color: #9a8a78;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: #e8661a;
+  box-shadow: 0 0 0 3px rgba(232, 102, 26, 0.12);
+}
+
+.countBadges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.countBadge,
+.countBadgeMuted {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.countBadge {
+  background: #fff8ef;
+  border: 1px solid #edd9c0;
+  color: #8a5a32;
+}
+
+.countBadgeMuted {
+  background: #f7f3ec;
+  border: 1px solid #e8dfd3;
+  color: #7a6a58;
+}
+
 .filters {
   display: flex;
   flex-wrap: wrap;
@@ -116,16 +196,23 @@
   border-radius: 10px;
   border: 1px solid #e0d0bc;
   background: #ffffff;
+  font-family: var(--sans);
   cursor: pointer;
   transition:
     background-color 0.2s ease,
     border-color 0.2s ease,
-    box-shadow 0.2s ease;
+    box-shadow 0.2s ease,
+    transform 0.15s ease;
 }
 
 .filterBtn:hover {
   border-color: #e8661a;
   background: #fffaf5;
+  transform: translateY(-1px);
+}
+
+.filterBtn:active {
+  transform: translateY(0);
 }
 
 .filterActive {
@@ -188,7 +275,7 @@
 }
 
 .resultCount {
-  margin: 0 0 20px;
+  margin: 0 0 16px;
   font-size: 0.82rem;
   color: #7a6a58;
 }
@@ -354,6 +441,26 @@
 @media (max-width: 768px) {
   .content {
     padding: 32px 24px 48px;
+  }
+
+  .scrollCue {
+    bottom: 14px;
+    width: 38px;
+    height: 38px;
+    font-size: 1.15rem;
+  }
+
+  .toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .searchWrap {
+    max-width: none;
+  }
+
+  .countBadges {
+    justify-content: flex-start;
   }
 
   .pageTitle {

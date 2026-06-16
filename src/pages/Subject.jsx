@@ -1,5 +1,8 @@
 import { useEffect, useMemo, useState } from 'react'
+import InnerBanner from '../components/InnerBanner'
+import pageUi from '../styles/pageUi.module.css'
 import { Link } from 'react-router-dom'
+import { FiBookOpen, FiSearch, FiUsers } from 'react-icons/fi'
 import { subjectAuthors, subjectCategories, subjects } from '../data/subjects'
 import styles from './Subject.module.css'
 
@@ -68,9 +71,13 @@ const subjectIcons = {
   ),
 }
 
-function SubjectCard({ slug, titleMr, titleEn, icon, hintMr, hintEn, authorCount }) {
+function SubjectCard({ slug, titleMr, titleEn, icon, hintMr, hintEn, authorCount, index }) {
   return (
-    <Link to={`/subject/${slug}`} className={styles.card}>
+    <Link
+      to={`/subject/${slug}`}
+      className={`${styles.card} ${pageUi.cardAnim}`}
+      style={{ animationDelay: `${Math.min(index, 8) * 45}ms` }}
+    >
       <div className={styles.cardBorder} aria-hidden="true" />
       <div className={styles.cardContent}>
         <span className={styles.iconWrap}>{subjectIcons[icon]}</span>
@@ -99,6 +106,7 @@ function SubjectCard({ slug, titleMr, titleEn, icon, hintMr, hintEn, authorCount
 
 function Subject() {
   const [activeCategory, setActiveCategory] = useState('all')
+  const [search, setSearch] = useState('')
 
   useEffect(() => {
     document.title = 'विषय – श्री समर्थ रामदास'
@@ -116,13 +124,32 @@ function Subject() {
     [],
   )
 
-  const filteredSubjects = useMemo(
-    () =>
+  const filteredSubjects = useMemo(() => {
+    const byCategory =
       activeCategory === 'all'
         ? subjectsWithCounts
-        : subjectsWithCounts.filter((s) => s.category === activeCategory),
-    [activeCategory, subjectsWithCounts],
-  )
+        : subjectsWithCounts.filter((s) => s.category === activeCategory)
+
+    const query = search.trim().toLowerCase()
+    if (!query) return byCategory
+
+    return byCategory.filter(
+      ({ titleMr, titleEn, hintMr, hintEn }) =>
+        titleMr.toLowerCase().includes(query) ||
+        titleEn.toLowerCase().includes(query) ||
+        hintMr.toLowerCase().includes(query) ||
+        hintEn.toLowerCase().includes(query),
+    )
+  }, [activeCategory, search, subjectsWithCounts])
+
+  const totalAuthors = useMemo(() => {
+    const unique = new Set()
+    Object.values(subjectAuthors).forEach((authors) => {
+      authors.forEach(({ slug }) => unique.add(slug))
+    })
+    return unique.size
+  }, [])
+
 
   const categoryCounts = useMemo(() => {
     const counts = { all: subjects.length }
@@ -134,15 +161,9 @@ function Subject() {
 
   return (
     <div className={styles.page}>
-      <div className={styles.banner}>
-        <img
-          src="/assets/inner-banner.png"
-          alt="|| जय जय रघुवीर समर्थ ||"
-          className={styles.bannerImage}
-        />
-      </div>
+      <InnerBanner contentId="subject-content" scrollLabel="विषयांकडे स्क्रोल करा / Scroll to subjects" />
 
-      <div className={styles.content}>
+      <div className={`${styles.content} ${pageUi.content}`} id="subject-content">
         <header className={styles.pageHeader}>
           <h1 className={styles.pageTitle}>
             विषयानुसार वर्गीकरण / Subject-wise Classification
@@ -155,23 +176,46 @@ function Subject() {
           </p>
         </header>
 
-        <div className={styles.steps} aria-label="How to use this page">
-          <div className={styles.step}>
+        <div className={`${styles.steps} ${pageUi.steps}`} aria-label="How to use this page">
+          <div className={`${styles.step} ${pageUi.step}`}>
             <span className={styles.stepNum}>१</span>
             <span className={styles.stepText}>विषय निवडा</span>
             <span className={styles.stepSub}>Choose Subject</span>
           </div>
           <span className={styles.stepArrow} aria-hidden="true">→</span>
-          <div className={styles.step}>
+          <div className={`${styles.step} ${pageUi.step}`}>
             <span className={styles.stepNum}>२</span>
             <span className={styles.stepText}>लेखक निवडा</span>
             <span className={styles.stepSub}>Pick Author</span>
           </div>
           <span className={styles.stepArrow} aria-hidden="true">→</span>
-          <div className={styles.step}>
+          <div className={`${styles.step} ${pageUi.step}`}>
             <span className={styles.stepNum}>३</span>
             <span className={styles.stepText}>साहित्य पहा</span>
             <span className={styles.stepSub}>View Content</span>
+          </div>
+        </div>
+
+        <div className={styles.toolbar}>
+          <label className={styles.searchWrap}>
+            <FiSearch className={styles.searchIcon} aria-hidden="true" />
+            <input
+              type="search"
+              className={styles.searchInput}
+              placeholder="विषय शोधा / Search subject..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </label>
+          <div className={styles.countBadges}>
+            <span className={styles.countBadge}>
+              <FiBookOpen aria-hidden="true" />
+              {filteredSubjects.length} विषय · {filteredSubjects.length} Subjects
+            </span>
+            <span className={styles.countBadgeMuted}>
+              <FiUsers aria-hidden="true" />
+              {totalAuthors} लेखक · {totalAuthors} Authors
+            </span>
           </div>
         </div>
 
@@ -192,15 +236,35 @@ function Subject() {
           ))}
         </div>
 
-        <p className={styles.resultCount}>
-          {filteredSubjects.length} विषय दाखवत आहे · Showing {filteredSubjects.length} subjects
-        </p>
+        {search.trim() && (
+          <p className={styles.resultCount}>
+            &quot;{search.trim()}&quot; साठी {filteredSubjects.length} निकाल ·{' '}
+            {filteredSubjects.length} results
+          </p>
+        )}
 
-        <div className={styles.grid}>
-          {filteredSubjects.map((subject) => (
-            <SubjectCard key={subject.slug} {...subject} />
-          ))}
-        </div>
+        {filteredSubjects.length === 0 ? (
+          <div className={pageUi.empty}>
+            <p>कोणताही विषय सापडला नाही.</p>
+            <p className={pageUi.emptySub}>No subjects found. Try a different search or category.</p>
+            <button
+              type="button"
+              className={pageUi.emptyReset}
+              onClick={() => {
+                setSearch('')
+                setActiveCategory('all')
+              }}
+            >
+              सर्व विषय पहा / View all subjects
+            </button>
+          </div>
+        ) : (
+          <div className={styles.grid} key={`${activeCategory}-${search}`}>
+            {filteredSubjects.map((subject, index) => (
+              <SubjectCard key={subject.slug} {...subject} index={index} />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   )

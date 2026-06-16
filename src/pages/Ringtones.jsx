@@ -1,4 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import InnerBanner from '../components/InnerBanner'
+import pageUi from '../styles/pageUi.module.css'
 import { FiDownload, FiPause, FiPlay, FiSearch } from 'react-icons/fi'
 import { getRingtoneAudioUrl, ringtones } from '../data/ringtones'
 import styles from './Ringtones.module.css'
@@ -13,9 +15,13 @@ function WaveBars({ active }) {
   )
 }
 
-function RingtoneCard({ ringtone, isPlaying, isActive, onPlay, onPause }) {
+function RingtoneCard({ ringtone, isPlaying, isActive, onPlay, onPause, index }) {
+  const cardClass = isActive ? styles.cardActive : styles.card
   return (
-    <article className={isActive ? styles.cardActive : styles.card}>
+    <article
+      className={`${cardClass} ${pageUi.cardAnim}`}
+      style={{ animationDelay: `${Math.min(index, 8) * 40}ms` }}
+    >
       <button
         type="button"
         className={isPlaying ? styles.playBtnActive : styles.playBtn}
@@ -99,15 +105,9 @@ function Ringtones() {
     <div className={styles.page}>
       <audio ref={audioRef} preload="none" />
 
-      <div className={styles.banner}>
-        <img
-          src="/assets/inner-banner.png"
-          alt="|| जय जय रघुवीर समर्थ ||"
-          className={styles.bannerImage}
-        />
-      </div>
+      <InnerBanner contentId="ringtones-content" />
 
-      <div className={styles.content}>
+      <div className={`${styles.content} ${pageUi.content}`} id="ringtones-content">
         <h1 className={styles.pageTitle}>रिंगटोन्स / Ringtones</h1>
         <p className={styles.pageIntro}>
           मनाचे श्लोक रिंगटोन्स ऐका आणि डाउनलोड करा.
@@ -133,13 +133,20 @@ function Ringtones() {
         </div>
 
         {filtered.length === 0 ? (
-          <p className={styles.empty}>कोणतेही रिंगटोन्स सापडले नाहीत.</p>
+          <div className={pageUi.empty}>
+            <p>कोणतेही रिंगटोन्स सापडले नाहीत.</p>
+            <p className={pageUi.emptySub}>No ringtones found. Try a different search.</p>
+            <button type="button" className={pageUi.emptyReset} onClick={() => setSearch('')}>
+              सर्व रिंगटोन्स पहा / View all ringtones
+            </button>
+          </div>
         ) : (
-          <div className={styles.grid}>
-            {filtered.map((ringtone) => (
+          <div className={styles.grid} key={search}>
+            {filtered.map((ringtone, index) => (
               <RingtoneCard
                 key={ringtone.slug}
                 ringtone={ringtone}
+                index={index}
                 isPlaying={playingSlug === ringtone.slug}
                 isActive={activeSlug === ringtone.slug}
                 onPlay={() => playRingtone(ringtone)}

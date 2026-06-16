@@ -1,14 +1,18 @@
 import { useEffect, useMemo, useState } from 'react'
+import InnerBanner from '../components/InnerBanner'
+import pageUi from '../styles/pageUi.module.css'
 import { Link } from 'react-router-dom'
 import { FiGlobe, FiSearch } from 'react-icons/fi'
 import { languageCategories, languages } from '../data/languages'
 import styles from './Language.module.css'
 
-function LanguageCard({ titleMr, titleEn, href, badge, hintMr, hintEn, featured }) {
+function LanguageCard({ titleMr, titleEn, href, badge, hintMr, hintEn, featured, index }) {
+  const cardClass = featured ? styles.cardFeatured : styles.card
   return (
     <Link
       to={href}
-      className={featured ? styles.cardFeatured : styles.card}
+      className={`${cardClass} ${pageUi.cardAnim}`}
+      style={{ animationDelay: `${Math.min(index, 8) * 45}ms` }}
     >
       <div className={styles.cardBorder} aria-hidden="true" />
       <div className={styles.cardContent}>
@@ -65,15 +69,9 @@ function Language() {
 
   return (
     <div className={styles.page}>
-      <div className={styles.banner}>
-        <img
-          src="/assets/inner-banner.png"
-          alt="|| जय जय रघुवीर समर्थ ||"
-          className={styles.bannerImage}
-        />
-      </div>
+      <InnerBanner contentId="language-content" />
 
-      <div className={styles.content}>
+      <div className={`${styles.content} ${pageUi.content}`} id="language-content">
         <header className={styles.pageHeader}>
           <h1 className={styles.pageTitle}>
             भाषेनुसार वर्गीकरण / Language-wise Classification
@@ -86,14 +84,14 @@ function Language() {
           </p>
         </header>
 
-        <div className={styles.steps} aria-label="How to use this page">
-          <div className={styles.step}>
+        <div className={`${styles.steps} ${pageUi.steps}`} aria-label="How to use this page">
+          <div className={`${styles.step} ${pageUi.step}`}>
             <span className={styles.stepNum}>१</span>
             <span className={styles.stepText}>भाषा निवडा</span>
             <span className={styles.stepSub}>Choose Language</span>
           </div>
           <span className={styles.stepArrow} aria-hidden="true">→</span>
-          <div className={styles.step}>
+          <div className={`${styles.step} ${pageUi.step}`}>
             <span className={styles.stepNum}>२</span>
             <span className={styles.stepText}>साहित्य पहा</span>
             <span className={styles.stepSub}>Browse Content</span>
@@ -137,11 +135,24 @@ function Language() {
         </div>
 
         {filtered.length === 0 ? (
-          <p className={styles.empty}>कोणतीही भाषा सापडली नाही.</p>
+          <div className={pageUi.empty}>
+            <p>कोणतीही भाषा सापडली नाही.</p>
+            <p className={pageUi.emptySub}>No languages found. Try a different search or category.</p>
+            <button
+              type="button"
+              className={pageUi.emptyReset}
+              onClick={() => {
+                setSearch('')
+                setActiveCategory('all')
+              }}
+            >
+              सर्व भाषा पहा / View all languages
+            </button>
+          </div>
         ) : (
-          <div className={styles.grid}>
-            {filtered.map((language) => (
-              <LanguageCard key={language.slug} {...language} />
+          <div className={styles.grid} key={`${activeCategory}-${search}`}>
+            {filtered.map((language, index) => (
+              <LanguageCard key={language.slug} {...language} index={index} />
             ))}
           </div>
         )}

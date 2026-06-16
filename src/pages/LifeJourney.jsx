@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react'
+import InnerBanner from '../components/InnerBanner'
+import pageUi from '../styles/pageUi.module.css'
 import styles from './LifeJourney.module.css'
 
 const marathiSections = [
@@ -76,15 +78,9 @@ function LifeJourney() {
 
   return (
     <div className={styles.page}>
-      <div className={styles.banner}>
-        <img
-          src="/assets/inner-banner.png"
-          alt="|| जय जय रघुवीर समर्थ ||"
-          className={styles.bannerImage}
-        />
-      </div>
+      <InnerBanner contentId="life-journey-content" />
 
-      <div className={styles.section}>
+      <div className={`${styles.section} ${pageUi.content}`} id="life-journey-content">
         <div className={styles.tabBar} role="tablist" aria-label="Life journey content">
           <button
             type="button"
@@ -106,7 +102,7 @@ function LifeJourney() {
           </button>
         </div>
 
-        <div className={styles.content}>
+        <div className={`${styles.content} ${pageUi.content}`} id="life-journey-content">
           {activeTab === 'marathi' ? (
             <div role="tabpanel" className={styles.textBlock}>
               {marathiSections.map((section, index) => (

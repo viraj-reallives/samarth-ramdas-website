@@ -1,4 +1,6 @@
 import { useEffect, useId, useState } from 'react'
+import InnerBanner from '../components/InnerBanner'
+import pageUi from '../styles/pageUi.module.css'
 import { FiMail, FiMapPin, FiSend, FiUpload, FiUser } from 'react-icons/fi'
 import { contactInfo } from '../data/navigation'
 import styles from './Contact.module.css'
@@ -23,15 +25,9 @@ function Contact() {
 
   return (
     <div className={styles.page}>
-      <div className={styles.banner}>
-        <img
-          src="/assets/inner-banner.png"
-          alt="|| जय जय रघुवीर समर्थ ||"
-          className={styles.bannerImage}
-        />
-      </div>
+      <InnerBanner contentId="contact-content" />
 
-      <div className={styles.content}>
+      <div className={`${styles.content} ${pageUi.content}`} id="contact-content">
         <header className={styles.pageHeader}>
           <h1 className={styles.pageTitle}>संपर्क / Contact</h1>
           <p className={styles.pageIntro}>

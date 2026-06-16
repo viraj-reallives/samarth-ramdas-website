@@ -1,0 +1,93 @@
+.content {
+  animation: contentFadeIn 0.6s ease-out 0.12s backwards;
+}
+
+.steps {
+  transition: box-shadow 0.25s ease;
+}
+
+.steps:hover {
+  box-shadow: 0 6px 20px rgba(232, 102, 26, 0.1);
+}
+
+.step {
+  padding: 6px 10px;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+}
+
+.step:hover {
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.cardAnim {
+  animation: cardFadeIn 0.45s ease backwards;
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 48px 24px;
+  text-align: center;
+  color: #5a4a38;
+  font-size: 0.95rem;
+  font-weight: 600;
+  background: linear-gradient(135deg, #fff8ef 0%, #fdf3e4 100%);
+  border-radius: 14px;
+  border: 1px dashed #e0d0bc;
+}
+
+.emptySub {
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: #7a6a58;
+}
+
+.emptyReset {
+  margin-top: 8px;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 999px;
+  background: #e8661a;
+  color: #ffffff;
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    transform 0.15s ease;
+}
+
+.emptyReset:hover {
+  background: #c44e0a;
+  transform: translateY(-1px);
+}
+
+@keyframes contentFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes cardFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

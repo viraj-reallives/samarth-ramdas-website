@@ -1,4 +1,6 @@
 import { useEffect } from 'react'
+import InnerBanner from '../components/InnerBanner'
+import pageUi from '../styles/pageUi.module.css'
 import { Link, useParams } from 'react-router-dom'
 import {
   getLanguageBySlug,
@@ -46,7 +48,7 @@ function LanguageDetail() {
   if (!language) {
     return (
       <div className={styles.page}>
-        <div className={styles.content}>
+        <div className={`${styles.content} ${pageUi.content}`} id="language-detail-content">
           <p className={styles.notFound}>Language not found.</p>
           <Link to="/language" className={styles.backLink}>
             Back to Language
@@ -58,15 +60,9 @@ function LanguageDetail() {
 
   return (
     <div className={styles.page}>
-      <div className={styles.banner}>
-        <img
-          src="/assets/inner-banner.png"
-          alt="|| जय जय रघुवीर समर्थ ||"
-          className={styles.bannerImage}
-        />
-      </div>
+      <InnerBanner contentId="language-detail-content" />
 
-      <div className={styles.content}>
+      <div className={`${styles.content} ${pageUi.content}`} id="language-detail-content">
         <nav className={styles.breadcrumb} aria-label="Breadcrumb">
           <Link to="/language" className={styles.breadcrumbLink}>
             भाषा / Language

@@ -1,4 +1,6 @@
 import { useEffect } from 'react'
+import InnerBanner from '../components/InnerBanner'
+import pageUi from '../styles/pageUi.module.css'
 import { Link, useParams } from 'react-router-dom'
 import {
   getOtherSubjects,
@@ -69,7 +71,7 @@ function SubjectDetail() {
   if (!subject) {
     return (
       <div className={styles.page}>
-        <div className={styles.content}>
+        <div className={`${styles.content} ${pageUi.content}`} id="subject-detail-content">
           <p className={styles.notFound}>Subject not found.</p>
           <Link to="/subject" className={styles.backLink}>
             Back to Subject
@@ -81,15 +83,9 @@ function SubjectDetail() {
 
   return (
     <div className={styles.page}>
-      <div className={styles.banner}>
-        <img
-          src="/assets/inner-banner.png"
-          alt="|| जय जय रघुवीर समर्थ ||"
-          className={styles.bannerImage}
-        />
-      </div>
+      <InnerBanner contentId="subject-detail-content" />
 
-      <div className={styles.content}>
+      <div className={`${styles.content} ${pageUi.content}`} id="subject-detail-content">
         <nav className={styles.breadcrumb} aria-label="Breadcrumb">
           <Link to="/subject" className={styles.breadcrumbLink}>
             विषय / Subject

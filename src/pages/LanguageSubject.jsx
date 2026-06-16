@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react'
+import InnerBanner from '../components/InnerBanner'
+import pageUi from '../styles/pageUi.module.css'
 import { Link, useParams } from 'react-router-dom'
 import {
   getAudiosForLanguageSubject,
@@ -125,7 +127,7 @@ function LanguageSubject() {
   if (!language || !subject) {
     return (
       <div className={styles.page}>
-        <div className={styles.content}>
+        <div className={`${styles.content} ${pageUi.content}`} id="language-subject-content">
           <p className={styles.notFound}>Content not found.</p>
           <Link to="/language" className={styles.backLink}>
             Back to Language
@@ -147,15 +149,9 @@ function LanguageSubject() {
 
   return (
     <div className={styles.page}>
-      <div className={styles.banner}>
-        <img
-          src="/assets/inner-banner.png"
-          alt="|| जय जय रघुवीर समर्थ ||"
-          className={styles.bannerImage}
-        />
-      </div>
+      <InnerBanner contentId="language-subject-content" />
 
-      <div className={styles.content}>
+      <div className={`${styles.content} ${pageUi.content}`} id="language-subject-content">
         <h1 className={styles.pageTitle}>Downloads</h1>
 
         <div className={styles.layout}>

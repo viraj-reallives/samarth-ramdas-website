@@ -141,7 +141,7 @@
 .mainNavList {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
 }
 
 .navItem,
@@ -153,7 +153,7 @@
 .mainNavLinkActive {
   display: inline-block;
   padding: 10px 12px;
-  font-size: 17px;
+  font-size: 15px;
 }
 
 .activeIndicator {

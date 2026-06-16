@@ -14,6 +14,57 @@
     <title>श्री समर्थ रामदास - श्री रामदासांचे साहित्य</title>
   </head>
   <body>
+    <div id="initial-loader" aria-live="polite" aria-label="Website loading">
+      <div class="initial-loader-inner">
+        <div class="initial-loader-spinner" aria-hidden="true"></div>
+        <p class="initial-loader-text">|| जय जय रघुवीर समर्थ ||</p>
+        <p class="initial-loader-sub">लोड होत आहे… / Loading…</p>
+      </div>
+    </div>
+    <style>
+      #initial-loader {
+        position: fixed;
+        inset: 0;
+        z-index: 10001;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(165deg, #fff9f3 0%, #ffffff 45%, #fff5eb 100%);
+        font-family: Roboto, system-ui, sans-serif;
+      }
+      .initial-loader-inner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+        text-align: center;
+        padding: 24px;
+      }
+      .initial-loader-spinner {
+        width: 44px;
+        height: 44px;
+        border: 3px solid #f3e0cc;
+        border-top-color: #e8661a;
+        border-radius: 50%;
+        animation: initial-spin 0.85s linear infinite;
+      }
+      .initial-loader-text {
+        margin: 0;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #c44e0a;
+      }
+      .initial-loader-sub {
+        margin: 0;
+        font-size: 0.88rem;
+        color: #7a6a58;
+      }
+      @keyframes initial-spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

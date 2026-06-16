@@ -1,4 +1,6 @@
 import { useEffect } from 'react'
+import InnerBanner from '../components/InnerBanner'
+import pageUi from '../styles/pageUi.module.css'
 import styles from './NewsEvents.module.css'
 
 const monthlyItems = [
@@ -85,9 +87,12 @@ function PdfIcon() {
   )
 }
 
-function DownloadCard({ titleMr, titleEn }) {
+function DownloadCard({ titleMr, titleEn, index }) {
   return (
-    <article className={styles.card}>
+    <article
+      className={`${styles.card} ${pageUi.cardAnim}`}
+      style={{ animationDelay: `${Math.min(index, 8) * 45}ms` }}
+    >
       <PdfIcon />
       <div className={styles.cardText}>
         <p className={styles.titleMr}>{titleMr}</p>
@@ -110,24 +115,18 @@ function NewsEvents() {
 
   return (
     <div className={styles.page}>
-      <div className={styles.banner}>
-        <img
-          src="/assets/inner-banner.png"
-          alt="|| जय जय रघुवीर समर्थ ||"
-          className={styles.bannerImage}
-        />
-      </div>
+      <InnerBanner contentId="news-content" />
 
-      <div className={styles.content}>
+      <div className={`${styles.content} ${pageUi.content}`} id="news-content">
         <div className={styles.grid}>
-          {monthlyItems.map((item) => (
-            <DownloadCard key={item.titleEn} {...item} />
+          {monthlyItems.map((item, index) => (
+            <DownloadCard key={item.titleEn} {...item} index={index} />
           ))}
         </div>
 
         <div className={styles.grid}>
-          {articleItems.map((item) => (
-            <DownloadCard key={item.titleEn} {...item} />
+          {articleItems.map((item, index) => (
+            <DownloadCard key={item.titleEn} {...item} index={index + monthlyItems.length} />
           ))}
         </div>
       </div>

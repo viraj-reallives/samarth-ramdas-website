@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react'
+import InnerBanner from '../components/InnerBanner'
+import pageUi from '../styles/pageUi.module.css'
 import { FiChevronLeft, FiChevronRight, FiX } from 'react-icons/fi'
 import styles from './Daswani.module.css'
 
@@ -76,15 +78,9 @@ function Daswani() {
 
   return (
     <div className={styles.page}>
-      <div className={styles.banner}>
-        <img
-          src="/assets/inner-banner.png"
-          alt="|| जय जय रघुवीर समर्थ ||"
-          className={styles.bannerImage}
-        />
-      </div>
+      <InnerBanner contentId="daswani-content" />
 
-      <div className={styles.content}>
+      <div className={`${styles.content} ${pageUi.content}`} id="daswani-content">
         <h1 className={styles.pageTitle}>दासवाणी / Daswani</h1>
         <p className={styles.pageIntro}>
           समर्थ रामदासांच्या दैनंदिन दासवाणीचे ५० पाने — कोणतेही पृष्ठ उघडण्यासाठी क्लिक करा.
@@ -95,7 +91,8 @@ function Daswani() {
             <button
               key={image.id}
               type="button"
-              className={styles.card}
+              className={`${styles.card} ${pageUi.cardAnim}`}
+              style={{ animationDelay: `${Math.min(index, 10) * 35}ms` }}
               onClick={() => openLightbox(index)}
               aria-label={`Open ${image.alt}`}
             >

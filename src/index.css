@@ -122,3 +122,24 @@ code {
   padding: 4px 8px;
   background: var(--code-bg);
 }
+
+/* Inner-page banner — fixed 600px height */
+.appMain img[src='/assets/inner-banner.png'] {
+  display: block;
+  width: 100%;
+  height: 600px;
+  object-fit: cover;
+  object-position: center center;
+}
+
+@media (max-width: 768px) {
+  .appMain img[src='/assets/inner-banner.png'] {
+    height: 320px;
+  }
+}
+
+@media (max-width: 480px) {
+  .appMain img[src='/assets/inner-banner.png'] {
+    height: 220px;
+  }
+}

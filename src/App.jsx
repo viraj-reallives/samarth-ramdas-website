@@ -1,6 +1,8 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { useEffect, useRef, useState } from 'react'
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import Header from './components/Header'
 import Footer from './components/Footer'
+import PageLoader from './components/PageLoader'
 import Home from './pages/Home'
 import LifeJourney from './pages/LifeJourney'
 import Contact from './pages/Contact'
@@ -15,10 +17,47 @@ import LanguageDetail from './pages/LanguageDetail'
 import LanguageSubject from './pages/LanguageSubject'
 import Ringtones from './pages/Ringtones'
 import Daswani from './pages/Daswani'
+import NotFound from './pages/NotFound'
+import { removeInitialHtmlLoader, waitForAppReady } from './utils/appLoader'
 
-function App() {
+function AppRoutes() {
+  const location = useLocation()
+  const [initialLoading, setInitialLoading] = useState(true)
+  const [navigating, setNavigating] = useState(false)
+  const isFirstRoute = useRef(true)
+
+  useEffect(() => {
+    let active = true
+
+    waitForAppReady().then(() => {
+      if (!active) return
+      removeInitialHtmlLoader()
+      setInitialLoading(false)
+    })
+
+    return () => {
+      active = false
+    }
+  }, [])
+
+  useEffect(() => {
+    if (initialLoading) return undefined
+
+    if (isFirstRoute.current) {
+      isFirstRoute.current = false
+      return undefined
+    }
+
+    setNavigating(true)
+    const timer = window.setTimeout(() => setNavigating(false), 420)
+    return () => window.clearTimeout(timer)
+  }, [location.pathname, initialLoading])
+
+  const showLoader = initialLoading || navigating
+
   return (
-    <BrowserRouter>
+    <>
+      <PageLoader visible={showLoader} />
       <div className="appShell">
         <Header />
         <main className="appMain">
@@ -37,10 +76,19 @@ function App() {
             <Route path="/language/:slug" element={<LanguageDetail />} />
             <Route path="/ringtones" element={<Ringtones />} />
             <Route path="/daswani" element={<Daswani />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
         <Footer />
       </div>
+    </>
+  )
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <AppRoutes />
     </BrowserRouter>
   )
 }
