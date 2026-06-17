@@ -90,7 +90,7 @@ function PdfIcon() {
 function DownloadCard({ titleMr, titleEn, index }) {
   return (
     <article
-      className={`${styles.card} ${pageUi.cardAnim}`}
+      className={styles.card}
       style={{ animationDelay: `${Math.min(index, 8) * 45}ms` }}
     >
       <PdfIcon />
@@ -118,16 +118,18 @@ function NewsEvents() {
       <InnerBanner contentId="news-content" />
 
       <div className={`${styles.content} ${pageUi.content}`} id="news-content">
-        <div className={styles.grid}>
-          {monthlyItems.map((item, index) => (
-            <DownloadCard key={item.titleEn} {...item} index={index} />
-          ))}
-        </div>
+        <div className={styles.section}>
+          <div className={styles.grid}>
+            {monthlyItems.map((item, index) => (
+              <DownloadCard key={item.titleEn} {...item} index={index} />
+            ))}
+          </div>
 
-        <div className={styles.grid}>
-          {articleItems.map((item, index) => (
-            <DownloadCard key={item.titleEn} {...item} index={index + monthlyItems.length} />
-          ))}
+          <div className={styles.grid}>
+            {articleItems.map((item, index) => (
+              <DownloadCard key={item.titleEn} {...item} index={index + monthlyItems.length} />
+            ))}
+          </div>
         </div>
       </div>
     </div>

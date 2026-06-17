@@ -1,8 +1,8 @@
 .footer {
   position: relative;
   margin-top: auto;
-  background: linear-gradient(180deg, #2a1810 0%, #1a100a 100%);
-  color: #f5ebe0;
+  background: #fadaa1;
+  color: #3d2a18;
 }
 
 .wave {
@@ -47,14 +47,13 @@
   width: auto;
   max-width: 280px;
   object-fit: contain;
-  filter: brightness(1.15);
 }
 
 .mantra {
   margin: 0;
   font-size: 18px;
   font-weight: 600;
-  color: #fb923c;
+  color: #c44e0a;
   letter-spacing: 0.02em;
 }
 
@@ -63,7 +62,7 @@
   max-width: 320px;
   font-size: 14px;
   line-height: 1.65;
-  color: #c9b8a8;
+  color: #5a4a38;
 }
 
 .columnTitle {
@@ -71,8 +70,8 @@
   padding-bottom: 10px;
   font-size: 15px;
   font-weight: 600;
-  color: #ffffff;
-  border-bottom: 2px solid rgba(249, 115, 22, 0.45);
+  color: #2a1810;
+  border-bottom: 2px solid rgba(196, 78, 10, 0.35);
 }
 
 .linkList {
@@ -91,13 +90,13 @@
   padding: 8px 0;
   font-size: 14px;
   line-height: 1.4;
-  color: #e8ddd2;
+  color: #4a3a2a;
   text-decoration: none;
   transition: color 0.2s ease, transform 0.2s ease;
 }
 
 .link:hover {
-  color: #fb923c;
+  color: #e8661a;
   transform: translateX(4px);
 }
 
@@ -108,11 +107,11 @@
 
 .linkEn {
   font-size: 12px;
-  color: #a89484;
+  color: #6b5a48;
 }
 
 .link:hover .linkEn {
-  color: #d4a574;
+  color: #c44e0a;
 }
 
 .contactBlocks {
@@ -132,14 +131,14 @@
 .contactTitle {
   font-size: 14px;
   font-weight: 600;
-  color: #ffffff;
+  color: #2a1810;
   line-height: 1.45;
 }
 
 .contactLine {
   font-size: 13px;
   line-height: 1.55;
-  color: #c9b8a8;
+  color: #5a4a38;
 }
 
 .contactButton {
@@ -149,12 +148,12 @@
   width: fit-content;
   margin-top: 18px;
   padding: 10px 18px;
-  border: 1px solid #f97316;
+  border: 1px solid #e8661a;
   border-radius: 6px;
-  background: rgba(249, 115, 22, 0.12);
+  background: rgba(255, 255, 255, 0.45);
   font-size: 13px;
   font-weight: 500;
-  color: #fdba74;
+  color: #c44e0a;
   text-decoration: none;
   transition:
     background-color 0.2s ease,
@@ -163,7 +162,7 @@
 }
 
 .contactButton:hover {
-  background: #f97316;
+  background: #e8661a;
   color: #ffffff;
   transform: translateY(-1px);
 }
@@ -175,22 +174,22 @@
   gap: 20px;
   margin-top: 44px;
   padding-top: 22px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid rgba(90, 74, 56, 0.2);
 }
 
 .copyright {
   margin: 0;
   font-size: 13px;
-  color: #8a7568;
+  color: #6b5a48;
 }
 
 .backToTop {
   padding: 8px 14px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(90, 74, 56, 0.25);
   border-radius: 6px;
-  background: transparent;
+  background: rgba(255, 255, 255, 0.35);
   font-size: 13px;
-  color: #d4c4b4;
+  color: #4a3a2a;
   cursor: pointer;
   transition:
     border-color 0.2s ease,
@@ -199,9 +198,9 @@
 }
 
 .backToTop:hover {
-  border-color: #f97316;
-  background: rgba(249, 115, 22, 0.1);
-  color: #fb923c;
+  border-color: #e8661a;
+  background: #ffffff;
+  color: #e8661a;
 }
 
 @media (max-width: 1100px) {

@@ -6,10 +6,12 @@ const categories = [
     id: 'subject',
     title: 'Subject',
     titleMr: 'विषय',
-    image: '/assets/cards/subject.jpg',
+    hintMr: 'विषयानुसार साहित्य व ऑडिओ',
+    hintEn: 'Literature & audio by subject',
+    image: '/assets/cards/subject.png',
     href: '/subject',
     theme: 'saffron',
-    position: 'center 30%',
+    position: 'center center',
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
         <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" strokeLinecap="round" />
@@ -22,10 +24,12 @@ const categories = [
     id: 'language',
     title: 'Language',
     titleMr: 'भाषा',
-    image: '/assets/cards/language.jpg',
+    hintMr: 'भाषेनुसार साहित्य संग्रह',
+    hintEn: 'Browse content by language',
+    image: '/assets/cards/language.png',
     href: '/language',
     theme: 'teal',
-    position: 'left center',
+    position: 'center center',
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
         <circle cx="12" cy="12" r="9" />
@@ -37,10 +41,12 @@ const categories = [
     id: 'author',
     title: 'Authors',
     titleMr: 'लेखक',
-    image: '/assets/cards/author.jpg',
+    hintMr: 'लेखकानुसार वर्गीकरण',
+    hintEn: 'Explore works by author',
+    image: '/assets/cards/author.png',
     href: '/author',
     theme: 'gold',
-    position: 'left 35%',
+    position: 'center center',
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
         <circle cx="9" cy="8" r="3.5" />
@@ -54,10 +60,12 @@ const categories = [
     id: 'ringtones',
     title: 'Mobile Ringtones',
     titleMr: 'रिंगटोन्स',
-    image: '/assets/cards/ringtones.jpg',
+    hintMr: 'मनाचे श्लोक रिंगटोन्स',
+    hintEn: 'Download devotional ringtones',
+    image: '/assets/cards/ringtones.png',
     href: '/ringtones',
     theme: 'maroon',
-    position: 'left center',
+    position: 'center center',
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
         <path d="M9 18V5l12-2v13" strokeLinecap="round" strokeLinejoin="round" />
@@ -68,39 +76,67 @@ const categories = [
   },
 ]
 
+const enterAnimations = ['fromBottomLeft', 'fromBottomRight', 'fromTopLeft', 'fromTopRight']
+
 function CategoryCards() {
   return (
     <section className={styles.section} aria-label="Category cards">
       <div className={styles.container}>
-        <div className={styles.grid}>
-          {categories.map(({ id, title, titleMr, image, href, theme, position, icon }) => (
-            <Link
-              key={id}
-              to={href}
-              className={styles.card}
-              data-theme={theme}
-            >
-              <div
-                className={styles.cardBg}
-                style={{ backgroundImage: `url(${image})`, backgroundPosition: position }}
-                aria-hidden="true"
-              />
-              <div className={styles.cardOverlay} aria-hidden="true" />
-              <div className={styles.cardBorder} aria-hidden="true" />
+        <header className={styles.sectionHeader}>
+          <p className={styles.sectionEyebrow}>|| श्री समर्थ वाङ्मय ||</p>
+          <h2 className={styles.sectionTitle}>साहित्य शोधा / Explore Literature</h2>
+          <p className={styles.sectionIntro}>
+            खालील विभाग निवडा — विषय, भाषा, लेखक किंवा रिंगटोन्स.
+          </p>
+        </header>
 
-              <div className={styles.cardBody}>
-                <span className={styles.iconWrap}>{icon}</span>
-                <div className={styles.titles}>
-                  <span className={styles.titleMr}>{titleMr}</span>
-                  <span className={styles.titleEn}>{title}</span>
+        <div className={styles.grid}>
+          {categories.map(
+            ({ id, title, titleMr, hintMr, hintEn, image, href, theme, position, icon }, index) => (
+              <Link
+                key={id}
+                to={href}
+                className={styles.card}
+                data-theme={theme}
+                data-enter={enterAnimations[index]}
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
+                <div
+                  className={styles.cardBg}
+                  style={{ backgroundImage: `url(${image})`, backgroundPosition: position }}
+                  aria-hidden="true"
+                />
+                <div className={styles.cardTint} aria-hidden="true" />
+                <div className={styles.cardOverlay} aria-hidden="true" />
+                <div className={styles.cardAccentBar} aria-hidden="true" />
+
+                <div className={styles.cardBody}>
+                  <div className={styles.cardHead}>
+                    <span className={styles.iconWrap}>{icon}</span>
+                    <span className={styles.cardNum} aria-hidden="true">
+                      {String(index + 1).padStart(2, '0')}
+                    </span>
+                  </div>
+
+                  <div className={styles.cardPanel}>
+                    <div className={styles.titles}>
+                      <span className={styles.titleMr}>{titleMr}</span>
+                      <span className={styles.titleEn}>{title}</span>
+                    </div>
+                    <p className={styles.hint}>
+                      <span>{hintMr}</span>
+                      <span className={styles.hintSep}>·</span>
+                      <span>{hintEn}</span>
+                    </p>
+                    <span className={styles.cta}>
+                      <span>पहा / Explore</span>
+                      <span className={styles.ctaArrow} aria-hidden="true">→</span>
+                    </span>
+                  </div>
                 </div>
-                <span className={styles.cta}>
-                  <span>Explore</span>
-                  <span className={styles.ctaArrow}>→</span>
-                </span>
-              </div>
-            </Link>
-          ))}
+              </Link>
+            ),
+          )}
         </div>
       </div>
     </section>

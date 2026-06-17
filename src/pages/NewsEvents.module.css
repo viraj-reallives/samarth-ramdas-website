@@ -18,19 +18,19 @@
   max-width: 1400px;
   margin: 0 auto;
   padding: 40px;
+}
+
+.section {
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 28px;
 }
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 20px;
-}
-
-.grid:last-child {
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 24px;
+  align-items: stretch;
 }
 
 .card {
@@ -38,12 +38,25 @@
   flex-direction: column;
   align-items: center;
   gap: 16px;
+  min-height: 220px;
   padding: 20px 14px 18px;
   border: 1px solid #dddddd;
   border-radius: 2px;
   background-color: #ffffff;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
   text-align: center;
+  box-sizing: border-box;
+  animation: cardFadeIn 0.45s ease backwards;
+}
+
+@keyframes cardFadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 .pdfIcon {
@@ -57,6 +70,7 @@
   flex-direction: column;
   gap: 6px;
   flex: 1;
+  width: 100%;
 }
 
 .titleMr,
@@ -73,7 +87,9 @@
 }
 
 .downloadButton {
-  display: inline-block;
+  display: block;
+  width: 100%;
+  margin-top: auto;
   padding: 8px 16px;
   border-radius: 3px;
   background: linear-gradient(to bottom, #f08a2a, #e8661a);
@@ -83,6 +99,7 @@
   text-decoration: none;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
   transition: background 0.2s ease;
+  box-sizing: border-box;
 }
 
 .downloadButton:hover {
@@ -91,24 +108,18 @@
 
 @media (max-width: 1200px) {
   .grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-
-  .grid:last-child {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
 
 @media (max-width: 768px) {
   .content {
     padding: 24px 20px 40px;
-    gap: 24px;
   }
 
-  .grid,
-  .grid:last-child {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
   }
 
   .card {
@@ -125,8 +136,7 @@
 }
 
 @media (max-width: 480px) {
-  .grid,
-  .grid:last-child {
+  .grid {
     grid-template-columns: 1fr;
   }
 }

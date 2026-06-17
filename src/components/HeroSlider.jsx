@@ -1,4 +1,5 @@
 import { useRef } from 'react'
+import { Link } from 'react-router-dom'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { EffectFade, Autoplay, Navigation, Pagination } from 'swiper/modules'
 import 'swiper/css'
@@ -12,7 +13,7 @@ const slides = [
     title: 'श्री समर्थ रामदास स्वामी',
     subtitle: 'आध्यात्मिक वारसा आणि प्रेरणादायी विचार',
     button: 'अधिक जाणून घ्या',
-    href: '/about',
+    href: '/life-journey',
   },
   {
     id: 2,
@@ -20,7 +21,7 @@ const slides = [
     title: 'शिवथरघळ',
     subtitle: 'दासबोधाची पवित्र भूमी',
     button: 'Explore',
-    href: '/shivtharghal',
+    href: '/subject/dasbodh',
   },
   {
     id: 3,
@@ -88,12 +89,12 @@ function HeroSlider() {
                 <div className={styles.contentInner}>
                   <h2 className={styles.title}>{title}</h2>
                   <p className={styles.subtitle}>{subtitle}</p>
-                  <a href={href} className={styles.cta}>
+                  <Link to={href} className={styles.cta}>
                     {button}
                     <span className={styles.ctaArrow} aria-hidden="true">
                       →
                     </span>
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
