@@ -1,0 +1,38 @@
+/* Site-wide light theme tokens */
+:root {
+  color-scheme: light;
+
+  --page-bg: #ffffff;
+  --site-bg: #ffffff;
+  --site-surface: #ffffff;
+  --site-surface-alt: #f7f3ec;
+  --site-surface-hover: #fff3e6;
+  --site-surface-muted: #f5f0e8;
+  --site-gradient-warm: linear-gradient(135deg, #fff8ef 0%, #fdf3e4 100%);
+  --site-gradient-topbar: linear-gradient(90deg, #fffaf5 0%, #ffffff 50%, #fffaf5 100%);
+  --site-text: #3d2a18;
+  --site-text-secondary: #4a3a2a;
+  --site-text-muted: #6b5a48;
+  --site-text-faint: #7a6a58;
+  --site-border: #e5e4e7;
+  --site-border-warm: #edd9c0;
+  --site-border-light: #f0e4d8;
+  --site-header-bg: #ffffff;
+  --site-footer-bg: #fadaa1;
+  --site-footer-text: #3d2a18;
+  --site-card-bg: #ffffff;
+  --site-card-bg-alt: #fff8ef;
+  --site-card-bg-cream: #fff9e3;
+  --site-loader-bg: linear-gradient(165deg, #fff9f3 0%, #ffffff 45%, #fff5eb 100%);
+  --site-shadow: rgba(0, 0, 0, 0.08);
+  --site-dropdown-bg: #ffffff;
+  --site-dropdown-hover: #fff7ed;
+  --site-input-bg: #ffffff;
+  --site-overlay: rgba(0, 0, 0, 0.4);
+}
+
+html,
+body {
+  background: var(--site-bg);
+  color: var(--site-text);
+}

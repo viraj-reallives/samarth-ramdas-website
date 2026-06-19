@@ -1,10 +1,10 @@
 .page {
-  background-color: #ffffff;
+  background-color: var(--page-bg);
 }
 
 .banner {
   width: 100%;
-  background-color: #f5f0e8;
+  background-color: var(--site-surface-muted);
   line-height: 0;
 }
 
@@ -80,7 +80,7 @@
   margin: 0;
   font-size: 17px;
   line-height: 1.75;
-  color: #333333;
+  color: var(--site-text);
   text-align: left;
 }
 

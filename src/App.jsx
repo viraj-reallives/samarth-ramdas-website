@@ -27,7 +27,7 @@ function AppRoutes() {
   const isFirstRoute = useRef(true)
 
   useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
   }, [location.pathname, location.search])
 
   useEffect(() => {

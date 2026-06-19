@@ -1,5 +1,5 @@
 .page {
-  background-color: #ffffff;
+  background-color: var(--page-bg);
 }
 
 .content {
@@ -28,14 +28,14 @@
   max-width: 720px;
   font-size: 0.95rem;
   line-height: 1.55;
-  color: #4a3a2a;
+  color: var(--site-text-secondary);
 }
 
 .pageIntroEn {
   display: block;
   margin-top: 4px;
   font-size: 0.86rem;
-  color: #6b5a48;
+  color: var(--site-text-muted);
 }
 
 .steps {
@@ -46,8 +46,8 @@
   margin-bottom: 28px;
   padding: 16px 20px;
   border-radius: 12px;
-  background: linear-gradient(135deg, #fff8ef 0%, #fdf3e4 100%);
-  border: 1px solid #edd9c0;
+  background: var(--site-gradient-warm);
+  border: 1px solid var(--site-border-warm);
   transition: box-shadow 0.25s ease;
 }
 
@@ -85,12 +85,12 @@
 .stepText {
   font-size: 0.9rem;
   font-weight: 600;
-  color: #3d2a18;
+  color: var(--site-text);
 }
 
 .stepSub {
   font-size: 0.78rem;
-  color: #6b5a48;
+  color: var(--site-text-muted);
 }
 
 .stepArrow {
@@ -131,10 +131,10 @@
   padding: 12px 14px 12px 42px;
   border: 1px solid #e0d0bc;
   border-radius: 12px;
-  background: #ffffff;
+  background: var(--site-surface);
   font-family: var(--sans);
   font-size: 0.9rem;
-  color: #3d2a18;
+  color: var(--site-text);
   transition:
     border-color 0.2s ease,
     box-shadow 0.2s ease;
@@ -168,15 +168,15 @@
 }
 
 .countBadge {
-  background: #fff8ef;
-  border: 1px solid #edd9c0;
+  background: var(--site-card-bg-alt);
+  border: 1px solid var(--site-border-warm);
   color: #8a5a32;
 }
 
 .countBadgeMuted {
-  background: #f7f3ec;
+  background: var(--site-surface-alt);
   border: 1px solid #e8dfd3;
-  color: #7a6a58;
+  color: var(--site-text-faint);
 }
 
 .filters {
@@ -195,7 +195,7 @@
   padding: 10px 14px;
   border-radius: 10px;
   border: 1px solid #e0d0bc;
-  background: #ffffff;
+  background: var(--site-surface);
   font-family: var(--sans);
   cursor: pointer;
   transition:
@@ -207,7 +207,7 @@
 
 .filterBtn:hover {
   border-color: #e8661a;
-  background: #fffaf5;
+  background: var(--site-surface-hover);
   transform: translateY(-1px);
 }
 
@@ -235,7 +235,7 @@
 
 .filterBtn .filterMr,
 .filterBtn .filterEn {
-  color: #3d2a18;
+  color: var(--site-text);
 }
 
 .filterActive .filterMr,
@@ -277,7 +277,7 @@
 .resultCount {
   margin: 0 0 16px;
   font-size: 0.82rem;
-  color: #7a6a58;
+  color: var(--site-text-faint);
 }
 
 .grid {
@@ -376,7 +376,7 @@
 .titleEn {
   font-size: 0.82rem;
   line-height: 1.35;
-  color: #5a4a38;
+  color: var(--site-text-muted);
   font-weight: 500;
 }
 
@@ -384,7 +384,7 @@
   margin: 0 0 14px;
   font-size: 0.78rem;
   line-height: 1.45;
-  color: #6b5a48;
+  color: var(--site-text-muted);
 }
 
 .hintSep {

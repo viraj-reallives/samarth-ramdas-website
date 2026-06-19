@@ -1,8 +1,8 @@
 .footer {
   position: relative;
   margin-top: auto;
-  background: #fadaa1;
-  color: #3d2a18;
+  background: var(--site-footer-bg);
+  color: var(--site-text);
 }
 
 .wave {
@@ -62,7 +62,7 @@
   max-width: 320px;
   font-size: 14px;
   line-height: 1.65;
-  color: #5a4a38;
+  color: var(--site-text-muted);
 }
 
 .columnTitle {
@@ -70,7 +70,7 @@
   padding-bottom: 10px;
   font-size: 15px;
   font-weight: 600;
-  color: #2a1810;
+  color: var(--site-text);
   border-bottom: 2px solid rgba(196, 78, 10, 0.35);
 }
 
@@ -90,7 +90,7 @@
   padding: 8px 0;
   font-size: 14px;
   line-height: 1.4;
-  color: #4a3a2a;
+  color: var(--site-text-secondary);
   text-decoration: none;
   transition: color 0.2s ease, transform 0.2s ease;
 }
@@ -107,7 +107,7 @@
 
 .linkEn {
   font-size: 12px;
-  color: #6b5a48;
+  color: var(--site-text-muted);
 }
 
 .link:hover .linkEn {
@@ -131,14 +131,14 @@
 .contactTitle {
   font-size: 14px;
   font-weight: 600;
-  color: #2a1810;
+  color: var(--site-text);
   line-height: 1.45;
 }
 
 .contactLine {
   font-size: 13px;
   line-height: 1.55;
-  color: #5a4a38;
+  color: var(--site-text-muted);
 }
 
 .contactButton {
@@ -180,7 +180,7 @@
 .copyright {
   margin: 0;
   font-size: 13px;
-  color: #6b5a48;
+  color: var(--site-text-muted);
 }
 
 .backToTop {
@@ -189,7 +189,7 @@
   border-radius: 6px;
   background: rgba(255, 255, 255, 0.35);
   font-size: 13px;
-  color: #4a3a2a;
+  color: var(--site-text-secondary);
   cursor: pointer;
   transition:
     border-color 0.2s ease,
@@ -199,7 +199,7 @@
 
 .backToTop:hover {
   border-color: #e8661a;
-  background: #ffffff;
+  background: var(--site-surface);
   color: #e8661a;
 }
 

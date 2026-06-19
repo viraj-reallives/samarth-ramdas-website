@@ -1,10 +1,10 @@
 .page {
-  background-color: #ffffff;
+  background-color: var(--page-bg);
 }
 
 .banner {
   width: 100%;
-  background-color: #f5f0e8;
+  background-color: var(--site-surface-muted);
   line-height: 0;
 }
 
@@ -46,7 +46,7 @@
 }
 
 .breadcrumbCurrent {
-  color: #6b5a48;
+  color: var(--site-text-muted);
   font-weight: 500;
 }
 
@@ -58,7 +58,7 @@
   padding: 22px 24px;
   border-radius: 16px;
   background: linear-gradient(135deg, #fff8ef 0%, #ffffff 100%);
-  border: 1px solid #edd9c0;
+  border: 1px solid var(--site-border-warm);
   box-shadow: 0 8px 28px rgba(61, 42, 24, 0.06);
 }
 
@@ -70,7 +70,7 @@
   overflow: hidden;
   border: 2px solid rgba(232, 102, 26, 0.35);
   box-shadow: 0 8px 24px rgba(61, 42, 24, 0.12);
-  background: #ffffff;
+  background: var(--site-surface);
 }
 
 .authorPhoto {
@@ -116,22 +116,22 @@
   max-width: 560px;
   font-size: 0.92rem;
   line-height: 1.55;
-  color: #4a3a2a;
+  color: var(--site-text-secondary);
 }
 
 .pageSubtitleEn {
   display: block;
   margin-top: 3px;
   font-size: 0.84rem;
-  color: #6b5a48;
+  color: var(--site-text-muted);
 }
 
 .subjectCountBadge {
   display: inline-flex;
   padding: 6px 12px;
   border-radius: 999px;
-  background: #ffffff;
-  border: 1px solid #edd9c0;
+  background: var(--site-surface);
+  border: 1px solid var(--site-border-warm);
   font-size: 0.78rem;
   font-weight: 600;
   color: #8a5a32;
@@ -160,7 +160,7 @@
 .sectionTitle {
   font-size: 0.95rem;
   font-weight: 600;
-  color: #3d2a18;
+  color: var(--site-text);
 }
 
 .subjectGrid {
@@ -242,7 +242,7 @@
 .subjectTitleEn {
   font-size: 0.8rem;
   line-height: 1.35;
-  color: #5a4a38;
+  color: var(--site-text-muted);
   font-weight: 500;
 }
 
@@ -279,8 +279,8 @@
   padding: 32px 20px;
   text-align: center;
   font-size: 0.92rem;
-  color: #7a6a58;
-  background: #fff8ef;
+  color: var(--site-text-faint);
+  background: var(--site-card-bg-alt);
   border-radius: 12px;
   border: 1px dashed #e0d0bc;
 }
@@ -290,7 +290,7 @@
   top: 100px;
   border: 1px solid #e8dfd3;
   border-radius: 12px;
-  background-color: #ffffff;
+  background-color: var(--page-bg);
   box-shadow: 0 8px 28px rgba(61, 42, 24, 0.08);
   overflow: hidden;
 }
@@ -346,7 +346,7 @@
 
 .sidebarLink:hover,
 .sidebarLink:focus-visible {
-  background-color: #fff8ef;
+  background-color: var(--site-card-bg-alt);
   padding-left: 18px;
 }
 
@@ -364,7 +364,7 @@
   border-radius: 8px;
   object-fit: cover;
   object-position: top center;
-  border: 1px solid #edd9c0;
+  border: 1px solid var(--site-border-warm);
 }
 
 .sidebarThumbPlaceholder {
@@ -375,9 +375,9 @@
   width: 36px;
   height: 36px;
   border-radius: 8px;
-  background: #fff8ef;
+  background: var(--site-card-bg-alt);
   color: #c44e0a;
-  border: 1px solid #edd9c0;
+  border: 1px solid var(--site-border-warm);
 }
 
 .sidebarThumbPlaceholder svg {
@@ -395,13 +395,13 @@
 .sidebarMr {
   font-size: 0.84rem;
   font-weight: 600;
-  color: #3d2a18;
+  color: var(--site-text);
   line-height: 1.3;
 }
 
 .sidebarEn {
   font-size: 0.74rem;
-  color: #6b5a48;
+  color: var(--site-text-muted);
   line-height: 1.3;
 }
 
@@ -423,7 +423,7 @@
 .notFound {
   margin: 0 0 16px;
   font-size: 18px;
-  color: #333333;
+  color: var(--site-text);
 }
 
 .backLink {

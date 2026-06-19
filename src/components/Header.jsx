@@ -48,6 +48,14 @@ function isPathActive(pathname, href) {
   return pathname === href || pathname.startsWith(`${href}/`)
 }
 
+function parseDropdownLabel(label) {
+  const parts = label.split(' # ')
+  if (parts.length >= 2) {
+    return { mr: parts[0], en: parts.slice(1).join(' # ') }
+  }
+  return { mr: label, en: null }
+}
+
 function Header() {
   const { pathname } = useLocation()
   const headerRef = useRef(null)
@@ -121,7 +129,9 @@ function Header() {
     return (
       <li
         key={item.id}
-        className={`${styles.dropdownItem} ${isOpen ? styles.dropdownItemOpen : ''}`}
+        className={`${styles.dropdownItem} ${isOpen ? styles.dropdownItemOpen : ''} ${
+          isActive ? styles.dropdownItemActive : ''
+        }`}
         onMouseEnter={() => variant === 'desktop' && setOpenDropdown(item.id)}
         onMouseLeave={() => variant === 'desktop' && setOpenDropdown(null)}
       >
@@ -135,7 +145,7 @@ function Header() {
           )}
           <button
             type="button"
-            className={styles.dropdownToggle}
+            className={`${styles.dropdownToggle} ${isOpen ? styles.dropdownToggleOpen : ''}`}
             aria-expanded={isOpen}
             aria-controls={`nav-dropdown-${item.id}-${variant}`}
             aria-label={`${item.label} submenu`}
@@ -150,19 +160,44 @@ function Header() {
           className={`${styles.dropdownPanel} ${isOpen ? styles.dropdownPanelOpen : ''}`}
           role="menu"
         >
+          <div className={styles.dropdownPanelHeader}>
+            <span className={styles.dropdownPanelTitle}>{item.label}</span>
+            <Link to={item.href} className={styles.dropdownViewAll} onClick={closeMenus}>
+              सर्व पहा / View all
+            </Link>
+          </div>
           <ul className={styles.dropdownList}>
-            {item.items.map(({ label, href }) => (
-              <li key={href} role="none">
-                <Link
-                  to={href}
-                  className={styles.dropdownLink}
-                  role="menuitem"
-                  onClick={closeMenus}
+            {item.items.map(({ label, href }, index) => {
+              const { mr, en } = parseDropdownLabel(label)
+              const linkActive = isPathActive(pathname, href)
+
+              return (
+                <li
+                  key={href}
+                  role="none"
+                  className={styles.dropdownListItem}
+                  style={{ '--item-delay': `${index * 40}ms` }}
                 >
-                  {label}
-                </Link>
-              </li>
-            ))}
+                  <Link
+                    to={href}
+                    className={`${styles.dropdownLink} ${
+                      linkActive ? styles.dropdownLinkActive : ''
+                    }`}
+                    role="menuitem"
+                    aria-current={linkActive ? 'page' : undefined}
+                    onClick={closeMenus}
+                  >
+                    <span className={styles.dropdownLinkText}>
+                      <span className={styles.dropdownLinkMr}>{mr}</span>
+                      {en && <span className={styles.dropdownLinkEn}>{en}</span>}
+                    </span>
+                    <span className={styles.dropdownLinkArrow} aria-hidden="true">
+                      →
+                    </span>
+                  </Link>
+                </li>
+              )
+            })}
           </ul>
         </div>
 
@@ -280,17 +315,29 @@ function Header() {
                       openDropdown === item.id ? styles.mobileSubListOpen : ''
                     }`}
                   >
-                    {item.items.map(({ label, href }) => (
-                      <li key={href}>
-                        <Link
-                          to={href}
-                          className={styles.mobileSubLink}
-                          onClick={closeMenus}
+                    {item.items.map(({ label, href }, index) => {
+                      const { mr, en } = parseDropdownLabel(label)
+                      const linkActive = isPathActive(pathname, href)
+
+                      return (
+                        <li
+                          key={href}
+                          className={styles.mobileSubListItem}
+                          style={{ '--item-delay': `${index * 35}ms` }}
                         >
-                          {label}
-                        </Link>
-                      </li>
-                    ))}
+                          <Link
+                            to={href}
+                            className={`${styles.mobileSubLink} ${
+                              linkActive ? styles.mobileSubLinkActive : ''
+                            }`}
+                            onClick={closeMenus}
+                          >
+                            <span className={styles.mobileSubLinkMr}>{mr}</span>
+                            {en && <span className={styles.mobileSubLinkEn}>{en}</span>}
+                          </Link>
+                        </li>
+                      )
+                    })}
                   </ul>
                 </li>
               ) : (

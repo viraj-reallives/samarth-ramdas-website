@@ -1,10 +1,10 @@
 .page {
-  background-color: #ffffff;
+  background-color: var(--page-bg);
 }
 
 .banner {
   width: 100%;
-  background-color: #f5f0e8;
+  background-color: var(--site-surface-muted);
   line-height: 0;
 }
 
@@ -57,23 +57,23 @@
 }
 
 .tabActive {
-  background-color: #fff9e3;
-  border: 1px solid #dddddd;
+  background-color: var(--site-card-bg-cream);
+  border: 1px solid var(--site-border);
   border-bottom: none;
 }
 
 .panel {
   min-height: 280px;
   padding: 24px;
-  background-color: #fff9e3;
-  border: 1px solid #dddddd;
+  background-color: var(--site-card-bg-cream);
+  border: 1px solid var(--site-border);
 }
 
 .breadcrumb {
   margin: 0 0 20px;
   font-size: 16px;
   line-height: 1.5;
-  color: #333333;
+  color: var(--site-text);
 }
 
 .emptyMessage {
@@ -101,9 +101,9 @@
   align-items: center;
   gap: 16px;
   padding: 20px 14px 18px;
-  border: 1px solid #dddddd;
+  border: 1px solid var(--site-border);
   border-radius: 2px;
-  background-color: #ffffff;
+  background-color: var(--page-bg);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
   text-align: center;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -134,12 +134,12 @@
   margin: 0;
   font-size: 14px;
   line-height: 1.45;
-  color: #333333;
+  color: var(--site-text);
 }
 
 .cardTitleEn {
   font-size: 13px;
-  color: #444444;
+  color: var(--site-text-secondary);
 }
 
 .downloadButton {
@@ -160,8 +160,8 @@
 }
 
 .sidebar {
-  border: 1px solid #dddddd;
-  background-color: #ffffff;
+  border: 1px solid var(--site-border);
+  background-color: var(--page-bg);
 }
 
 .sidebarHeader {
@@ -180,10 +180,10 @@
 
 .sidebarLink {
   padding: 14px 16px;
-  border-bottom: 1px solid #e5e5e5;
+  border-bottom: 1px solid var(--site-border);
   font-size: 15px;
   line-height: 1.45;
-  color: #333333;
+  color: var(--site-text);
   text-decoration: none;
   transition: background-color 0.2s ease, color 0.2s ease;
 }
@@ -193,7 +193,7 @@
 }
 
 .sidebarLink:hover {
-  background-color: #fff8f0;
+  background-color: var(--site-card-bg-cream);
   color: #e8661a;
 }
 
@@ -208,7 +208,7 @@
 .notFound {
   margin: 0 0 16px;
   font-size: 18px;
-  color: #333333;
+  color: var(--site-text);
 }
 
 .backLink {

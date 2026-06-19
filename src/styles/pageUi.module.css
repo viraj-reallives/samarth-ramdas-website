@@ -32,10 +32,10 @@
   margin: 0;
   padding: 48px 24px;
   text-align: center;
-  color: #5a4a38;
+  color: var(--site-text-muted);
   font-size: 0.95rem;
   font-weight: 600;
-  background: linear-gradient(135deg, #fff8ef 0%, #fdf3e4 100%);
+  background: var(--site-gradient-warm);
   border-radius: 14px;
   border: 1px dashed #e0d0bc;
 }
@@ -44,7 +44,7 @@
   margin: 0;
   font-size: 0.85rem;
   font-weight: 400;
-  color: #7a6a58;
+  color: var(--site-text-faint);
 }
 
 .emptyReset {

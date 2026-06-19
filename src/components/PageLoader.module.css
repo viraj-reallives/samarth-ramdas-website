@@ -6,7 +6,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(165deg, #fff9f3 0%, #ffffff 45%, #fff5eb 100%);
+  background: var(--site-loader-bg);
   transition:
     opacity 0.45s ease,
     visibility 0.45s ease;
@@ -60,7 +60,7 @@
   margin: 0;
   font-family: var(--sans);
   font-size: 0.88rem;
-  color: #7a6a58;
+  color: var(--site-text-faint);
 }
 
 @keyframes spin {

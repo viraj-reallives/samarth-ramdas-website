@@ -1,10 +1,10 @@
 .page {
-  background-color: #ffffff;
+  background-color: var(--page-bg);
 }
 
 .banner {
   width: 100%;
-  background-color: #f5f0e8;
+  background-color: var(--site-surface-muted);
   line-height: 0;
 }
 
@@ -46,7 +46,7 @@
 }
 
 .breadcrumbCurrent {
-  color: #6b5a48;
+  color: var(--site-text-muted);
   font-weight: 500;
 }
 
@@ -66,14 +66,14 @@
   max-width: 640px;
   font-size: 0.9rem;
   line-height: 1.5;
-  color: #5a4a38;
+  color: var(--site-text-muted);
 }
 
 .pageIntroEn {
   display: block;
   margin-top: 3px;
   font-size: 0.82rem;
-  color: #7a6a58;
+  color: var(--site-text-faint);
 }
 
 .layout {
@@ -99,15 +99,15 @@
 .sectionTitle {
   font-size: 0.95rem;
   font-weight: 600;
-  color: #3d2a18;
+  color: var(--site-text);
 }
 
 .authorCount {
   font-size: 0.78rem;
   font-weight: 600;
   color: #8a5a32;
-  background: #fff8ef;
-  border: 1px solid #edd9c0;
+  background: var(--site-card-bg-alt);
+  border: 1px solid var(--site-border-warm);
   padding: 5px 10px;
   border-radius: 999px;
 }
@@ -180,7 +180,7 @@
   height: 104px;
   border: 2px solid #e8dfd3;
   border-radius: 8px;
-  background: #ffffff;
+  background: var(--site-surface);
   box-shadow: 0 4px 12px rgba(61, 42, 24, 0.1);
   transition:
     border-color 0.3s ease,
@@ -246,7 +246,7 @@
 .authorTitleEn {
   font-size: 12px;
   line-height: 1.35;
-  color: #5a4a38;
+  color: var(--site-text-muted);
   font-weight: 500;
 }
 
@@ -286,7 +286,7 @@
   top: 100px;
   border: 1px solid #e8dfd3;
   border-radius: 12px;
-  background-color: #ffffff;
+  background-color: var(--page-bg);
   box-shadow: 0 8px 28px rgba(61, 42, 24, 0.08);
   overflow: hidden;
 }
@@ -344,13 +344,13 @@
 
 .sidebarLink:hover,
 .sidebarLink:focus-visible {
-  background-color: #fff8ef;
+  background-color: var(--site-card-bg-alt);
   padding-left: 18px;
 }
 
 .sidebarLink:focus-visible {
   outline: none;
-  background-color: #fff3e6;
+  background-color: var(--site-surface-hover);
   box-shadow: inset 3px 0 0 #e8661a;
 }
 
@@ -371,7 +371,7 @@
 .sidebarEn {
   font-size: 0.74rem;
   line-height: 1.3;
-  color: #7a6a58;
+  color: var(--site-text-faint);
 }
 
 .sidebarLink:hover .sidebarMr,
@@ -400,7 +400,7 @@
 .notFound {
   margin: 0 0 16px;
   font-size: 18px;
-  color: #333333;
+  color: var(--site-text);
 }
 
 .backLink {
