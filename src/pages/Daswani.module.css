@@ -20,22 +20,107 @@
   padding: 40px 48px 64px;
 }
 
-.pageTitle {
+.pageHeader {
+  margin-bottom: 36px;
+}
+
+.eyebrow {
   margin: 0 0 8px;
-  padding: 0 0px;
-  font-family: var(--sans);
-  font-size: 22px;
-  font-weight: 500;
-  line-height: 1.4;
-  letter-spacing: normal;
-  color: #e8661a;
+  font-family: var(--font-mr);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: #ff6b00;
+}
+
+.pageTitle {
+  margin: 0 0 10px;
+  font-family: var(--font-mr);
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: #4e342e;
 }
 
 .pageIntro {
-  margin: 0 0 32px;
-  font-size: 0.9rem;
-  line-height: 1.5;
+  margin: 0;
+  max-width: 720px;
+  font-family: var(--font-mr);
+  font-size: 0.95rem;
+  line-height: 1.7;
   color: var(--site-text-muted);
+}
+
+.pageIntroEn {
+  display: block;
+  margin-top: 6px;
+  font-family: var(--font-en);
+  font-size: 0.86rem;
+  color: var(--site-text-faint);
+}
+
+.gallerySection {
+  scroll-margin-top: calc(var(--site-header-offset, 96px) + 16px);
+  padding: 28px;
+  border: 1px solid rgba(255, 107, 0, 0.14);
+  border-radius: 20px;
+  background: linear-gradient(180deg, #fffdf8 0%, #ffffff 100%);
+  box-shadow: 0 12px 40px rgba(78, 52, 46, 0.06);
+}
+
+.galleryHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid rgba(78, 52, 46, 0.08);
+}
+
+.galleryTitleWrap {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.galleryIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: rgba(255, 107, 0, 0.1);
+  color: #ff6b00;
+  font-size: 1.25rem;
+}
+
+.galleryTitle {
+  margin: 0;
+  font-family: var(--font-mr);
+  font-size: 22px;
+  font-weight: 700;
+  color: #4e342e;
+}
+
+.gallerySub {
+  margin: 4px 0 0;
+  font-family: var(--font-en);
+  font-size: 0.82rem;
+  color: var(--site-text-faint);
+}
+
+.galleryBadge {
+  flex-shrink: 0;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: #fff8e7;
+  border: 1px solid rgba(255, 107, 0, 0.2);
+  font-family: var(--font-mr);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #ff6b00;
 }
 
 .grid {
@@ -45,15 +130,16 @@
 }
 
 .card {
-  display: block;
+  display: flex;
+  flex-direction: column;
   width: 100%;
   padding: 0;
-  border: 1px solid var(--site-border);
-  border-radius: 4px;
-  background: var(--site-surface);
+  border: 1px solid rgba(78, 52, 46, 0.1);
+  border-radius: 12px;
+  background: #ffffff;
   cursor: pointer;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+  box-shadow: 0 4px 14px rgba(78, 52, 46, 0.06);
   transition:
     transform 0.25s ease,
     box-shadow 0.25s ease,
@@ -62,14 +148,20 @@
 
 .card:hover,
 .card:focus-visible {
-  transform: translateY(-3px);
-  border-color: #e8661a;
-  box-shadow: 0 8px 20px rgba(232, 102, 26, 0.18);
+  transform: translateY(-4px);
+  border-color: #ff6b00;
+  box-shadow: 0 14px 32px rgba(255, 107, 0, 0.14);
 }
 
 .card:focus-visible {
-  outline: 2px solid #e8661a;
+  outline: 2px solid #ff6b00;
   outline-offset: 2px;
+}
+
+.cardImageWrap {
+  position: relative;
+  overflow: hidden;
+  background: #f7f3ec;
 }
 
 .cardImage {
@@ -77,6 +169,58 @@
   width: 100%;
   height: auto;
   vertical-align: top;
+  transition: transform 0.35s ease;
+}
+
+.card:hover .cardImage,
+.card:focus-visible .cardImage {
+  transform: scale(1.04);
+}
+
+.cardOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: rgba(78, 52, 46, 0.45);
+  color: #ffffff;
+  font-family: var(--font-mr);
+  font-size: 0.9rem;
+  font-weight: 600;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.cardOverlay svg {
+  font-size: 1.4rem;
+}
+
+.card:hover .cardOverlay,
+.card:focus-visible .cardOverlay {
+  opacity: 1;
+}
+
+.cardLabel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 12px;
+  font-family: var(--font-mr);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #4e342e;
+  background: #fff8e7;
+}
+
+.cardLabel span {
+  font-family: var(--font-en);
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--site-text-faint);
 }
 
 /* ── Full-screen viewer ── */
@@ -269,7 +413,17 @@
   }
 
   .pageTitle {
-    font-size: 18px;
+    font-size: 22px;
+  }
+
+  .gallerySection {
+    padding: 20px 16px;
+    border-radius: 16px;
+  }
+
+  .galleryHeader {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   .grid {

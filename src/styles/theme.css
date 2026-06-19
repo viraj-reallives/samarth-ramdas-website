@@ -2,6 +2,12 @@
 :root {
   color-scheme: light;
 
+  --font-mr: 'Noto Sans Devanagari', system-ui, sans-serif;
+  --font-en: 'Poppins', system-ui, sans-serif;
+  --color-saffron: #ff6b00;
+  --color-cream: #fff8e7;
+  --color-brown: #4e342e;
+
   --page-bg: #ffffff;
   --site-bg: #ffffff;
   --site-surface: #ffffff;
@@ -18,6 +24,7 @@
   --site-border-warm: #edd9c0;
   --site-border-light: #f0e4d8;
   --site-header-bg: #ffffff;
+  --site-header-offset: 96px;
   --site-footer-bg: #fadaa1;
   --site-footer-text: #3d2a18;
   --site-card-bg: #ffffff;

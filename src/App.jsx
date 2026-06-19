@@ -16,6 +16,7 @@ import Language from './pages/Language'
 import LanguageDetail from './pages/LanguageDetail'
 import LanguageSubject from './pages/LanguageSubject'
 import Ringtones from './pages/Ringtones'
+import Audio from './pages/Audio'
 import Daswani from './pages/Daswani'
 import NotFound from './pages/NotFound'
 import { removeInitialHtmlLoader, waitForAppReady } from './utils/appLoader'
@@ -58,11 +59,12 @@ function AppRoutes() {
   }, [location.pathname, initialLoading])
 
   const showLoader = initialLoading || navigating
+  const isHome = location.pathname === '/'
 
   return (
     <>
       <PageLoader visible={showLoader} />
-      <div className="appShell">
+      <div className={`appShell${isHome ? ' appShellHome' : ''}`}>
         <Header />
         <main className="appMain">
           <Routes>
@@ -79,6 +81,7 @@ function AppRoutes() {
             <Route path="/language/:languageSlug/subject/:subjectSlug" element={<LanguageSubject />} />
             <Route path="/language/:slug" element={<LanguageDetail />} />
             <Route path="/ringtones" element={<Ringtones />} />
+            <Route path="/audio" element={<Audio />} />
             <Route path="/daswani" element={<Daswani />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

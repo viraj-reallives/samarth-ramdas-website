@@ -900,3 +900,24 @@ export function getLiteratureForAuthor(subjectSlug, authorSlug) {
 export function getAudiosForAuthor(subjectSlug, authorSlug) {
   return subjectAudios[`${subjectSlug}/${authorSlug}`] ?? []
 }
+
+export function getAllAudioEntries() {
+  return Object.entries(subjectAudios).flatMap(([key, items]) => {
+    const [subjectSlug, authorSlug] = key.split('/')
+    const subject = getSubjectBySlug(subjectSlug)
+    const author = getAuthorForSubject(subjectSlug, authorSlug)
+
+    return items.map((item, index) => ({
+      id: `${key}-${index}`,
+      subjectSlug,
+      authorSlug,
+      subjectTitleMr: subject?.titleMr ?? subjectSlug,
+      subjectTitleEn: subject?.titleEn ?? subjectSlug,
+      authorTitleMr: author?.titleMr ?? authorSlug,
+      authorTitleEn: author?.titleEn ?? authorSlug,
+      browseUrl: getSubjectAuthorUrl(subjectSlug, authorSlug),
+      titleMr: item.titleMr,
+      titleEn: item.titleEn,
+    }))
+  })
+}

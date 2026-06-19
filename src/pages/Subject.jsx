@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import InnerBanner from '../components/InnerBanner'
 import pageUi from '../styles/pageUi.module.css'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { FiBookOpen, FiSearch, FiUsers } from 'react-icons/fi'
 import { subjectAuthors, subjectCategories, subjects } from '../data/subjects'
 import styles from './Subject.module.css'
@@ -105,8 +105,14 @@ function SubjectCard({ slug, titleMr, titleEn, icon, hintMr, hintEn, authorCount
 }
 
 function Subject() {
+  const [searchParams] = useSearchParams()
   const [activeCategory, setActiveCategory] = useState('all')
-  const [search, setSearch] = useState('')
+  const [search, setSearch] = useState(() => searchParams.get('search') ?? '')
+
+  useEffect(() => {
+    const query = searchParams.get('search') ?? ''
+    setSearch(query)
+  }, [searchParams])
 
   useEffect(() => {
     document.title = 'विषय – श्री समर्थ रामदास'

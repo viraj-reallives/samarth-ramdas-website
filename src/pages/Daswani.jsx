@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import InnerBanner from '../components/InnerBanner'
 import pageUi from '../styles/pageUi.module.css'
-import { FiChevronLeft, FiChevronRight, FiX } from 'react-icons/fi'
+import { FiChevronLeft, FiChevronRight, FiGrid, FiX, FiZoomIn } from 'react-icons/fi'
 import styles from './Daswani.module.css'
 
 const daswaniImages = Array.from({ length: 50 }, (_, index) => {
@@ -15,6 +16,7 @@ const daswaniImages = Array.from({ length: 50 }, (_, index) => {
 })
 
 function Daswani() {
+  const { hash } = useLocation()
   const [activeIndex, setActiveIndex] = useState(null)
 
   const openLightbox = (index) => setActiveIndex(index)
@@ -38,6 +40,16 @@ function Daswani() {
       document.title = 'श्री समर्थ रामदास - श्री रामदासांचे साहित्य'
     }
   }, [])
+
+  useEffect(() => {
+    if (hash !== '#gallery') return undefined
+
+    const timer = window.setTimeout(() => {
+      document.getElementById('gallery')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }, 120)
+
+    return () => window.clearTimeout(timer)
+  }, [hash])
 
   useEffect(() => {
     if (activeIndex === null) {
@@ -81,30 +93,65 @@ function Daswani() {
       <InnerBanner contentId="daswani-content" />
 
       <div className={`${styles.content} ${pageUi.content}`} id="daswani-content">
-        <h1 className={styles.pageTitle}>दासवाणी / Daswani</h1>
-        <p className={styles.pageIntro}>
-          समर्थ रामदासांच्या दैनंदिन दासवाणीचे ५० पाने — कोणतेही पृष्ठ उघडण्यासाठी क्लिक करा.
-        </p>
+        <header className={styles.pageHeader}>
+          <p className={styles.eyebrow}>॥ श्री समर्थ दासवाणी ॥</p>
+          <h1 className={styles.pageTitle}>दासवाणी / Daswani</h1>
+          <p className={styles.pageIntro}>
+            समर्थ रामदासांच्या दैनंदिन दासवाणीचे ५० पाने — प्रत्येक पृष्ठ उघडण्यासाठी क्लिक करा.
+            <span className={styles.pageIntroEn}>
+              Browse all 50 pages of daily Daswani — click any image to open the reader.
+            </span>
+          </p>
+        </header>
 
-        <div className={styles.grid}>
-          {daswaniImages.map((image, index) => (
-            <button
-              key={image.id}
-              type="button"
-              className={`${styles.card} ${pageUi.cardAnim}`}
-              style={{ animationDelay: `${Math.min(index, 10) * 35}ms` }}
-              onClick={() => openLightbox(index)}
-              aria-label={`Open ${image.alt}`}
-            >
-              <img
-                src={image.src}
-                alt={image.alt}
-                className={styles.cardImage}
-                loading="lazy"
-              />
-            </button>
-          ))}
-        </div>
+        <section className={styles.gallerySection} id="gallery" aria-labelledby="daswani-gallery-title">
+          <div className={styles.galleryHeader}>
+            <div className={styles.galleryTitleWrap}>
+              <span className={styles.galleryIcon} aria-hidden="true">
+                <FiGrid />
+              </span>
+              <div>
+                <h2 className={styles.galleryTitle} id="daswani-gallery-title">
+                  गॅलरी / Gallery
+                </h2>
+                <p className={styles.gallerySub}>
+                  दासवाणी पृष्ठ संग्रह · {daswaniImages.length} pages
+                </p>
+              </div>
+            </div>
+            <span className={styles.galleryBadge}>{daswaniImages.length} पाने</span>
+          </div>
+
+          <div className={styles.grid}>
+            {daswaniImages.map((image, index) => (
+              <button
+                key={image.id}
+                type="button"
+                className={`${styles.card} ${pageUi.cardAnim}`}
+                style={{ animationDelay: `${Math.min(index, 10) * 35}ms` }}
+                onClick={() => openLightbox(index)}
+                aria-label={`Open ${image.alt}`}
+              >
+                <div className={styles.cardImageWrap}>
+                  <img
+                    src={image.src}
+                    alt={image.alt}
+                    className={styles.cardImage}
+                    loading="lazy"
+                  />
+                  <span className={styles.cardOverlay} aria-hidden="true">
+                    <FiZoomIn />
+                    <span>पहा</span>
+                  </span>
+                </div>
+                <span className={styles.cardLabel}>
+                  पृष्ठ {image.num}
+                  <span>Page {index + 1}</span>
+                </span>
+              </button>
+            ))}
+          </div>
+        </section>
       </div>
 
       {activeImage && (
@@ -112,7 +159,7 @@ function Daswani() {
           className={styles.viewer}
           role="dialog"
           aria-modal="true"
-          aria-label="Daswani reader"
+          aria-label="Daswani gallery reader"
         >
           <button
             type="button"

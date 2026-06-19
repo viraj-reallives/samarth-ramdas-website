@@ -1,71 +1,133 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { authors } from '../data/authors'
-import { languages } from '../data/languages'
-import { exploreLinks, toExploreLabel } from '../data/navigation'
-import { subjects } from '../data/subjects'
+import { FiChevronDown } from 'react-icons/fi'
+import { libraryMegaMenu, libraryRoutePrefixes, mainNavItems, mediaMenu, mediaRoutePrefixes } from '../data/headerNav'
 import styles from './Header.module.css'
-
-const topNavItems = exploreLinks.map((item) => ({
-  label: toExploreLabel(item),
-  href: item.href,
-}))
-
-const mainNavItems = [
-  {
-    id: 'subject',
-    label: 'विषय / Subject',
-    href: '/subject',
-    items: subjects.map(({ slug, titleMr, titleEn }) => ({
-      label: `${titleMr} # ${titleEn}`,
-      href: `/subject/${slug}`,
-    })),
-  },
-  {
-    id: 'author',
-    label: 'लेखक / Author',
-    href: '/author',
-    items: authors.map(({ slug, titleMr, titleEn }) => ({
-      label: `${titleMr} # ${titleEn}`,
-      href: `/author/${slug}`,
-    })),
-  },
-  {
-    id: 'language',
-    label: 'भाषा / Language',
-    href: '/language',
-    items: languages.map(({ slug, titleMr, titleEn }) => ({
-      label: `${titleMr} # ${titleEn}`,
-      href: `/language/${slug}`,
-    })),
-  },
-  { id: 'ringtones', label: 'रिंगटोन्स / Ringtones', href: '/ringtones' },
-  { id: 'daswani', label: 'दासवाणी / Daswani', href: '/daswani' },
-]
 
 function isPathActive(pathname, href) {
   if (href === '/') return pathname === '/'
-  return pathname === href || pathname.startsWith(`${href}/`)
+  const pathOnly = href.split('#')[0]
+  return pathname === pathOnly || pathname.startsWith(`${pathOnly}/`)
 }
 
-function parseDropdownLabel(label) {
-  const parts = label.split(' # ')
-  if (parts.length >= 2) {
-    return { mr: parts[0], en: parts.slice(1).join(' # ') }
+function isDaswaniGalleryView(pathname, hash) {
+  return pathname === '/daswani' && hash === '#gallery'
+}
+
+function matchesMenuLink(pathname, hash, href) {
+  if (href.includes('#')) {
+    const [path, linkHash] = href.split('#')
+    return pathname === path && hash === `#${linkHash}`
   }
-  return { mr: label, en: null }
+
+  if (hash) return false
+  return isPathActive(pathname, href)
+}
+
+function matchesRoutePrefix(pathname, prefixes) {
+  return prefixes.some((prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`))
+}
+
+function isLibraryActive(pathname, hash = '') {
+  if (isDaswaniGalleryView(pathname, hash)) return false
+  if (matchesRoutePrefix(pathname, mediaRoutePrefixes)) return false
+  return matchesRoutePrefix(pathname, libraryRoutePrefixes)
+}
+
+function getTopLevelHrefs() {
+  return new Set(mainNavItems.filter((item) => item.type === 'link').map((item) => item.href))
+}
+
+function isMediaActive(pathname, hash = '') {
+  if (isDaswaniGalleryView(pathname, hash)) return true
+  if (matchesRoutePrefix(pathname, mediaRoutePrefixes)) return true
+
+  const topLevelHrefs = getTopLevelHrefs()
+
+  return mediaMenu.links.some(({ href }) => {
+    if (topLevelHrefs.has(href.split('#')[0])) return false
+    if (matchesRoutePrefix(pathname, libraryRoutePrefixes) && !href.includes('#')) return false
+    return matchesMenuLink(pathname, hash, href)
+  })
+}
+
+function getActiveDropdownLinkId(pathname, hash, links) {
+  if (!isMediaActive(pathname, hash)) return null
+
+  const topLevelHrefs = getTopLevelHrefs()
+
+  const match = links.find((link) => {
+    if (!matchesMenuLink(pathname, hash, link.href)) return false
+    if (topLevelHrefs.has(link.href.split('#')[0])) return false
+    return true
+  })
+
+  return match?.id ?? null
+}
+
+function NavLabel({ labelMr, labelEn, stacked = true }) {
+  if (!stacked) {
+    return (
+      <span className={styles.navLabelInline}>
+        <span className={styles.navMr}>{labelMr}</span>
+        <span className={styles.navSep}>/</span>
+        <span className={styles.navEn}>{labelEn}</span>
+      </span>
+    )
+  }
+
+  return (
+    <span className={styles.navLabel}>
+      <span className={styles.navMr}>{labelMr}</span>
+      <span className={styles.navEn}>{labelEn}</span>
+    </span>
+  )
 }
 
 function Header() {
-  const { pathname } = useLocation()
+  const { pathname, hash } = useLocation()
   const headerRef = useRef(null)
+  const menuCloseTimer = useRef(null)
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
-  const [openDropdown, setOpenDropdown] = useState(null)
+  const [openMenu, setOpenMenu] = useState(null)
+
+  const isHome = pathname === '/'
+  const isTransparent = isHome && !scrolled
 
   const closeMenus = useCallback(() => {
+    if (menuCloseTimer.current) {
+      window.clearTimeout(menuCloseTimer.current)
+      menuCloseTimer.current = null
+    }
     setMobileOpen(false)
-    setOpenDropdown(null)
+    setOpenMenu(null)
+  }, [])
+
+  const openMenuNow = useCallback((menuId) => {
+    if (menuCloseTimer.current) {
+      window.clearTimeout(menuCloseTimer.current)
+      menuCloseTimer.current = null
+    }
+    setOpenMenu(menuId)
+  }, [])
+
+  const scheduleMenuClose = useCallback(() => {
+    if (menuCloseTimer.current) {
+      window.clearTimeout(menuCloseTimer.current)
+    }
+    menuCloseTimer.current = window.setTimeout(() => {
+      setOpenMenu(null)
+      menuCloseTimer.current = null
+    }, 120)
+  }, [])
+
+  useEffect(() => {
+    return () => {
+      if (menuCloseTimer.current) {
+        window.clearTimeout(menuCloseTimer.current)
+      }
+    }
   }, [])
 
   useEffect(() => {
@@ -73,7 +135,7 @@ function Header() {
   }, [pathname, closeMenus])
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12)
+    const onScroll = () => setScrolled(window.scrollY > 24)
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
@@ -90,7 +152,7 @@ function Header() {
   useEffect(() => {
     const onPointerDown = (event) => {
       if (headerRef.current && !headerRef.current.contains(event.target)) {
-        setOpenDropdown(null)
+        setOpenMenu(null)
       }
     }
     document.addEventListener('pointerdown', onPointerDown)
@@ -104,114 +166,137 @@ function Header() {
     }
   }, [mobileOpen])
 
-  const toggleDropdown = (id) => {
-    setOpenDropdown((current) => (current === id ? null : id))
-  }
-
-  const renderNavLink = (href, label, linkClassName, activeClassName, onNavigate) => {
-    const isActive = isPathActive(pathname, href)
-    return (
-      <Link
-        to={href}
-        className={isActive ? activeClassName : linkClassName}
-        aria-current={isActive ? 'page' : undefined}
-        onClick={onNavigate}
-      >
-        {label}
-      </Link>
-    )
-  }
-
-  const renderDropdown = (item, variant) => {
-    const isOpen = openDropdown === item.id
-    const isActive = isPathActive(pathname, item.href)
+  const renderMegaMenu = (item) => {
+    const isOpen = openMenu === item.id
+    const isActive = isLibraryActive(pathname, hash)
 
     return (
       <li
         key={item.id}
-        className={`${styles.dropdownItem} ${isOpen ? styles.dropdownItemOpen : ''} ${
-          isActive ? styles.dropdownItemActive : ''
-        }`}
-        onMouseEnter={() => variant === 'desktop' && setOpenDropdown(item.id)}
-        onMouseLeave={() => variant === 'desktop' && setOpenDropdown(null)}
+        className={`${styles.navItem} ${styles.hasMenu} ${isOpen ? styles.menuOpen : ''}`}
+        onMouseEnter={() => openMenuNow(item.id)}
+        onMouseLeave={scheduleMenuClose}
       >
-        <div className={styles.dropdownTrigger}>
-          {renderNavLink(
-            item.href,
-            item.label,
-            styles.mainNavLink,
-            styles.mainNavLinkActive,
-            closeMenus,
-          )}
-          <button
-            type="button"
-            className={`${styles.dropdownToggle} ${isOpen ? styles.dropdownToggleOpen : ''}`}
-            aria-expanded={isOpen}
-            aria-controls={`nav-dropdown-${item.id}-${variant}`}
-            aria-label={`${item.label} submenu`}
-            onClick={() => toggleDropdown(item.id)}
-          >
-            <span className={styles.chevron} aria-hidden="true" />
-          </button>
-        </div>
-
-        <div
-          id={`nav-dropdown-${item.id}-${variant}`}
-          className={`${styles.dropdownPanel} ${isOpen ? styles.dropdownPanelOpen : ''}`}
-          role="menu"
+        <button
+          type="button"
+          className={`${styles.navTrigger} ${isActive ? styles.navTriggerActive : ''}`}
+          aria-expanded={isOpen}
+          aria-haspopup="true"
+          title={`${item.labelMr} / ${item.labelEn}`}
+          onClick={() => setOpenMenu((c) => (c === item.id ? null : item.id))}
         >
-          <div className={styles.dropdownPanelHeader}>
-            <span className={styles.dropdownPanelTitle}>{item.label}</span>
-            <Link to={item.href} className={styles.dropdownViewAll} onClick={closeMenus}>
-              सर्व पहा / View all
-            </Link>
-          </div>
-          <ul className={styles.dropdownList}>
-            {item.items.map(({ label, href }, index) => {
-              const { mr, en } = parseDropdownLabel(label)
-              const linkActive = isPathActive(pathname, href)
+          <NavLabel labelMr={item.labelMr} labelEn={item.labelEn} stacked={false} />
+          <FiChevronDown className={styles.chevron} aria-hidden="true" />
+          {isActive && <span className={styles.activeLine} aria-hidden="true" />}
+        </button>
 
-              return (
-                <li
-                  key={href}
-                  role="none"
-                  className={styles.dropdownListItem}
-                  style={{ '--item-delay': `${index * 40}ms` }}
-                >
-                  <Link
-                    to={href}
-                    className={`${styles.dropdownLink} ${
-                      linkActive ? styles.dropdownLinkActive : ''
-                    }`}
-                    role="menuitem"
-                    aria-current={linkActive ? 'page' : undefined}
-                    onClick={closeMenus}
-                  >
-                    <span className={styles.dropdownLinkText}>
-                      <span className={styles.dropdownLinkMr}>{mr}</span>
-                      {en && <span className={styles.dropdownLinkEn}>{en}</span>}
-                    </span>
-                    <span className={styles.dropdownLinkArrow} aria-hidden="true">
-                      →
-                    </span>
+        <div className={`${styles.megaPanel} ${isOpen ? styles.panelOpen : ''}`}>
+          <div className={styles.megaInner}>
+            <div className={styles.megaHeader}>
+              <div>
+                <p className={styles.megaEyebrow}>श्री समर्थ वाङ्मय</p>
+                <h3 className={styles.megaTitle}>
+                  {item.labelMr} <span>/ {item.labelEn}</span>
+                </h3>
+              </div>
+              <Link to={item.href} className={styles.megaCta} onClick={closeMenus}>
+                सर्व पहा / View all
+              </Link>
+            </div>
+            <div className={styles.megaGrid}>
+              {item.columns.map((column) => (
+                <div key={column.titleEn} className={styles.megaColumn}>
+                  <Link to={column.href} className={styles.megaColumnTitle} onClick={closeMenus}>
+                    <span>{column.titleMr}</span>
+                    <span className={styles.megaColumnTitleEn}>{column.titleEn}</span>
                   </Link>
-                </li>
-              )
-            })}
-          </ul>
+                  <ul className={styles.megaList}>
+                    {column.links.map((link) => (
+                      <li key={link.href}>
+                        <Link
+                          to={link.href}
+                          className={`${styles.megaLink} ${
+                            isPathActive(pathname, link.href) ? styles.megaLinkActive : ''
+                          }`}
+                          onClick={closeMenus}
+                        >
+                          <span className={styles.megaLinkMr}>{link.labelMr}</span>
+                          <span className={styles.megaLinkEn}>{link.labelEn}</span>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
-
-        {isActive && <span className={styles.activeIndicator} aria-hidden="true" />}
       </li>
     )
   }
 
-  const renderSimpleLink = (item, linkClassName, activeClassName, onNavigate) => {
-    const isActive = isPathActive(pathname, item.href)
+  const renderDropdown = (item) => {
+    const isOpen = openMenu === item.id
+    const isActive = isMediaActive(pathname, hash)
+    const activeLinkId = getActiveDropdownLinkId(pathname, hash, item.links)
+
     return (
-      <li key={item.id} className={styles.navItem}>
-        {renderNavLink(item.href, item.label, linkClassName, activeClassName, onNavigate)}
-        {isActive && <span className={styles.activeIndicator} aria-hidden="true" />}
+      <li
+        key={item.id}
+        className={`${styles.navItem} ${styles.hasMenu} ${isOpen ? styles.menuOpen : ''}`}
+        onMouseEnter={() => openMenuNow(item.id)}
+        onMouseLeave={scheduleMenuClose}
+      >
+        <button
+          type="button"
+          className={`${styles.navTrigger} ${isActive || isOpen ? styles.navTriggerActive : ''}`}
+          aria-expanded={isOpen}
+          aria-haspopup="true"
+          title={`${item.labelMr} / ${item.labelEn}`}
+          onClick={() => setOpenMenu((c) => (c === item.id ? null : item.id))}
+        >
+          <NavLabel labelMr={item.labelMr} labelEn={item.labelEn} stacked={false} />
+          <FiChevronDown className={styles.chevron} aria-hidden="true" />
+          {(isActive || isOpen) && <span className={styles.activeLine} aria-hidden="true" />}
+        </button>
+
+        <div className={`${styles.dropPanel} ${isOpen ? styles.panelOpen : ''}`}>
+          <ul className={styles.dropList}>
+            {item.links.map((link) => (
+              <li key={link.id}>
+                <Link
+                  to={link.href}
+                  className={`${styles.dropLink} ${
+                    activeLinkId === link.id ? styles.dropLinkActive : ''
+                  }`}
+                  onClick={closeMenus}
+                >
+                  <span className={styles.dropLinkMr}>{link.labelMr}</span>
+                  <span className={styles.dropLinkEn}>{link.labelEn}</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </li>
+    )
+  }
+
+  const renderNavLink = (item) => {
+    const isActive = isPathActive(pathname, item.href)
+
+    return (
+      <li key={item.href} className={styles.navItem}>
+        <Link
+          to={item.href}
+          className={`${styles.navLink} ${isActive ? styles.navLinkActive : ''}`}
+          aria-current={isActive ? 'page' : undefined}
+          title={`${item.labelMr} / ${item.labelEn}`}
+          onClick={closeMenus}
+        >
+          <NavLabel labelMr={item.labelMr} labelEn={item.labelEn} stacked={false} />
+          {isActive && <span className={styles.activeLine} aria-hidden="true" />}
+        </Link>
       </li>
     )
   }
@@ -219,66 +304,46 @@ function Header() {
   return (
     <header
       ref={headerRef}
-      className={`${styles.header} ${scrolled ? styles.headerScrolled : ''}`}
+      className={`${styles.header} ${scrolled ? styles.headerScrolled : ''} ${
+        isTransparent ? styles.headerTransparent : ''
+      }`}
     >
       <div className={styles.topBar}>
-        <div className={styles.container}>
-          <p className={styles.topMantra}>|| जय जय रघुवीर समर्थ ||</p>
-          <nav className={styles.topNav} aria-label="Top navigation">
-            <ul className={styles.topNavList}>
-              {topNavItems.map(({ label, href }) => (
-                <li key={href}>
-                  {renderNavLink(
-                    href,
-                    label,
-                    styles.topNavLink,
-                    styles.topNavLinkActive,
-                    closeMenus,
-                  )}
-                </li>
-              ))}
-            </ul>
-          </nav>
+        <div className={styles.topShell}>
+          <p className={styles.mantra}>॥ जय जय रघुवीर समर्थ ॥</p>
         </div>
       </div>
 
-      <div className={styles.mainHeader}>
-        <div className={styles.container}>
+      <div className={styles.mainBar}>
+        <div className={styles.mainShell}>
           <Link to="/" className={styles.logoLink} onClick={closeMenus}>
-            <img
-              src="/assets/logo.png"
-              alt="श्री समर्थ रामदास"
-              className={styles.logo}
-            />
+            <img src="/assets/logo.png" alt="श्री समर्थ रामदास" className={styles.logo} />
           </Link>
 
-          <button
-            type="button"
-            className={`${styles.menuButton} ${mobileOpen ? styles.menuButtonOpen : ''}`}
-            aria-expanded={mobileOpen}
-            aria-controls="mobile-nav"
-            aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
-            onClick={() => setMobileOpen((open) => !open)}
-          >
-            <span className={styles.menuBar} />
-            <span className={styles.menuBar} />
-            <span className={styles.menuBar} />
-          </button>
-
-          <nav className={styles.mainNav} aria-label="Main navigation">
-            <ul className={styles.mainNavList}>
-              {mainNavItems.map((item) =>
-                item.items
-                  ? renderDropdown(item, 'desktop')
-                  : renderSimpleLink(
-                      item,
-                      styles.mainNavLink,
-                      styles.mainNavLinkActive,
-                      closeMenus,
-                    ),
-              )}
+          <nav className={styles.desktopNav} aria-label="Main navigation">
+            <ul className={styles.navList}>
+              {mainNavItems.map((item) => {
+                if (item.type === 'mega') return renderMegaMenu(item)
+                if (item.type === 'dropdown') return renderDropdown(item)
+                return renderNavLink(item)
+              })}
             </ul>
           </nav>
+
+          <div className={styles.actions}>
+            <button
+              type="button"
+              className={`${styles.menuBtn} ${mobileOpen ? styles.menuBtnOpen : ''}`}
+              aria-expanded={mobileOpen}
+              aria-controls="mobile-nav"
+              aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+              onClick={() => setMobileOpen((open) => !open)}
+            >
+              <span />
+              <span />
+              <span />
+            </button>
+          </div>
         </div>
       </div>
 
@@ -287,86 +352,82 @@ function Header() {
         className={`${styles.mobileNav} ${mobileOpen ? styles.mobileNavOpen : ''}`}
         aria-hidden={!mobileOpen}
       >
-        <div className={styles.mobileNavInner}>
-          <p className={styles.mobileNavHeading}>मुख्य मेनू</p>
-          <ul className={styles.mobileNavList}>
-            {mainNavItems.map((item) =>
-              item.items ? (
-                <li key={item.id} className={styles.mobileDropdownItem}>
-                  <div className={styles.mobileDropdownHeader}>
-                    {renderNavLink(
-                      item.href,
-                      item.label,
-                      styles.mobileNavLink,
-                      styles.mobileNavLinkActive,
-                      closeMenus,
-                    )}
-                    <button
-                      type="button"
-                      className={styles.mobileDropdownToggle}
-                      aria-expanded={openDropdown === item.id}
-                      onClick={() => toggleDropdown(item.id)}
+        <div className={styles.mobileInner}>
+          <p className={styles.mobileHeading}>मुख्य मेनू</p>
+          <ul className={styles.mobileList}>
+            {mainNavItems.map((item) => {
+              if (item.type === 'link') {
+                const isActive = isPathActive(pathname, item.href)
+                return (
+                  <li key={item.href}>
+                    <Link
+                      to={item.href}
+                      className={`${styles.mobileLink} ${isActive ? styles.mobileLinkActive : ''}`}
+                      onClick={closeMenus}
                     >
-                      <span className={styles.chevron} aria-hidden="true" />
-                    </button>
-                  </div>
-                  <ul
-                    className={`${styles.mobileSubList} ${
-                      openDropdown === item.id ? styles.mobileSubListOpen : ''
-                    }`}
-                  >
-                    {item.items.map(({ label, href }, index) => {
-                      const { mr, en } = parseDropdownLabel(label)
-                      const linkActive = isPathActive(pathname, href)
+                      <NavLabel labelMr={item.labelMr} labelEn={item.labelEn} />
+                    </Link>
+                  </li>
+                )
+              }
 
-                      return (
-                        <li
-                          key={href}
-                          className={styles.mobileSubListItem}
-                          style={{ '--item-delay': `${index * 35}ms` }}
-                        >
+              const menuId = item.id
+              const isOpen = openMenu === menuId
+              const isMega = item.type === 'mega'
+
+              return (
+                <li key={menuId} className={styles.mobileAccordion}>
+                  <button
+                    type="button"
+                    className={styles.mobileAccordionBtn}
+                    aria-expanded={isOpen}
+                    onClick={() => setOpenMenu((c) => (c === menuId ? null : menuId))}
+                  >
+                    <NavLabel labelMr={item.labelMr} labelEn={item.labelEn} />
+                    <FiChevronDown className={styles.mobileChevron} aria-hidden="true" />
+                  </button>
+                  <div className={`${styles.mobilePanel} ${isOpen ? styles.mobilePanelOpen : ''}`}>
+                    {isMega
+                      ? libraryMegaMenu.columns.map((column) => (
+                          <div key={column.titleEn} className={styles.mobileGroup}>
+                            <Link
+                              to={column.href}
+                              className={styles.mobileGroupTitle}
+                              onClick={closeMenus}
+                            >
+                              {column.titleMr} / {column.titleEn}
+                            </Link>
+                            <ul className={styles.mobileSubList}>
+                              {column.links.map((link) => (
+                                <li key={link.href}>
+                                  <Link
+                                    to={link.href}
+                                    className={styles.mobileSubLink}
+                                    onClick={closeMenus}
+                                  >
+                                    {link.labelMr}
+                                    <span>{link.labelEn}</span>
+                                  </Link>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        ))
+                      : mediaMenu.links.map((link) => (
                           <Link
-                            to={href}
-                            className={`${styles.mobileSubLink} ${
-                              linkActive ? styles.mobileSubLinkActive : ''
-                            }`}
+                            key={link.id}
+                            to={link.href}
+                            className={styles.mobileSubLink}
                             onClick={closeMenus}
                           >
-                            <span className={styles.mobileSubLinkMr}>{mr}</span>
-                            {en && <span className={styles.mobileSubLinkEn}>{en}</span>}
+                            {link.labelMr}
+                            <span>{link.labelEn}</span>
                           </Link>
-                        </li>
-                      )
-                    })}
-                  </ul>
+                        ))}
+                  </div>
                 </li>
-              ) : (
-                <li key={item.id}>
-                  {renderNavLink(
-                    item.href,
-                    item.label,
-                    styles.mobileNavLink,
-                    styles.mobileNavLinkActive,
-                    closeMenus,
-                  )}
-                </li>
-              ),
-            )}
-          </ul>
-
-          <p className={styles.mobileNavHeading}>इतर पाने</p>
-          <ul className={styles.mobileNavList}>
-            {topNavItems.map(({ label, href }) => (
-              <li key={href}>
-                {renderNavLink(
-                  href,
-                  label,
-                  styles.mobileNavLink,
-                  styles.mobileNavLinkActive,
-                  closeMenus,
-                )}
-              </li>
-            ))}
+              )
+            })}
           </ul>
         </div>
       </div>
