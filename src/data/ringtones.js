@@ -1,6 +1,14 @@
 const BASE = 'https://samarthramdas400.in/download'
+const R2_BASE = 'https://pub-31371e9d4db049cfba14534a68b77428.r2.dev'
 
 export const ringtones = [
+  {
+    slug: 'acharya-dharmendraji',
+    titleMr: 'आचार्य धर्मेंद्रजी',
+    titleEn: 'Acharya Dharmendraji',
+    audioUrl: `${R2_BASE}/acharya_dharmendraji.mp3`,
+    downloadPath: `${R2_BASE}/acharya_dharmendraji.mp3`,
+  },
   {
     slug: 'ganadheesh-jo',
     titleMr: 'गणाधीश जो',
@@ -208,5 +216,57 @@ export const ringtones = [
 ]
 
 export function getRingtoneAudioUrl(slug) {
+  const ringtone = ringtones.find((item) => item.slug === slug)
+  if (ringtone?.audioUrl) {
+    return ringtone.audioUrl
+  }
+
   return `/assets/ringtones/${slug}.mp3`
+}
+
+export function getRingtoneDownloadUrl(ringtone) {
+  if (ringtone.audioUrl) {
+    return ringtone.audioUrl
+  }
+
+  if (ringtone.downloadPath?.toLowerCase().includes('.mp3')) {
+    return ringtone.downloadPath
+  }
+
+  return getRingtoneAudioUrl(ringtone.slug)
+}
+
+export function getRingtoneFileName(ringtone) {
+  return `${ringtone.slug}.mp3`
+}
+
+export async function downloadRingtone(ringtone) {
+  const url = getRingtoneDownloadUrl(ringtone)
+  const fileName = getRingtoneFileName(ringtone)
+
+  try {
+    const response = await fetch(url)
+    if (!response.ok) {
+      throw new Error('Download failed')
+    }
+
+    const blob = await response.blob()
+    const objectUrl = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = objectUrl
+    link.download = fileName
+    document.body.appendChild(link)
+    link.click()
+    link.remove()
+    URL.revokeObjectURL(objectUrl)
+  } catch {
+    const link = document.createElement('a')
+    link.href = url
+    link.download = fileName
+    link.target = '_blank'
+    link.rel = 'noopener noreferrer'
+    document.body.appendChild(link)
+    link.click()
+    link.remove()
+  }
 }

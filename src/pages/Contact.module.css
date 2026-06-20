@@ -178,6 +178,10 @@
   padding: 24px 24px 28px;
 }
 
+.botcheck {
+  display: none;
+}
+
 .formHint {
   margin: 0;
   padding: 12px 14px;
@@ -266,6 +270,12 @@
   cursor: pointer;
 }
 
+.fileHint {
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: var(--site-text-muted);
+}
+
 .checkboxField {
   display: flex;
   align-items: flex-start;
@@ -301,6 +311,18 @@
   line-height: 1.45;
 }
 
+.error {
+  margin: 0;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #b91c1c;
+  font-size: 0.86rem;
+  font-weight: 500;
+  line-height: 1.45;
+}
+
 .submitButton {
   display: inline-flex;
   align-items: center;
@@ -330,6 +352,19 @@
 
 .submitButton:active {
   transform: translateY(0);
+}
+
+.submitButton:disabled {
+  opacity: 0.72;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.submitButton:disabled:hover {
+  background: linear-gradient(135deg, #f08a2a 0%, #e8661a 100%);
+  transform: none;
+  box-shadow: 0 6px 18px rgba(232, 102, 26, 0.28);
 }
 
 @media (max-width: 900px) {

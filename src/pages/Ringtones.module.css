@@ -281,12 +281,15 @@
   gap: 6px;
   width: 100%;
   padding: 9px 14px;
+  border: none;
   border-radius: 8px;
   background: linear-gradient(to bottom, #f08a2a, #e8661a);
   color: #ffffff;
+  font-family: inherit;
   font-size: 0.82rem;
   font-weight: 600;
   text-decoration: none;
+  cursor: pointer;
   box-shadow: 0 2px 8px rgba(232, 102, 26, 0.25);
   transition:
     background 0.2s ease,
@@ -366,13 +369,18 @@
   align-items: center;
   gap: 6px;
   padding: 8px 14px;
+  border: 1px solid var(--site-border-warm);
   border-radius: 8px;
   background: var(--site-card-bg-alt);
-  border: 1px solid var(--site-border-warm);
   color: #e8661a;
-  font-size: 0.8rem;
+  font-family: inherit;
+  font-size: 0.82rem;
   font-weight: 600;
-  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .playerDownload:hover {

@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import InnerBanner from '../components/InnerBanner'
 import pageUi from '../styles/pageUi.module.css'
 import { FiDownload, FiPause, FiPlay, FiSearch } from 'react-icons/fi'
-import { getRingtoneAudioUrl, ringtones } from '../data/ringtones'
+import { downloadRingtone, getRingtoneAudioUrl, ringtones } from '../data/ringtones'
 import styles from './Ringtones.module.css'
 
 function WaveBars({ active }) {
@@ -15,7 +15,7 @@ function WaveBars({ active }) {
   )
 }
 
-function RingtoneCard({ ringtone, isPlaying, isActive, onPlay, onPause, index }) {
+function RingtoneCard({ ringtone, isPlaying, isActive, onPlay, onPause, onDownload, index }) {
   const cardClass = isActive ? styles.cardActive : styles.card
   return (
     <article
@@ -37,15 +37,15 @@ function RingtoneCard({ ringtone, isPlaying, isActive, onPlay, onPause, index })
         {isActive && <WaveBars active={isPlaying} />}
       </div>
 
-      <a
-        href={ringtone.downloadPath}
-        target="_blank"
-        rel="noopener noreferrer"
+      <button
+        type="button"
         className={styles.downloadBtn}
+        onClick={() => onDownload(ringtone)}
+        aria-label={`Download ${ringtone.titleEn}`}
       >
         <FiDownload />
         Download
-      </a>
+      </button>
     </article>
   )
 }
@@ -75,9 +75,13 @@ function Ringtones() {
 
     audio.src = getRingtoneAudioUrl(ringtone.slug)
     audio.play().catch(() => {
-      window.open(ringtone.downloadPath, '_blank', 'noopener,noreferrer')
+      downloadRingtone(ringtone)
       setPlayingSlug(null)
     })
+  }
+
+  const handleDownload = (ringtone) => {
+    downloadRingtone(ringtone)
   }
 
   const pauseRingtone = () => {
@@ -151,6 +155,7 @@ function Ringtones() {
                 isActive={activeSlug === ringtone.slug}
                 onPlay={() => playRingtone(ringtone)}
                 onPause={pauseRingtone}
+                onDownload={handleDownload}
               />
             ))}
           </div>
@@ -178,15 +183,15 @@ function Ringtones() {
             >
               {playingSlug === activeRingtone.slug ? <FiPause /> : <FiPlay />}
             </button>
-            <a
-              href={activeRingtone.downloadPath}
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              type="button"
               className={styles.playerDownload}
+              onClick={() => handleDownload(activeRingtone)}
+              aria-label={`Download ${activeRingtone.titleEn}`}
             >
               <FiDownload />
               Download
-            </a>
+            </button>
           </div>
         </div>
       )}
