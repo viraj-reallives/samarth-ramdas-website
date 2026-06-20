@@ -19,7 +19,6 @@ export function waitForAppReady(minDisplayMs = 700) {
   })
 
   const assetsReady = Promise.all([
-    preloadImage('/assets/logo.png'),
     preloadImage('/assets/inner-banner.png'),
   ])
 

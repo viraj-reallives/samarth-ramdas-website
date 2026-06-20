@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { FiChevronDown } from 'react-icons/fi'
 import { libraryMegaMenu, libraryRoutePrefixes, mainNavItems, mediaMenu, mediaRoutePrefixes } from '../data/headerNav'
+import SiteLogo from './SiteLogo'
 import styles from './Header.module.css'
 
 function isPathActive(pathname, href) {
@@ -317,7 +318,7 @@ function Header() {
       <div className={styles.mainBar}>
         <div className={styles.mainShell}>
           <Link to="/" className={styles.logoLink} onClick={closeMenus}>
-            <img src="/assets/logo.png" alt="श्री समर्थ रामदास" className={styles.logo} />
+            <SiteLogo variant={isTransparent ? 'white' : 'color'} />
           </Link>
 
           <nav className={styles.desktopNav} aria-label="Main navigation">

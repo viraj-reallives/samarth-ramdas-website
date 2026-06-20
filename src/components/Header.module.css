@@ -114,24 +114,11 @@
   min-width: 0;
   padding-right: 12px;
   text-decoration: none;
+  transition: transform 0.25s ease;
 }
 
-.logo {
-  display: block;
-  height: 42px;
-  width: auto;
-  max-width: 100%;
-  object-fit: contain;
-  object-position: left center;
-  transition: transform 0.25s ease, filter 0.35s ease;
-}
-
-.logoLink:hover .logo {
+.logoLink:hover {
   transform: scale(1.02);
-}
-
-.headerTransparent:not(.headerScrolled) .logo {
-  filter: brightness(0) invert(1) drop-shadow(0 1px 2px rgba(0, 0, 0, 0.25));
 }
 
 /* ── Desktop navigation ───────────────────────────────────────── */
@@ -828,8 +815,8 @@
     padding: 0 20px;
   }
 
-  .logo {
-    height: 40px;
+  .logoLink {
+    padding-right: 8px;
   }
 }
 

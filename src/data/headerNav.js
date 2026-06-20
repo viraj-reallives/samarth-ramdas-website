@@ -58,17 +58,15 @@ export const mediaMenu = {
   id: 'media',
   labelMr: 'मीडिया',
   labelEn: 'Media',
-  href: '/audio',
+  href: '/ringtones',
   links: [
-    { id: 'audio', labelMr: 'ऑडिओ', labelEn: 'Audio', href: '/audio', icon: 'audio' },
-    { id: 'video', labelMr: 'व्हिडिओ', labelEn: 'Video', href: '/daswani', icon: 'video' },
     { id: 'ringtones', labelMr: 'रिंगटोन्स', labelEn: 'Ringtones', href: '/ringtones', icon: 'ringtones' },
     { id: 'gallery', labelMr: 'गॅलरी', labelEn: 'Gallery', href: '/daswani#gallery', icon: 'gallery' },
   ],
 }
 
 export const libraryRoutePrefixes = ['/subject', '/author', '/language', '/daswani']
-export const mediaRoutePrefixes = ['/audio', '/ringtones']
+export const mediaRoutePrefixes = ['/ringtones']
 
 export const mainNavItems = [
   { type: 'link', href: '/', labelMr: 'मुख्यपृष्ठ', labelEn: 'Home' },
