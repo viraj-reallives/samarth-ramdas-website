@@ -1,6 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import InnerBanner from '../components/InnerBanner'
 import pageUi from '../styles/pageUi.module.css'
+import { lifeJourneyVisuals } from '../data/lifeJourneyVisuals'
+import { FiChevronLeft, FiChevronRight, FiPause, FiPlay, FiX, FiZoomIn } from 'react-icons/fi'
 import styles from './LifeJourney.module.css'
 
 const marathiSections = [
@@ -26,7 +28,7 @@ const marathiSections = [
   },
   {
     title: 'तीर्थयात्रा व लोकस्थितीचे अवलोकन',
-    text: 'शके १५५४ म्हणजेच सन १६३२ मध्ये तीर्थयात्रा व धर्मस्थापना यासाठी टाकळीतून बाहेर पडणे. पुढील बारा वर्षात आसेतुहिमाचल भारतभ्रमण. लोकस्थितीचे सूक्ष्म अवलोकन. ध्यानात आले की, वारंवार पडणारे ओले – कोरडे दुष्काळ आणि मुसलमान सुलतानांची पाशवी आक्रमणे – त्यांचे मदतनीस आपलेच लोक – यांनी सगळे समाजजीवन उध्वस्त झालेले. लोक भीतिग्रस्त आणि निराश. त्यातून सर्वत्र अधर्म माजलेला. ही देश – लोकस्थिती वर्णन करणारी रामदासांची ‘अस्मानी सुलतानी’ आणि ‘परचक्रनिरुपण’ ही दोन स्फुट काव्ये. भारताच्या संपूर्ण संतवाङ्मयात अशी स्वकाळाची वर्णने करणारी काव्ये नाहीत.',
+    text: 'शके १५४४ म्हणजेच सन १६३२ मध्ये तीर्थयात्रा व धर्मस्थापना यासाठी टाकळीतून बाहेर पडणे. पुढील बारा वर्षात आसेतुहिमाचल भारतभ्रमण. लोकस्थितीचे सूक्ष्म अवलोकन. ध्यानात आले की, वारंवार पडणारे ओले – कोरडे दुष्काळ आणि मुसलमान सुलतानांची पाशवी आक्रमणे – त्यांचे मदतनीस आपलेच लोक – यांनी सगळे समाजजीवन उध्वस्त झालेले. लोक भीतिग्रस्त आणि निराश. त्यातून सर्वत्र अधर्म माजलेला. ही देश – लोकस्थिती वर्णन करणारी रामदासांची ‘अस्मानी सुलतानी’ आणि ‘परचक्रनिरुपण’ ही दोन स्फुट काव्ये. भारताच्या संपूर्ण संतवाङ्मयात अशी स्वकाळाची वर्णने करणारी काव्ये नाहीत.',
   },
   {
     title: null,
@@ -66,6 +68,248 @@ const englishSections = [
   },
 ]
 
+const AUTOPLAY_MS = 7000
+
+function LifeJourneyVisualGallery() {
+  const [activeIndex, setActiveIndex] = useState(0)
+  const [slideDir, setSlideDir] = useState('next')
+  const [lightboxOpen, setLightboxOpen] = useState(false)
+  const [isAutoplay, setIsAutoplay] = useState(false)
+  const touchStartX = useRef(0)
+
+  const active = lifeJourneyVisuals[activeIndex]
+  const total = lifeJourneyVisuals.length
+  const progress = ((activeIndex + 1) / total) * 100
+
+  const goTo = useCallback((index, direction = 'next') => {
+    setSlideDir(direction)
+    setActiveIndex((index + total) % total)
+  }, [total])
+
+  const goNext = useCallback(() => goTo(activeIndex + 1, 'next'), [activeIndex, goTo])
+  const goPrev = useCallback(() => goTo(activeIndex - 1, 'prev'), [activeIndex, goTo])
+
+  const openLightbox = () => setLightboxOpen(true)
+  const closeLightbox = () => setLightboxOpen(false)
+
+  useEffect(() => {
+    if (!isAutoplay || lightboxOpen) return undefined
+
+    const timer = window.setInterval(goNext, AUTOPLAY_MS)
+    return () => window.clearInterval(timer)
+  }, [isAutoplay, lightboxOpen, goNext])
+
+  useEffect(() => {
+    const onKeyDown = (event) => {
+      const tag = event.target.tagName
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return
+
+      if (lightboxOpen) {
+        if (event.key === 'Escape') closeLightbox()
+        if (event.key === 'ArrowLeft') goPrev()
+        if (event.key === 'ArrowRight') goNext()
+        return
+      }
+
+      if (event.key === 'ArrowLeft') goPrev()
+      if (event.key === 'ArrowRight') goNext()
+    }
+
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [lightboxOpen, goNext, goPrev])
+
+  useEffect(() => {
+    if (!lightboxOpen) {
+      document.body.style.overflow = ''
+      return undefined
+    }
+
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [lightboxOpen])
+
+  const handleTouchStart = (event) => {
+    touchStartX.current = event.touches[0].clientX
+  }
+
+  const handleTouchEnd = (event) => {
+    const delta = event.changedTouches[0].clientX - touchStartX.current
+    if (Math.abs(delta) < 48) return
+    if (delta < 0) goNext()
+    else goPrev()
+  }
+
+  return (
+    <section className={styles.visualSection} aria-labelledby="life-journey-visual-title">
+      <header className={styles.visualHeader}>
+        <p className={styles.visualEyebrow}>॥ जय जय रघुवीर समर्थ ॥</p>
+        <h2 className={styles.visualTitle} id="life-journey-visual-title">
+          जीवन प्रवास / Life Journey
+        </h2>
+        <p className={styles.visualIntro}>
+          समर्थ रामदास स्वामींच्या जीवनातील महत्त्वाचे टप्पे — टॅप करा, स्वाइप करा किंवा स्लाइडशो पहा.
+          <span className={styles.visualIntroEn}>
+            Explore key milestones — tap, swipe, or play the slideshow.
+          </span>
+        </p>
+      </header>
+
+      <div className={styles.timeline} role="tablist" aria-label="Life journey stages">
+        <div className={styles.timelineTrack} aria-hidden="true">
+          <span className={styles.timelineFill} style={{ width: `${progress}%` }} />
+        </div>
+        {lifeJourneyVisuals.map((item, index) => (
+          <button
+            key={item.id}
+            type="button"
+            role="tab"
+            aria-selected={index === activeIndex}
+            className={index === activeIndex ? styles.timelineStepActive : styles.timelineStep}
+            onClick={() => goTo(index, index > activeIndex ? 'next' : 'prev')}
+          >
+            <span className={styles.timelineDot}>{index + 1}</span>
+            <span className={styles.timelineLabelMr}>{item.titleMr}</span>
+          </button>
+        ))}
+      </div>
+
+      <div className={styles.viewerCard}>
+        <div className={styles.viewerToolbar}>
+          <span className={styles.viewerCounter}>
+            {activeIndex + 1} / {total}
+          </span>
+          <button
+            type="button"
+            className={isAutoplay ? styles.autoplayBtnActive : styles.autoplayBtn}
+            onClick={() => setIsAutoplay((value) => !value)}
+            aria-pressed={isAutoplay}
+            aria-label={isAutoplay ? 'Pause slideshow' : 'Play slideshow'}
+          >
+            {isAutoplay ? <FiPause /> : <FiPlay />}
+            <span>{isAutoplay ? 'थांबवा' : 'स्लाइडशो'}</span>
+          </button>
+        </div>
+
+        <div
+          className={styles.viewerStage}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+        >
+          <div className={styles.stageFrame}>
+            <button
+              type="button"
+              className={styles.stageImageWrap}
+              onClick={openLightbox}
+              aria-label={`View ${active.titleEn} full size`}
+            >
+              <img
+                key={active.id}
+                src={active.src}
+                alt={active.titleMr}
+                className={`${styles.stageImage} ${slideDir === 'next' ? styles.slideNext : styles.slidePrev}`}
+              />
+              <span className={styles.stageZoom}>
+                <FiZoomIn />
+                मोठे पहा
+              </span>
+            </button>
+
+            <button
+              type="button"
+              className={`${styles.stageNav} ${styles.stageNavPrev}`}
+              onClick={goPrev}
+              aria-label="Previous"
+            >
+              <FiChevronLeft />
+            </button>
+
+            <button
+              type="button"
+              className={`${styles.stageNav} ${styles.stageNavNext}`}
+              onClick={goNext}
+              aria-label="Next"
+            >
+              <FiChevronRight />
+            </button>
+          </div>
+        </div>
+
+        <div className={styles.viewerInfo}>
+          <h3 className={styles.viewerTitleMr}>{active.titleMr}</h3>
+          <p className={styles.viewerTitleEn}>{active.titleEn}</p>
+          <p className={styles.viewerDesc}>{active.descMr}</p>
+          <p className={styles.viewerDescEn}>{active.descEn}</p>
+        </div>
+
+        <div className={styles.thumbGrid}>
+          {lifeJourneyVisuals.map((item, index) => (
+            <button
+              key={item.id}
+              type="button"
+              className={index === activeIndex ? styles.thumbCardActive : styles.thumbCard}
+              onClick={() => goTo(index, index > activeIndex ? 'next' : 'prev')}
+              aria-current={index === activeIndex ? 'true' : undefined}
+            >
+              <span className={styles.thumbCardImgWrap}>
+                <img src={item.src} alt="" />
+                <span className={styles.thumbCardNum}>{index + 1}</span>
+              </span>
+              <span className={styles.thumbCardTitle}>{item.titleMr}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {lightboxOpen && (
+        <div className={styles.lightbox} onClick={closeLightbox} role="presentation">
+          <div
+            className={styles.lightboxInner}
+            onClick={(event) => event.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+            aria-label={active.titleEn}
+          >
+            <button type="button" className={styles.lightboxClose} onClick={closeLightbox} aria-label="Close">
+              <FiX />
+            </button>
+
+            <div className={styles.lightboxTop}>
+              <span className={styles.lightboxCounter}>
+                {activeIndex + 1} / {total}
+              </span>
+              <p className={styles.lightboxTitleMr}>{active.titleMr}</p>
+            </div>
+
+            <div className={styles.lightboxStage}>
+              <button type="button" className={styles.lightboxNav} onClick={goPrev} aria-label="Previous">
+                <FiChevronLeft />
+              </button>
+
+              <figure className={styles.lightboxFigure}>
+                <img src={active.src} alt={active.titleMr} className={styles.lightboxImage} />
+              </figure>
+
+              <button
+                type="button"
+                className={`${styles.lightboxNav} ${styles.lightboxNavNext}`}
+                onClick={goNext}
+                aria-label="Next"
+              >
+                <FiChevronRight />
+              </button>
+            </div>
+
+            <p className={styles.lightboxDesc}>{active.descMr}</p>
+          </div>
+        </div>
+      )}
+    </section>
+  )
+}
+
 function LifeJourney() {
   const [activeTab, setActiveTab] = useState('marathi')
 
@@ -81,6 +325,8 @@ function LifeJourney() {
       <InnerBanner contentId="life-journey-content" />
 
       <div className={`${styles.section} ${pageUi.content}`} id="life-journey-content">
+        <LifeJourneyVisualGallery />
+
         <div className={styles.tabBar} role="tablist" aria-label="Life journey content">
           <button
             type="button"
@@ -102,7 +348,7 @@ function LifeJourney() {
           </button>
         </div>
 
-        <div className={`${styles.content} ${pageUi.content}`} id="life-journey-content">
+        <div className={styles.content}>
           {activeTab === 'marathi' ? (
             <div role="tabpanel" className={styles.textBlock}>
               {marathiSections.map((section, index) => (

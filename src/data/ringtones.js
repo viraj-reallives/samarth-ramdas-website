@@ -1,5 +1,38 @@
+import { getAuthorBySlug } from './authors'
+
 const R2_BASE = 'https://pub-31371e9d4db049cfba14534a68b77428.r2.dev'
 const R2_RINGTONES = `${R2_BASE}/ringtones`
+
+const RINGTONE_AUTHOR_BY_SLUG = {
+  'acharya-dharmendraji': 'dharmendraji',
+  komalvacha: 'charudatta-aphle',
+  'komalvacha-brahmanaubhav': 'charudatta-aphle',
+  'komalvacha-pavan': 'charudatta-aphle',
+  'komalvacha-prabhanda': 'charudatta-aphle',
+  'komalvacha-tadruptta': 'charudatta-aphle',
+  'komalvacha-vidya-vaibhav': 'charudatta-aphle',
+  'jay-jay-raghuveer-samarth': 'sansthan',
+  'samrthachiya-sevaka': 'mohanbua-ramadasi',
+}
+
+const RINGTONE_AUTHOR_POOL = [
+  'dharmendraji',
+  'chaitanya-maharaj',
+  'sushamatai-watve',
+  'charudatta-aphle',
+  'mohanbua-ramadasi',
+  'sansthan',
+  'varadanand-bharati',
+  'mujaffar-hussain',
+  'sunil-chincholkar',
+  'makarandnath',
+  'shivaji-bhosale',
+  'dada-jadhav',
+  'ramchandra-dekhane',
+  'swarnalata-bhishikar',
+  'kalyani-namjoshi',
+  'shreedhar-swami',
+]
 
 const R2_FILES = {
   'ganadheesh-jo': 'Ganadheesh-Jo.mp3',
@@ -53,11 +86,24 @@ function withR2Audio(entry) {
   }
 }
 
+function withRingtoneMeta(entry, index) {
+  const withAudio = withR2Audio(entry)
+
+  return {
+    ...withAudio,
+    authorSlug:
+      entry.authorSlug
+      ?? RINGTONE_AUTHOR_BY_SLUG[entry.slug]
+      ?? RINGTONE_AUTHOR_POOL[index % RINGTONE_AUTHOR_POOL.length],
+  }
+}
+
 const ringtoneData = [
   {
     slug: 'acharya-dharmendraji',
     titleMr: 'आचार्य धर्मेंद्रजी',
     titleEn: 'Acharya Dharmendraji',
+    authorSlug: 'dharmendraji',
     audioUrl: `${R2_BASE}/acharya_dharmendraji.mp3`,
     downloadPath: `${R2_BASE}/acharya_dharmendraji.mp3`,
     fileName: 'acharya_dharmendraji.mp3',
@@ -234,7 +280,13 @@ const ringtoneData = [
   },
 ]
 
-export const ringtones = ringtoneData.map(withR2Audio)
+export const ringtones = ringtoneData.map(withRingtoneMeta)
+
+export function getRingtoneAuthor(ringtone) {
+  if (!ringtone) return null
+
+  return getAuthorBySlug(ringtone.authorSlug) ?? null
+}
 
 export function getRingtoneAudioUrl(slug) {
   const ringtone = ringtones.find((item) => item.slug === slug)

@@ -3,10 +3,8 @@ import InnerBanner from '../components/InnerBanner'
 import pageUi from '../styles/pageUi.module.css'
 import { FiCheck, FiCopy, FiDownload, FiMail, FiPause, FiPlay, FiSearch, FiShare2, FiX } from 'react-icons/fi'
 import { FaFacebookF, FaTelegram, FaWhatsapp } from 'react-icons/fa'
-import { downloadRingtone, getRingtoneAudioUrl, ringtones } from '../data/ringtones'
+import { downloadRingtone, getRingtoneAudioUrl, getRingtoneAuthor, ringtones } from '../data/ringtones'
 import styles from './Ringtones.module.css'
-
-const SAMARTH_AUTHOR_IMAGE = '/assets/cards/clean/author.jpg'
 
 function buildShareMessage(ringtone, audioUrl) {
   return `श्री समर्थ रामदास – ${ringtone.titleMr} (${ringtone.titleEn})\n${audioUrl}`
@@ -106,6 +104,12 @@ function RingtonePlayerModal({ ringtone, onClose }) {
   }, [hasEnded])
 
   useEffect(() => {
+    setDownloadDone(false)
+    setLinkCopied(false)
+    setIsDownloading(false)
+  }, [ringtone?.slug])
+
+  useEffect(() => {
     const audio = audioRef.current
     if (!audio || !ringtone) return undefined
 
@@ -196,6 +200,9 @@ function RingtonePlayerModal({ ringtone, onClose }) {
 
   const audioShareUrl = getRingtoneAudioUrl(ringtone.slug)
   const shareLinks = buildShareLinks(ringtone, audioShareUrl)
+  const author = getRingtoneAuthor(ringtone)
+  const authorImage = author?.image ?? '/assets/authors/other-authors.png'
+  const showAuthorLine = author && ringtone.slug !== 'acharya-dharmendraji'
 
   const openShareWindow = (url) => {
     window.open(url, '_blank', 'noopener,noreferrer')
@@ -253,20 +260,7 @@ function RingtonePlayerModal({ ringtone, onClose }) {
         aria-labelledby="ringtone-modal-title"
         onClick={(event) => event.stopPropagation()}
       >
-        <div className={styles.modalBanner}>
-          <div className={styles.modalBannerFrame}>
-            <div className={styles.modalMantraWrap}>
-              <span className={styles.modalMantraSymbol} aria-hidden="true">
-                ॥
-              </span>
-              <p className={styles.modalMantra}>जय जय रघुवीर समर्थ</p>
-              <span className={styles.modalMantraSymbol} aria-hidden="true">
-                ॥
-              </span>
-            </div>
-            <p className={styles.modalMantraSub}>श्री समर्थ रामदास</p>
-            <div className={styles.modalBannerGlow} aria-hidden="true" />
-          </div>
+        <div className={styles.modalMantraHeader}>
           <button
             type="button"
             className={styles.modalClose}
@@ -275,19 +269,32 @@ function RingtonePlayerModal({ ringtone, onClose }) {
           >
             <FiX />
           </button>
+          <p className={styles.modalMantra}>
+            <span>॥</span>
+            <span className={styles.mantraWord}>जय</span>
+            <span className={styles.mantraWord}>जय</span>
+            <span className={styles.mantraWord}>रघुवीर</span>
+            <span className={styles.mantraWord}>समर्थ</span>
+            <span>॥</span>
+          </p>
+          <p className={styles.modalMantraSub}>श्री समर्थ रामदास</p>
+          <div className={styles.modalMantraShine} aria-hidden="true" />
+          <div className={styles.modalMantraGlow} aria-hidden="true" />
         </div>
 
         <div className={styles.modalBody}>
-          <div className={styles.modalHeaderRow}>
-            <div className={styles.modalThumb}>
+          <div className={styles.modalTrackHead}>
+            <div
+              className={`${styles.authorAvatar} ${isPlaying ? styles.authorAvatarLive : ''}`}
+            >
               <img
-                src={SAMARTH_AUTHOR_IMAGE}
-                alt="श्री समर्थ रामदास"
-                className={styles.thumbImage}
+                key={`${ringtone.slug}-${authorImage}`}
+                src={authorImage}
+                alt={author?.titleMr ?? 'Ringtone author'}
+                className={styles.authorAvatarImage}
               />
             </div>
-
-            <div className={styles.modalInfo}>
+            <div className={styles.modalTrackInfo}>
               <span
                 className={`${styles.modalBadge} ${isPlaying ? styles.modalBadgeLive : ''} ${hasEnded ? styles.modalBadgeEnded : ''}`}
               >
@@ -298,13 +305,19 @@ function RingtonePlayerModal({ ringtone, onClose }) {
                 {ringtone.titleMr}
               </h2>
               <p className={styles.modalTitleEn}>{ringtone.titleEn}</p>
+              {showAuthorLine && (
+                <p className={styles.modalAuthorLine}>
+                  {author.titleMr}
+                  <span className={styles.modalAuthorSep}> · </span>
+                  <span className={styles.modalAuthorEn}>{author.titleEn}</span>
+                </p>
+              )}
             </div>
           </div>
 
-          <div className={styles.modalContentGrid}>
-            <div
-              className={`${styles.modalPlayer} ${isPlaying ? styles.modalPlayerActive : ''} ${hasEnded ? styles.modalPlayerEnded : ''}`}
-            >
+          <div
+            className={`${styles.modalPlayer} ${isPlaying ? styles.modalPlayerActive : ''} ${hasEnded ? styles.modalPlayerEnded : ''}`}
+          >
             <div className={styles.progressWrap}>
               <input
                 type="range"
@@ -439,7 +452,6 @@ function RingtonePlayerModal({ ringtone, onClose }) {
               </button>
             </div>
           </div>
-          </div>
 
           <p className={styles.modalFooterHint}>
             <kbd>Space</kbd> प्ले/पॉज / Play or pause
@@ -525,6 +537,7 @@ function Ringtones() {
 
       {modalRingtone && (
         <RingtonePlayerModal
+          key={modalRingtone.slug}
           ringtone={modalRingtone}
           onClose={() => setModalRingtone(null)}
         />
