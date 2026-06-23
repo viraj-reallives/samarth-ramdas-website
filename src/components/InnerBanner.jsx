@@ -4,6 +4,8 @@ import styles from './InnerBanner.module.css'
 function InnerBanner({
   contentId = 'page-content',
   scrollLabel = 'खाली स्क्रोल करा / Scroll down',
+  image = '/assets/inner-banner.png',
+  imageAlt = '|| जय जय रघुवीर समर्थ ||',
 }) {
   const scrollToContent = () => {
     document.getElementById(contentId)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -13,8 +15,8 @@ function InnerBanner({
     <div className={styles.banner}>
       <div className={styles.bannerInner}>
         <img
-          src="/assets/inner-banner.png"
-          alt="|| जय जय रघुवीर समर्थ ||"
+          src={image}
+          alt={imageAlt}
           className={styles.bannerImage}
         />
         <div className={styles.bannerOverlay} aria-hidden="true" />

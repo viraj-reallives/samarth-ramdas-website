@@ -30,8 +30,8 @@ const categories = [
     image: '/assets/cards/language.png',
     href: '/language',
     theme: 'teal',
-    position: 'center 35%',
-    positionMobile: 'center 30%',
+    position: 'center center',
+    positionMobile: 'center center',
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
         <circle cx="12" cy="12" r="9" />
