@@ -3,7 +3,7 @@ import InnerBanner from '../components/InnerBanner'
 import pageUi from '../styles/pageUi.module.css'
 import { FiCheck, FiCopy, FiDownload, FiMail, FiPause, FiPlay, FiSearch, FiShare2, FiX } from 'react-icons/fi'
 import { FaFacebookF, FaTelegram, FaWhatsapp } from 'react-icons/fa'
-import { downloadRingtone, getRingtoneAudioUrl, getRingtoneAuthor, ringtones } from '../data/ringtones'
+import { downloadRingtone, getRingtoneAuthor } from '../data/ringtones'
 import styles from './Ringtones.module.css'
 
 function buildShareMessage(ringtone, audioUrl) {
@@ -116,7 +116,7 @@ function RingtonePlayerModal({ ringtone, onClose }) {
     setCurrentTime(0)
     setDuration(0)
     setHasEnded(false)
-    audio.src = getRingtoneAudioUrl(ringtone.slug)
+    audio.src = ringtone.audioUrl
     audio.play().then(() => setIsPlaying(true)).catch(() => setIsPlaying(false))
 
     const onPlay = () => {
@@ -198,11 +198,11 @@ function RingtonePlayerModal({ ringtone, onClose }) {
     }
   }
 
-  const audioShareUrl = getRingtoneAudioUrl(ringtone.slug)
+  const audioShareUrl = ringtone.audioUrl
   const shareLinks = buildShareLinks(ringtone, audioShareUrl)
   const author = getRingtoneAuthor(ringtone)
   const authorImage = author?.image ?? '/assets/authors/other-authors.png'
-  const showAuthorLine = author && ringtone.slug !== 'acharya-dharmendraji'
+  const showAuthorLine = !!author
 
   const openShareWindow = (url) => {
     window.open(url, '_blank', 'noopener,noreferrer')
@@ -467,6 +467,20 @@ function RingtonePlayerModal({ ringtone, onClose }) {
 function Ringtones() {
   const [search, setSearch] = useState('')
   const [modalRingtone, setModalRingtone] = useState(null)
+  const [ringtones, setRingtones] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+
+  useEffect(() => {
+    fetch('/api/collections/ringtones')
+      .then((res) => {
+        if (!res.ok) throw new Error(`API returned ${res.status}`)
+        return res.json()
+      })
+      .then((data) => setRingtones(data.items))
+      .catch((err) => setError(err.message))
+      .finally(() => setLoading(false))
+  }, [])
 
   const filtered = useMemo(() => {
     const query = search.trim().toLowerCase()
@@ -475,7 +489,7 @@ function Ringtones() {
       ({ titleMr, titleEn }) =>
         titleMr.toLowerCase().includes(query) || titleEn.toLowerCase().includes(query),
     )
-  }, [search])
+  }, [search, ringtones])
 
   useEffect(() => {
     document.title = 'रिंगटोन्स – श्री समर्थ रामदास'
@@ -513,7 +527,17 @@ function Ringtones() {
           </span>
         </div>
 
-        {filtered.length === 0 ? (
+        {loading ? (
+          <div className={pageUi.empty}>
+            <p>रिंगटोन्स लोड होत आहेत...</p>
+            <p className={pageUi.emptySub}>Loading ringtones...</p>
+          </div>
+        ) : error ? (
+          <div className={pageUi.empty}>
+            <p>रिंगटोन्स लोड करता आले नाहीत.</p>
+            <p className={pageUi.emptySub}>Could not load ringtones. Please try again later.</p>
+          </div>
+        ) : filtered.length === 0 ? (
           <div className={pageUi.empty}>
             <p>कोणतेही रिंगटोन्स सापडले नाहीत.</p>
             <p className={pageUi.emptySub}>No ringtones found. Try a different search.</p>

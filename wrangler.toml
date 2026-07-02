@@ -1,0 +1,15 @@
+name = "samarth-ramdas-website"
+compatibility_date = "2026-07-02"
+pages_build_output_dir = "dist"
+
+# D1 binding — the Worker/Functions access this as env.DB
+[[d1_databases]]
+binding = "DB"
+database_name = "samarth-ramdas-db"
+database_id = "1ac89da8-377b-4c6a-a503-350d91cc4498"
+
+# R2 public base URL, exposed to Functions as env.R2_BASE.
+# Kept here as one constant so switching to files.samarthramdas400.in later
+# is a one-line change.
+[vars]
+R2_BASE = "https://pub-31371e9d4db049cfba14534a68b77428.r2.dev"

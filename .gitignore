@@ -1,0 +1,8 @@
+node_modules
+.wrangler
+.mf
+.env
+.env.*
+!.env.example
+.DS_Store
+*.log

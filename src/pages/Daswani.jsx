@@ -5,19 +5,23 @@ import pageUi from '../styles/pageUi.module.css'
 import { FiChevronLeft, FiChevronRight, FiGrid, FiX, FiZoomIn } from 'react-icons/fi'
 import styles from './Daswani.module.css'
 
-const daswaniImages = Array.from({ length: 50 }, (_, index) => {
-  const num = String(index + 1).padStart(2, '0')
-  return {
-    id: index + 1,
-    num,
-    src: `/assets/daswani/${num}.png`,
-    alt: `दासवाणी पृष्ठ ${index + 1}`,
-  }
-})
-
 function Daswani() {
   const { hash } = useLocation()
   const [activeIndex, setActiveIndex] = useState(null)
+  const [daswaniImages, setDaswaniImages] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+
+  useEffect(() => {
+    fetch('/api/collections/daswani')
+      .then((res) => {
+        if (!res.ok) throw new Error(`API returned ${res.status}`)
+        return res.json()
+      })
+      .then((data) => setDaswaniImages(data.items))
+      .catch((err) => setError(err.message))
+      .finally(() => setLoading(false))
+  }, [])
 
   const openLightbox = (index) => setActiveIndex(index)
   const closeLightbox = () => setActiveIndex(null)
@@ -78,7 +82,7 @@ function Daswani() {
       document.body.style.overflow = ''
       window.removeEventListener('keydown', handleKeyDown)
     }
-  }, [activeIndex])
+  }, [activeIndex, daswaniImages.length])
 
   const activeImage = activeIndex !== null ? daswaniImages[activeIndex] : null
 
@@ -122,35 +126,47 @@ function Daswani() {
             <span className={styles.galleryBadge}>{daswaniImages.length} पाने</span>
           </div>
 
-          <div className={styles.grid}>
-            {daswaniImages.map((image, index) => (
-              <button
-                key={image.id}
-                type="button"
-                className={`${styles.card} ${pageUi.cardAnim}`}
-                style={{ animationDelay: `${Math.min(index, 10) * 35}ms` }}
-                onClick={() => openLightbox(index)}
-                aria-label={`Open ${image.alt}`}
-              >
-                <div className={styles.cardImageWrap}>
-                  <img
-                    src={image.src}
-                    alt={image.alt}
-                    className={styles.cardImage}
-                    loading="lazy"
-                  />
-                  <span className={styles.cardOverlay} aria-hidden="true">
-                    <FiZoomIn />
-                    <span>पहा</span>
+          {loading ? (
+            <div className={pageUi.empty}>
+              <p>दासवाणी पाने लोड होत आहेत...</p>
+              <p className={pageUi.emptySub}>Loading Daswani pages...</p>
+            </div>
+          ) : error ? (
+            <div className={pageUi.empty}>
+              <p>दासवाणी पाने लोड करता आली नाहीत.</p>
+              <p className={pageUi.emptySub}>Could not load Daswani pages. Please try again later.</p>
+            </div>
+          ) : (
+            <div className={styles.grid}>
+              {daswaniImages.map((image, index) => (
+                <button
+                  key={image.id}
+                  type="button"
+                  className={`${styles.card} ${pageUi.cardAnim}`}
+                  style={{ animationDelay: `${Math.min(index, 10) * 35}ms` }}
+                  onClick={() => openLightbox(index)}
+                  aria-label={`Open ${image.alt}`}
+                >
+                  <div className={styles.cardImageWrap}>
+                    <img
+                      src={image.src}
+                      alt={image.alt}
+                      className={styles.cardImage}
+                      loading="lazy"
+                    />
+                    <span className={styles.cardOverlay} aria-hidden="true">
+                      <FiZoomIn />
+                      <span>पहा</span>
+                    </span>
+                  </div>
+                  <span className={styles.cardLabel}>
+                    पृष्ठ {image.num}
+                    <span>Page {index + 1}</span>
                   </span>
-                </div>
-                <span className={styles.cardLabel}>
-                  पृष्ठ {image.num}
-                  <span>Page {index + 1}</span>
-                </span>
-              </button>
-            ))}
-          </div>
+                </button>
+              ))}
+            </div>
+          )}
         </section>
       </div>
 
