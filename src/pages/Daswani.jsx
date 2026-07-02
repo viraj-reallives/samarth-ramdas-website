@@ -1,12 +1,10 @@
 import { useEffect, useState } from 'react'
-import { useLocation } from 'react-router-dom'
 import InnerBanner from '../components/InnerBanner'
 import pageUi from '../styles/pageUi.module.css'
 import { FiChevronLeft, FiChevronRight, FiGrid, FiX, FiZoomIn } from 'react-icons/fi'
 import styles from './Daswani.module.css'
 
 function Daswani() {
-  const { hash } = useLocation()
   const [activeIndex, setActiveIndex] = useState(null)
   const [daswaniImages, setDaswaniImages] = useState([])
   const [loading, setLoading] = useState(true)
@@ -44,16 +42,6 @@ function Daswani() {
       document.title = 'श्री समर्थ रामदास - श्री रामदासांचे साहित्य'
     }
   }, [])
-
-  useEffect(() => {
-    if (hash !== '#gallery') return undefined
-
-    const timer = window.setTimeout(() => {
-      document.getElementById('gallery')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    }, 120)
-
-    return () => window.clearTimeout(timer)
-  }, [hash])
 
   useEffect(() => {
     if (activeIndex === null) {

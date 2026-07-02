@@ -18,8 +18,10 @@ import LanguageSubject from './pages/LanguageSubject'
 import Ringtones from './pages/Ringtones'
 import Audio from './pages/Audio'
 import Daswani from './pages/Daswani'
+import Browse from './pages/Browse'
 import NotFound from './pages/NotFound'
 import { removeInitialHtmlLoader, waitForAppReady } from './utils/appLoader'
+import { scheduleRouteScroll } from './utils/pageScroll'
 
 function AppRoutes() {
   const location = useLocation()
@@ -28,8 +30,8 @@ function AppRoutes() {
   const isFirstRoute = useRef(true)
 
   useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
-  }, [location.pathname, location.search])
+    return scheduleRouteScroll(location.pathname, location.hash, location.search)
+  }, [location.pathname, location.hash, location.search])
 
   useEffect(() => {
     let active = true
@@ -80,6 +82,7 @@ function AppRoutes() {
             <Route path="/language" element={<Language />} />
             <Route path="/language/:languageSlug/subject/:subjectSlug" element={<LanguageSubject />} />
             <Route path="/language/:slug" element={<LanguageDetail />} />
+            <Route path="/browse" element={<Browse />} />
             <Route path="/ringtones" element={<Ringtones />} />
             <Route path="/audio" element={<Audio />} />
             <Route path="/daswani" element={<Daswani />} />

@@ -1,0 +1,134 @@
+.card {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 18px 20px;
+  border: 1px solid var(--site-border-warm);
+  border-radius: 12px;
+  background: var(--site-card-bg-alt);
+  text-decoration: none;
+  color: inherit;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.card:hover {
+  border-color: #e0c4a8;
+  background: var(--site-surface-hover);
+  box-shadow: 0 4px 16px rgba(78, 52, 46, 0.06);
+  transform: translateY(-2px);
+}
+
+/* Stacked layout for browse hub */
+.stacked {
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 22px 16px 20px;
+  gap: 12px;
+}
+
+.stacked .body {
+  flex: unset;
+}
+
+.stacked .title {
+  justify-content: center;
+}
+
+.stacked .description {
+  font-size: 0.8rem;
+}
+
+.stacked .arrow {
+  margin-top: 0;
+  opacity: 0.5;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.stacked:hover .arrow {
+  opacity: 1;
+  transform: translateX(3px);
+}
+
+.iconWrap {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: #fff3e8;
+  color: #e8661a;
+  font-size: 1.2rem;
+}
+
+.body {
+  flex: 1;
+  min-width: 0;
+}
+
+.step {
+  margin: 0 0 6px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #c46a20;
+}
+
+.stepEn {
+  margin-left: 6px;
+  font-family: var(--font-en);
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: normal;
+  color: #d4a574;
+}
+
+.title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px;
+  margin: 0 0 6px;
+}
+
+.titleMr {
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--site-text);
+}
+
+.titleEn {
+  font-family: var(--font-en);
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--site-text-muted);
+}
+
+.description {
+  margin: 0;
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: var(--site-text-muted);
+}
+
+.descEn {
+  display: block;
+  margin-top: 2px;
+  font-family: var(--font-en);
+  font-size: 0.74rem;
+  color: var(--site-text-faint);
+}
+
+.arrow {
+  flex-shrink: 0;
+  margin-top: 6px;
+  color: #e8661a;
+  font-size: 1.1rem;
+}

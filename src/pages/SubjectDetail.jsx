@@ -87,6 +87,10 @@ function SubjectDetail() {
 
       <div className={`${styles.content} ${pageUi.content}`} id="subject-detail-content">
         <nav className={styles.breadcrumb} aria-label="Breadcrumb">
+          <Link to="/browse" className={styles.breadcrumbLink}>
+            साहित्य शोधा / Browse
+          </Link>
+          <span className={styles.breadcrumbSep} aria-hidden="true">›</span>
           <Link to="/subject" className={styles.breadcrumbLink}>
             विषय / Subject
           </Link>
@@ -96,14 +100,19 @@ function SubjectDetail() {
           </span>
         </nav>
 
+        <p className={styles.stepLabel}>
+          पायरी २ · लेखक निवडा
+          <span className={styles.stepLabelEn}>Step 2 — Choose author</span>
+        </p>
+
         <h1 className={styles.pageTitle}>
-          {subject.titleMr} # {subject.titleEn} -&gt; लेखक # Authors
+          {subject.titleMr} · {subject.titleEn}
         </h1>
 
         <p className={styles.pageIntro}>
-          खालील लेखक निवडा आणि ऑडिओ व साहित्य पहा.
+          या विषयासाठी लेखक निवडा, नंतर ऑडिओ व साहित्य पहा.
           <span className={styles.pageIntroEn}>
-            Select an author below to view audio & literature.
+            Choose an author for this subject, then view audio & literature.
           </span>
         </p>
 

@@ -50,6 +50,24 @@
   font-weight: 500;
 }
 
+.stepLabel {
+  margin: 0 0 8px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #c46a20;
+}
+
+.stepLabelEn {
+  margin-left: 8px;
+  font-family: var(--font-en);
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: normal;
+  color: #d4a574;
+}
+
 .pageTitle {
   margin: 0 0 10px;
   padding: 0;

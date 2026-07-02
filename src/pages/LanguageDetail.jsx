@@ -64,6 +64,10 @@ function LanguageDetail() {
 
       <div className={`${styles.content} ${pageUi.content}`} id="language-detail-content">
         <nav className={styles.breadcrumb} aria-label="Breadcrumb">
+          <Link to="/browse" className={styles.breadcrumbLink}>
+            साहित्य शोधा / Browse
+          </Link>
+          <span className={styles.breadcrumbSep} aria-hidden="true">›</span>
           <Link to="/language" className={styles.breadcrumbLink}>
             भाषा / Language
           </Link>
@@ -73,14 +77,19 @@ function LanguageDetail() {
           </span>
         </nav>
 
+        <p className={styles.stepLabel}>
+          पायरी २ · विषय निवडा
+          <span className={styles.stepLabelEn}>Step 2 — Choose subject</span>
+        </p>
+
         <h1 className={styles.pageTitle}>
-          {language.titleMr} # {language.titleEn} -&gt; विषय # Subject
+          {language.titleMr} · {language.titleEn}
         </h1>
 
         <p className={styles.pageIntro}>
-          खालील विषय निवडा आणि {language.titleMr} भाषेतील साहित्य पहा.
+          या भाषेतील विषय निवडा, नंतर साहित्य पहा.
           <span className={styles.pageIntroEn}>
-            Select a subject below to browse literature in {language.titleEn}.
+            Choose a subject in this language, then browse literature.
           </span>
         </p>
 

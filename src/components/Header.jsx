@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { FiChevronDown } from 'react-icons/fi'
-import { libraryMegaMenu, libraryRoutePrefixes, mainNavItems, mediaMenu, mediaRoutePrefixes } from '../data/headerNav'
+import { libraryRoutePrefixes, mainNavItems, mediaMenu, mediaRoutePrefixes } from '../data/headerNav'
 import SiteLogo from './SiteLogo'
 import styles from './Header.module.css'
 
@@ -199,36 +199,74 @@ function Header() {
                 <h3 className={styles.megaTitle}>
                   {item.labelMr} <span>/ {item.labelEn}</span>
                 </h3>
+                {item.introMr && (
+                  <p className={styles.megaIntro}>
+                    {item.introMr}
+                    <span className={styles.megaIntroEn}>{item.introEn}</span>
+                  </p>
+                )}
               </div>
               <Link to={item.href} className={styles.megaCta} onClick={closeMenus}>
-                सर्व पहा / View all
+                साहित्य शोधा / Browse all
               </Link>
             </div>
             <div className={styles.megaGrid}>
-              {item.columns.map((column) => (
-                <div key={column.titleEn} className={styles.megaColumn}>
-                  <Link to={column.href} className={styles.megaColumnTitle} onClick={closeMenus}>
-                    <span>{column.titleMr}</span>
-                    <span className={styles.megaColumnTitleEn}>{column.titleEn}</span>
-                  </Link>
-                  <ul className={styles.megaList}>
-                    {column.links.map((link) => (
-                      <li key={link.href}>
-                        <Link
-                          to={link.href}
-                          className={`${styles.megaLink} ${
-                            isPathActive(pathname, link.href) ? styles.megaLinkActive : ''
-                          }`}
-                          onClick={closeMenus}
-                        >
-                          <span className={styles.megaLinkMr}>{link.labelMr}</span>
-                          <span className={styles.megaLinkEn}>{link.labelEn}</span>
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
+              {item.columns.map((column) => {
+                if (column.variant === 'featured') {
+                  const isFeaturedActive = isPathActive(pathname, column.href)
+                  return (
+                    <div key={column.titleEn} className={styles.megaFeatured}>
+                      <Link
+                        to={column.href}
+                        className={`${styles.megaFeaturedCard} ${
+                          isFeaturedActive ? styles.megaFeaturedCardActive : ''
+                        }`}
+                        onClick={closeMenus}
+                      >
+                        <span className={styles.megaFeaturedTitle}>{column.titleMr}</span>
+                        <span className={styles.megaFeaturedTitleEn}>{column.titleEn}</span>
+                        {column.hintMr && (
+                          <p className={styles.megaFeaturedHint}>
+                            {column.hintMr}
+                            <span>{column.hintEn}</span>
+                          </p>
+                        )}
+                        <span className={styles.megaFeaturedCta}>शोधा / Search →</span>
+                      </Link>
+                    </div>
+                  )
+                }
+
+                return (
+                  <div key={column.titleEn} className={styles.megaColumn}>
+                    <Link to={column.href} className={styles.megaColumnTitle} onClick={closeMenus}>
+                      <span>{column.titleMr}</span>
+                      <span className={styles.megaColumnTitleEn}>{column.titleEn}</span>
+                    </Link>
+                    <ul className={styles.megaList}>
+                      {column.links.map((link) => (
+                        <li key={link.href}>
+                          <Link
+                            to={link.href}
+                            className={`${styles.megaLink} ${
+                              isPathActive(pathname, link.href) ? styles.megaLinkActive : ''
+                            }`}
+                            onClick={closeMenus}
+                          >
+                            <span className={styles.megaLinkMr}>{link.labelMr}</span>
+                            <span className={styles.megaLinkEn}>{link.labelEn}</span>
+                            {link.hintMr && (
+                              <span className={styles.megaLinkHint}>
+                                {link.hintMr} · {link.hintEn}
+                              </span>
+                            )}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )
+              })}
             </div>
           </div>
         </div>
@@ -389,31 +427,46 @@ function Header() {
                   </button>
                   <div className={`${styles.mobilePanel} ${isOpen ? styles.mobilePanelOpen : ''}`}>
                     {isMega
-                      ? libraryMegaMenu.columns.map((column) => (
-                          <div key={column.titleEn} className={styles.mobileGroup}>
-                            <Link
-                              to={column.href}
-                              className={styles.mobileGroupTitle}
-                              onClick={closeMenus}
-                            >
-                              {column.titleMr} / {column.titleEn}
-                            </Link>
-                            <ul className={styles.mobileSubList}>
-                              {column.links.map((link) => (
-                                <li key={link.href}>
-                                  <Link
-                                    to={link.href}
-                                    className={styles.mobileSubLink}
-                                    onClick={closeMenus}
-                                  >
-                                    {link.labelMr}
-                                    <span>{link.labelEn}</span>
-                                  </Link>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        ))
+                      ? item.columns.map((column) => {
+                          if (column.variant === 'featured') {
+                            return (
+                              <Link
+                                key={column.titleEn}
+                                to={column.href}
+                                className={styles.mobileFeaturedLink}
+                                onClick={closeMenus}
+                              >
+                                {column.titleMr} / {column.titleEn}
+                              </Link>
+                            )
+                          }
+
+                          return (
+                            <div key={column.titleEn} className={styles.mobileGroup}>
+                              <Link
+                                to={column.href}
+                                className={styles.mobileGroupTitle}
+                                onClick={closeMenus}
+                              >
+                                {column.titleMr} / {column.titleEn}
+                              </Link>
+                              <ul className={styles.mobileSubList}>
+                                {column.links.map((link) => (
+                                  <li key={link.href}>
+                                    <Link
+                                      to={link.href}
+                                      className={styles.mobileSubLink}
+                                      onClick={closeMenus}
+                                    >
+                                      {link.labelMr}
+                                      <span>{link.labelEn}</span>
+                                    </Link>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          )
+                        })
                       : mediaMenu.links.map((link) => (
                           <Link
                             key={link.id}

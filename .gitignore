@@ -1,6 +1,7 @@
-node_modules
-.wrangler
-.mf
+node_modules/
+dist/
+.wrangler/
+.mf/
 .env
 .env.*
 !.env.example

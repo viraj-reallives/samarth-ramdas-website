@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:api": "npm run build && wrangler pages dev dist --port 8788",
+    "dev:local": "VITE_API_PROXY=http://127.0.0.1:8788 npm run dev",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"

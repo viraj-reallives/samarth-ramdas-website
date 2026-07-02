@@ -1,5 +1,6 @@
 .content {
   animation: contentFadeIn 0.6s ease-out 0.12s backwards;
+  scroll-margin-top: calc(var(--site-header-offset, 96px) + 16px);
 }
 
 .steps {

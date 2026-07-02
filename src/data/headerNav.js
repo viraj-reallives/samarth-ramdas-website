@@ -1,55 +1,61 @@
-import { authors } from './authors'
-import { languages } from './languages'
-
-export const featuredSubjectLinks = [
+export const popularLibraryLinks = [
   { labelMr: 'दासबोध', labelEn: 'Dasbodh', href: '/subject/dasbodh' },
   { labelMr: 'मनाचे श्लोक', labelEn: 'Manache Shlok', href: '/subject/manache-shlok' },
-  { labelMr: 'निरूपण', labelEn: 'Nirupan', href: '/subject/nirupan' },
-  { labelMr: 'भजन', labelEn: 'Bhajan', href: '/subject/bhajan' },
   { labelMr: 'रिंगटोन्स', labelEn: 'Ringtones', href: '/ringtones' },
+  { labelMr: 'दासवाणी', labelEn: 'Daswani', href: '/daswani' },
+]
+
+export const browseByLinks = [
+  {
+    labelMr: 'विषयानुसार',
+    labelEn: 'By Subject',
+    href: '/subject',
+    hintMr: 'दासबोध, भजन… नंतर लेखक',
+    hintEn: 'Pick subject, then author',
+  },
+  {
+    labelMr: 'लेखकानुसार',
+    labelEn: 'By Author',
+    href: '/author',
+    hintMr: 'लेखक निवडा, नंतर विषय',
+    hintEn: 'Pick author, then subject',
+  },
+  {
+    labelMr: 'भाषेनुसार',
+    labelEn: 'By Language',
+    href: '/language',
+    hintMr: 'मराठी, हिंदी… नंतर विषय',
+    hintEn: 'Pick language, then subject',
+  },
 ]
 
 export const libraryMegaMenu = {
   id: 'library',
   labelMr: 'ग्रंथालय',
   labelEn: 'Library',
-  href: '/subject',
+  href: '/browse',
+  introMr: 'एकाच ठिकाणी शोधा — विषय, लेखक, भाषा किंवा संग्रह.',
+  introEn: 'Search in one place — subject, author, language, or collection.',
   columns: [
     {
-      titleMr: 'विषय',
-      titleEn: 'Subject',
-      href: '/subject',
-      links: featuredSubjectLinks,
+      variant: 'featured',
+      titleMr: 'साहित्य शोधा',
+      titleEn: 'Browse all',
+      href: '/browse',
+      hintMr: 'सर्व साहित्य, रिंगटोन्स आणि गॅलरी एकाच ठिकाणी',
+      hintEn: 'All literature, ringtones & galleries together',
     },
     {
-      titleMr: 'लेखक',
-      titleEn: 'Author',
-      href: '/author',
-      links: authors.slice(0, 6).map(({ slug, titleMr, titleEn }) => ({
-        labelMr: titleMr,
-        labelEn: titleEn,
-        href: `/author/${slug}`,
-      })),
+      titleMr: 'लोकप्रिय',
+      titleEn: 'Popular',
+      href: '/browse',
+      links: popularLibraryLinks,
     },
     {
-      titleMr: 'भाषा',
-      titleEn: 'Language',
-      href: '/language',
-      links: languages.slice(0, 6).map(({ slug, titleMr, titleEn }) => ({
-        labelMr: titleMr,
-        labelEn: titleEn,
-        href: `/language/${slug}`,
-      })),
-    },
-    {
-      titleMr: 'दासवाणी',
-      titleEn: 'Daswani',
-      href: '/daswani',
-      links: [
-        { labelMr: 'दासवाणी संग्रह', labelEn: 'Daswani Collection', href: '/daswani' },
-        { labelMr: 'सर्व विषय', labelEn: 'All Subjects', href: '/subject' },
-        { labelMr: 'सर्व लेखक', labelEn: 'All Authors', href: '/author' },
-      ],
+      titleMr: 'यानुसार शोधा',
+      titleEn: 'Browse by',
+      href: '/browse',
+      links: browseByLinks,
     },
   ],
 }
@@ -65,7 +71,7 @@ export const mediaMenu = {
   ],
 }
 
-export const libraryRoutePrefixes = ['/subject', '/author', '/language', '/daswani']
+export const libraryRoutePrefixes = ['/browse', '/subject', '/author', '/language', '/daswani']
 export const mediaRoutePrefixes = ['/ringtones']
 
 export const mainNavItems = [
@@ -73,6 +79,6 @@ export const mainNavItems = [
   { type: 'link', href: '/life-journey', labelMr: 'जीवन प्रवास', labelEn: 'Life Journey' },
   { type: 'mega', ...libraryMegaMenu },
   { type: 'dropdown', ...mediaMenu },
-  { type: 'link', href: '/news-events', labelMr: 'वृत्त आणि घटना', labelEn: 'News & Events' },
+  // { type: 'link', href: '/news-events', labelMr: 'वृत्त आणि घटना', labelEn: 'News & Events' },
   { type: 'link', href: '/contact', labelMr: 'संपर्क', labelEn: 'Contact' },
 ]

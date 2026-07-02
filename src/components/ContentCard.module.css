@@ -1,0 +1,155 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 18px;
+  border: 1px solid var(--site-border-warm);
+  border-radius: 12px;
+  background: var(--site-surface);
+  text-decoration: none;
+  color: inherit;
+  text-align: left;
+  animation: cardFadeIn 0.45s ease backwards;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.cardButton {
+  width: 100%;
+  font: inherit;
+  cursor: pointer;
+}
+
+.card:hover {
+  border-color: #e0c4a8;
+  background: var(--site-surface-hover);
+  transform: translateY(-2px);
+}
+
+.compact {
+  gap: 10px;
+  padding: 16px 18px;
+}
+
+.compact .top {
+  margin-bottom: 2px;
+}
+
+.compact .titleMr {
+  font-size: 0.95rem;
+}
+
+.compact .titleEn {
+  font-size: 0.78rem;
+}
+
+.compact .tags {
+  display: none;
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.typeBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #fff3e8;
+  border: 1px solid #f0d4b8;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #b84e08;
+}
+
+.typeBadge svg {
+  font-size: 0.85rem;
+}
+
+.typeEn {
+  font-weight: 500;
+  color: #c46a20;
+}
+
+.typeEn::before {
+  content: '·';
+  margin: 0 3px;
+  color: #d4a574;
+}
+
+.count {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--site-text-faint);
+}
+
+.titles {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.titleMr {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--site-text);
+}
+
+.titleEn {
+  margin: 0;
+  font-family: var(--font-en);
+  font-size: 0.82rem;
+  line-height: 1.4;
+  color: var(--site-text-muted);
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: auto;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: var(--site-card-bg-alt);
+  border: 1px solid var(--site-border-light);
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--site-text-muted);
+}
+
+.tagEn {
+  font-weight: 500;
+  color: var(--site-text-faint);
+}
+
+.tagEn::before {
+  content: '·';
+  margin: 0 2px;
+}
+
+@keyframes cardFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

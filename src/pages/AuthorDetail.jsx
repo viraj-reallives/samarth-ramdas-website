@@ -83,6 +83,10 @@ function AuthorDetail() {
 
       <div className={`${styles.content} ${pageUi.content}`} id="author-detail-content">
         <nav className={styles.breadcrumb} aria-label="Breadcrumb">
+          <Link to="/browse" className={styles.breadcrumbLink}>
+            साहित्य शोधा / Browse
+          </Link>
+          <span className={styles.breadcrumbSep} aria-hidden="true">›</span>
           <Link to="/author" className={styles.breadcrumbLink}>
             लेखक / Author
           </Link>
@@ -95,13 +99,17 @@ function AuthorDetail() {
         <div className={styles.authorHero}>
           <AuthorAvatar titleMr={author.titleMr} image={author.image} />
           <div className={styles.authorHeroText}>
+            <p className={styles.stepLabel}>
+              पायरी २ · विषय निवडा
+              <span className={styles.stepLabelEn}>Step 2 — Choose subject</span>
+            </p>
             <h1 className={styles.pageTitle}>
-              {author.titleMr} # {author.titleEn}
+              {author.titleMr} · {author.titleEn}
             </h1>
             <p className={styles.pageSubtitle}>
-              खालील विषय निवडा आणि ऑडिओ व साहित्य पहा.
+              या लेखकाचे विषय निवडा, नंतर ऑडिओ व साहित्य पहा.
               <span className={styles.pageSubtitleEn}>
-                Select a subject below to browse audio & literature.
+                Choose a subject by this author, then view audio & literature.
               </span>
             </p>
             <span className={styles.subjectCountBadge}>
