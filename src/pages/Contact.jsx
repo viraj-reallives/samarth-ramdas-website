@@ -1,5 +1,6 @@
 import { useEffect, useId, useRef, useState } from 'react'
 import InnerBanner from '../components/InnerBanner'
+import SimpleCaptcha, { useSimpleCaptcha } from '../components/SimpleCaptcha'
 import pageUi from '../styles/pageUi.module.css'
 import { FiMail, FiMapPin, FiSend, FiUpload, FiUser } from 'react-icons/fi'
 import {
@@ -21,6 +22,7 @@ function Contact() {
   const [selectedFileName, setSelectedFileName] = useState('')
   const fileInputRef = useRef(null)
   const formId = useId()
+  const captcha = useSimpleCaptcha()
 
   useEffect(() => {
     document.title = 'संपर्क – श्री समर्थ रामदास'
@@ -60,6 +62,13 @@ function Contact() {
 
   const handleSubmit = async (event) => {
     event.preventDefault()
+
+    if (!captcha.validate()) {
+      setStatus('error')
+      setStatusMessage('')
+      return
+    }
+
     setStatus('submitting')
     setStatusMessage('')
 
@@ -93,6 +102,7 @@ function Contact() {
         )
         form.reset()
         resetFileInput()
+        captcha.refresh()
         window.setTimeout(() => {
           setStatus('idle')
           setStatusMessage('')
@@ -156,6 +166,7 @@ function Contact() {
                   setStatus('idle')
                   setStatusMessage('')
                   resetFileInput()
+                  captcha.refresh()
                 }}
               >
                 <span className={styles.tabMr}>सहभाग</span>
@@ -173,6 +184,7 @@ function Contact() {
                   setStatus('idle')
                   setStatusMessage('')
                   resetFileInput()
+                  captcha.refresh()
                 }}
               >
                 <span className={styles.tabMr}>प्रतिक्रिया</span>
@@ -192,6 +204,13 @@ function Contact() {
             >
               <input type="hidden" name="access_key" value={WEB3FORMS_ACCESS_KEY} />
               <input type="hidden" name="subject" value={FORM_SUBJECT} />
+              <input
+                type="checkbox"
+                name="botcheck"
+                className={styles.botcheck}
+                tabIndex={-1}
+                autoComplete="off"
+              />
 
               <p className={styles.formHint}>
                 {activeTab === 'participation'
@@ -269,6 +288,14 @@ function Contact() {
                   />
                 </label>
               )}
+
+              <SimpleCaptcha
+                value={captcha.value}
+                onChange={captcha.setValue}
+                onRefresh={captcha.refresh}
+                challenge={captcha.challenge}
+                error={captcha.error}
+              />
 
               {status === 'success' && (
                 <p className={styles.success} role="status">
