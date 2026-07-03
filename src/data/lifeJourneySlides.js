@@ -12,10 +12,10 @@ export const lifeJourneySlides = [
     titleEn: 'Guru of Chhatrapati Shivaji Maharaj',
   },
   {
-    id: 'life-timeline',
-    src: '/assets/life-journey/sajjangad-samadhi.png',
-    titleMr: 'जीवन प्रवास सारांश',
-    titleEn: 'Life Journey Overview',
+    id: 'kirtan-pravachan',
+    src: '/assets/life-journey/kirtan-pravachan.png',
+    titleMr: 'कीर्तन आणि प्रवचन',
+    titleEn: 'Kirtan & Spiritual Discourse',
   },
   {
     id: 'childhood-sadhana',
@@ -30,10 +30,10 @@ export const lifeJourneySlides = [
     titleEn: 'Meeting Shivaji Maharaj',
   },
   {
-    id: 'eleven-maruti-temples',
-    src: '/assets/life-journey/eleven-maruti-temples.png',
-    titleMr: 'अकरा मारुती मंदिरे',
-    titleEn: 'Eleven Maruti Temples',
+    id: 'hanuman-bhakti',
+    src: '/assets/life-journey/hanuman-bhakti.png',
+    titleMr: 'हनुमान भक्ती',
+    titleEn: 'Devotion to Hanuman',
   },
   {
     id: 'sajjangad-samadhi',
