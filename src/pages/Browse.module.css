@@ -232,6 +232,20 @@
   color: #b84e08;
 }
 
+.resultNote {
+  margin: 0 0 16px;
+  font-size: 0.82rem;
+  color: var(--site-text-muted);
+}
+
+.resultNoteEn {
+  display: block;
+  margin-top: 2px;
+  font-family: var(--font-en);
+  font-size: 0.76rem;
+  color: var(--site-text-faint);
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);

@@ -64,9 +64,10 @@
 
 .panel {
   min-height: 280px;
-  padding: 24px;
+  padding: 24px 24px 32px;
   background-color: var(--site-card-bg-cream);
   border: 1px solid var(--site-border);
+  overflow: visible;
 }
 
 .breadcrumb {
@@ -86,32 +87,32 @@
 .literatureGrid,
 .downloadGrid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 20px;
+  align-items: start;
 }
 
-.downloadGridWide {
-  grid-template-columns: repeat(5, 1fr);
+.downloadGridCompact {
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
 }
 
 .literatureCard,
 .downloadCard {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 16px;
-  padding: 20px 14px 18px;
+  align-items: stretch;
+  gap: 12px;
+  padding: 18px 12px 16px;
   border: 1px solid var(--site-border);
   border-radius: 2px;
   background-color: var(--page-bg);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
   text-align: center;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: box-shadow 0.2s ease;
 }
 
 .literatureCard:hover,
 .downloadCard:hover {
-  transform: translateY(-3px);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
 }
 
@@ -120,21 +121,23 @@
   width: 56px;
   height: 70px;
   flex-shrink: 0;
+  align-self: center;
 }
 
 .cardText {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  flex: 1;
+  flex: 0 1 auto;
 }
 
 .cardTitleMr,
 .cardTitleEn {
   margin: 0;
   font-size: 14px;
-  line-height: 1.45;
+  line-height: 1.4;
   color: var(--site-text);
+  overflow-wrap: anywhere;
 }
 
 .cardTitleEn {
@@ -142,21 +145,18 @@
   color: var(--site-text-secondary);
 }
 
-.downloadButton {
-  display: inline-block;
-  padding: 8px 16px;
-  border-radius: 3px;
-  background: linear-gradient(to bottom, #f08a2a, #e8661a);
-  color: #ffffff;
-  font-size: 14px;
-  font-weight: 500;
-  text-decoration: none;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
-  transition: background 0.2s ease;
+.tabCount {
+  margin-left: 6px;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.25);
+  font-size: 0.75rem;
+  font-weight: 600;
 }
 
-.downloadButton:hover {
-  background: linear-gradient(to bottom, #e8661a, #d45a14);
+.tabActive .tabCount {
+  background: rgba(232, 102, 26, 0.15);
+  color: #b84e08;
 }
 
 .sidebar {
@@ -224,12 +224,6 @@
   .layout {
     grid-template-columns: 1fr;
   }
-
-  .literatureGrid,
-  .downloadGrid,
-  .downloadGridWide {
-    grid-template-columns: repeat(3, 1fr);
-  }
 }
 
 @media (max-width: 768px) {
@@ -259,7 +253,6 @@
 
   .literatureGrid,
   .downloadGrid {
-    grid-template-columns: repeat(2, 1fr);
     gap: 16px;
   }
 
@@ -279,7 +272,8 @@
 
 @media (max-width: 480px) {
   .literatureGrid,
-  .downloadGrid {
+  .downloadGrid,
+  .downloadGridCompact {
     grid-template-columns: 1fr;
   }
 }

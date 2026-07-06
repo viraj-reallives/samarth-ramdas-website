@@ -93,9 +93,6 @@ function Header() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [openMenu, setOpenMenu] = useState(null)
 
-  const isHome = pathname === '/'
-  const isTransparent = isHome && !scrolled
-
   const closeMenus = useCallback(() => {
     if (menuCloseTimer.current) {
       window.clearTimeout(menuCloseTimer.current)
@@ -343,9 +340,7 @@ function Header() {
   return (
     <header
       ref={headerRef}
-      className={`${styles.header} ${scrolled ? styles.headerScrolled : ''} ${
-        isTransparent ? styles.headerTransparent : ''
-      }`}
+      className={`${styles.header} ${scrolled ? styles.headerScrolled : ''}`}
     >
       <div className={styles.topBar}>
         <div className={styles.topShell}>
@@ -356,7 +351,7 @@ function Header() {
       <div className={styles.mainBar}>
         <div className={styles.mainShell}>
           <Link to="/" className={styles.logoLink} onClick={closeMenus}>
-            <SiteLogo variant={isTransparent ? 'white' : 'color'} />
+            <SiteLogo variant="color" />
           </Link>
 
           <nav className={styles.desktopNav} aria-label="Main navigation">

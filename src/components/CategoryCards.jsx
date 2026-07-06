@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { CATEGORY_CARD_IMAGES } from '../data/categoryCardImages'
 import styles from './CategoryCards.module.css'
 
 const categories = [
@@ -8,7 +9,7 @@ const categories = [
     titleMr: 'विषय',
     hintMr: 'विषयानुसार साहित्य व ऑडिओ',
     hintEn: 'Literature & audio by subject',
-    image: '/assets/cards/subject.png',
+    image: CATEGORY_CARD_IMAGES.subject,
     href: '/subject',
     theme: 'saffron',
     position: 'center 32%',
@@ -27,7 +28,7 @@ const categories = [
     titleMr: 'भाषा',
     hintMr: 'भाषेनुसार साहित्य संग्रह',
     hintEn: 'Browse content by language',
-    image: '/assets/cards/language.png',
+    image: CATEGORY_CARD_IMAGES.language,
     href: '/language',
     theme: 'teal',
     position: 'center center',
@@ -45,7 +46,7 @@ const categories = [
     titleMr: 'लेखक',
     hintMr: 'लेखकानुसार वर्गीकरण',
     hintEn: 'Explore works by author',
-    image: '/assets/cards/author.png',
+    image: CATEGORY_CARD_IMAGES.author,
     href: '/author',
     theme: 'gold',
     position: '58% center',
@@ -65,7 +66,7 @@ const categories = [
     titleMr: 'रिंगटोन्स',
     hintMr: 'मनाचे श्लोक रिंगटोन्स',
     hintEn: 'Download devotional ringtones',
-    image: '/assets/cards/ringtones.png',
+    image: CATEGORY_CARD_IMAGES.ringtones,
     href: '/ringtones',
     theme: 'maroon',
     position: '62% center',

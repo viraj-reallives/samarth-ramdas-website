@@ -1,0 +1,63 @@
+# Authoritative mapping: WordPress category slug → facet_type
+# facet_type: subject | author | language | skip
+# Rows with skip are not imported as facets (content-type / meta tags).
+slug,category_name_en,facet_type,note
+# --- skip: content-type / meta categories ---
+literature,Literature,skip,Top-level content type
+audios,Audios,skip,Top-level content type
+nirupan,Nirupan,skip,Content subtype
+others,Others,skip,Misc bucket
+sasthan,Sansthan,skip,Institution meta
+ringtones,Ringtones,skip,Handled separately in collections table
+%e0%a4%b5%e0%a4%83%e0%a4%a4%e0%a5%8d%e0%a4%a4-%e0%a4%86%e0%a4%a3%e0%a4%bf-%e0%a4%98%e0%a4%9f%e0%a4%a8%e0%a4%be-news-events,News & Events,skip,News/events not a browse facet
+%e0%a4%b5%e0%a5%83%e0%a4%a4%e0%a5%8d%e0%a4%a4-%e0%a4%86%e0%a4%a3%e0%a4%bf-%e0%a4%98%e0%a4%9f%e0%a4%a8%e0%a4%be-news-events,News & Events,skip,Alternate encoding of news-events slug
+# --- language ---
+marathi,Marathi,language,
+hindi,Hindi,language,
+english,English,language,
+german,German,language,
+gujrathi,Gujrathi,language,
+kannad,Kannad,language,
+sanskrit,Sanskrit,language,
+sindhi,Sindhi,language,
+# --- author ---
+transparent-writer-icon-png,Other Authors,author,Fallback author bucket
+acharya-dharmendraji,Acharya Dharmendraji,author,
+ashok-joshi,Kumudagraj - Ashok Joshi,author,
+caphale,Charudatta Aphle,author,
+chaitanya_maharaj,Chaitanya Maharaj,author,
+chincholkar,Sunil Chincholkar,author,
+dadajadhav,Dada Jadhav,author,
+dr_dekhane,Dr. Ramchandra Dekhane,author,
+dr-swarnalata-bhishikar,Dr Swarnalata Bhishikar,author,
+kalyani_tai_namjoshi,Kalyanitai Namjoshi,author,
+mohabua_ramdasi,Mohanbua Ramadasi,author,
+mujaffar_husain,Mujjaffar Hussain,author,
+prabhakar-pujari,Prabhakar Pujari,author,
+shivaji_bhosale,Prof. ShivajiRao Bhosale,author,
+shridhar_swami,Shreedhar Swami,author,
+shrikrushna-deshmukh,Shrikrushna Deshmukh,author,
+shriniwas_rairikar,Shrinivas Rairikar,author,
+sushamatai,Dr Sushamatai Watve,author,
+swami-govinddev-giri-acharya-kishorji-vyas,Swami Govinddev Giri (Acharya Kishorji Vyas),author,
+varadanand_bhrati,Varadanand Bharati,author,
+makarandnath,Makarandnath,author,
+%e0%a4%b8%e0%a5%8c-%e0%a4%ae%e0%a4%be%e0%a4%af%e0%a4%be-%e0%a4%9c%e0%a5%8b%e0%a4%b6%e0%a5%80-mrs-maya-joshi,Mrs. Maya Joshi,author,
+%e0%a4%a1%e0%a5%89-%e0%a4%b8%e0%a5%81%e0%a4%a7%e0%a5%80%e0%a4%b0-%e0%a4%a8%e0%a4%bf%e0%a4%b0%e0%a5%8d%e0%a4%97%e0%a5%81%e0%a4%a1%e0%a4%95%e0%a4%b0,Dr. Sudhir Nirgudkar,author,
+# --- subject ---
+%e0%a4%a6%e0%a4%be%e0%a4%b8%e0%a4%ac%e0%a5%8b%e0%a4%a7-dasbodh,Dasbodh,subject,
+aarti,Aarti,subject,
+bhajan,Bhajan,subject,
+dainandin-upasana,Dainandin Upasana,subject,
+dasnavami-dasbodh-adhava,Dasnavami Dasbodh Adhava,subject,
+guru-tatva,Guru Tatva,subject,
+karunashtake,Karunashtake,subject,
+manache-shlok,Manache Shlok,subject,
+manache-shlok-nirupan,Manache Shlok Nirupan,subject,
+navavidha-bhakti,Navavidha Bhakti,subject,
+samarth-charitra,Samarth Charitra,subject,
+samarth-krupechi-vachane,Samarth krupechi vachane,subject,
+samarthanchi-kavyasrushti,Samarthanchi Kavyasrushti,subject,
+shree-manache-shlok-pravachane,Shree Manache Shlok Pravachane,subject,
+shreemat-dasbodh-vachan,Shreemat Dasbodh Vachan,subject,
+shloka,Shloka,subject,

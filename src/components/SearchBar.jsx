@@ -17,7 +17,6 @@ function SearchBar({
   const handleSubmit = (event) => {
     event.preventDefault()
     const trimmed = query.trim()
-    // TODO(search): wire to real full-text search API when available
     if (onSearch) {
       onSearch(trimmed)
       return

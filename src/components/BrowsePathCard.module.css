@@ -1,57 +1,206 @@
 .card {
+  position: relative;
   display: flex;
   align-items: flex-start;
   gap: 14px;
   padding: 18px 20px;
   border: 1px solid var(--site-border-warm);
-  border-radius: 12px;
+  border-radius: 14px;
   background: var(--site-card-bg-alt);
   text-decoration: none;
   color: inherit;
+  cursor: pointer;
   transition:
-    border-color 0.2s ease,
-    background-color 0.2s ease,
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+    border-color 0.22s ease,
+    background-color 0.22s ease,
+    transform 0.22s ease,
+    box-shadow 0.22s ease;
 }
 
 .card:hover {
   border-color: #e0c4a8;
   background: var(--site-surface-hover);
-  box-shadow: 0 4px 16px rgba(78, 52, 46, 0.06);
+  box-shadow: 0 8px 24px rgba(78, 52, 46, 0.08);
   transform: translateY(-2px);
 }
 
-/* Stacked layout for browse hub */
-.stacked {
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  padding: 22px 16px 20px;
-  gap: 12px;
+.card:active {
+  transform: translateY(0);
 }
 
-.stacked .body {
-  flex: unset;
+.card:focus-visible {
+  outline: 2px solid #e8661a;
+  outline-offset: 3px;
+}
+
+/* ── Stacked layout (home browse paths) ─────────────────────── */
+
+.stacked {
+  flex-direction: column;
+  align-items: stretch;
+  padding: 0;
+  overflow: hidden;
+  min-height: 220px;
+  border-color: #e8dcc8;
+  background: linear-gradient(180deg, #ffffff 0%, #fffaf5 100%);
+  box-shadow:
+    0 2px 8px rgba(78, 52, 46, 0.06),
+    0 1px 2px rgba(78, 52, 46, 0.04);
+}
+
+.stacked::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #e8661a 0%, #f5a623 100%);
+  z-index: 1;
+}
+
+.cardVisual {
+  position: relative;
+  width: 100%;
+  height: 140px;
+  overflow: hidden;
+  background: #1a100a;
+}
+
+.cardImage {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 35%;
+}
+
+.stacked:hover {
+  border-color: #e8661a;
+  background: linear-gradient(180deg, #ffffff 0%, #fff3e6 100%);
+  box-shadow:
+    0 14px 36px rgba(232, 102, 26, 0.14),
+    0 4px 12px rgba(78, 52, 46, 0.06);
+  transform: translateY(-5px);
+}
+
+.stackedInner {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 28px 20px 18px;
+  text-align: center;
+}
+
+.stacked .iconWrap {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  font-size: 1.45rem;
+  background: linear-gradient(135deg, #fff3e6 0%, #ffe8d0 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease;
+}
+
+.stacked:hover .iconWrap {
+  transform: scale(1.06);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 6px 16px rgba(232, 102, 26, 0.18);
 }
 
 .stacked .title {
   justify-content: center;
+  margin-bottom: 8px;
+}
+
+.stacked .titleMr {
+  font-size: 1.05rem;
 }
 
 .stacked .description {
-  font-size: 0.8rem;
+  font-size: 0.82rem;
+  max-width: 22ch;
+  margin: 0 auto;
 }
 
-.stacked .arrow {
-  margin-top: 0;
-  opacity: 0.5;
-  transition: opacity 0.2s ease, transform 0.2s ease;
+.stackedCta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 13px 18px;
+  border-top: 1px solid #f0e4d8;
+  background: #fff8f0;
+  transition:
+    background-color 0.22s ease,
+    color 0.22s ease;
 }
 
-.stacked:hover .arrow {
-  opacity: 1;
-  transform: translateX(3px);
+.stacked:hover .stackedCta {
+  background: linear-gradient(to bottom, #f08a2a, #e8661a);
+  border-top-color: transparent;
+}
+
+.ctaLabel {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: #c44e0a;
+  transition: color 0.22s ease;
+}
+
+.ctaLabelEn {
+  margin-left: 6px;
+  font-family: var(--font-en);
+  font-weight: 600;
+}
+
+.stacked:hover .ctaLabel {
+  color: #ffffff;
+}
+
+.ctaIcon {
+  flex-shrink: 0;
+  font-size: 1.05rem;
+  color: #e8661a;
+  transition:
+    color 0.22s ease,
+    transform 0.22s ease;
+}
+
+.stacked:hover .ctaIcon {
+  color: #ffffff;
+  transform: translateX(4px);
+}
+
+/* ── Horizontal layout (browse hub) ─────────────────────────── */
+
+.horizontalCta {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  margin-top: 4px;
+  border-radius: 999px;
+  background: #fff3e8;
+  color: #e8661a;
+  font-size: 1.1rem;
+  transition:
+    background-color 0.22s ease,
+    color 0.22s ease,
+    transform 0.22s ease;
+}
+
+.card:hover .horizontalCta {
+  background: #e8661a;
+  color: #ffffff;
+  transform: translateX(2px);
 }
 
 .iconWrap {
@@ -120,15 +269,18 @@
 
 .descEn {
   display: block;
-  margin-top: 2px;
+  margin-top: 4px;
   font-family: var(--font-en);
   font-size: 0.74rem;
   color: var(--site-text-faint);
 }
 
-.arrow {
-  flex-shrink: 0;
-  margin-top: 6px;
-  color: #e8661a;
-  font-size: 1.1rem;
+@media (max-width: 720px) {
+  .stacked {
+    min-height: 0;
+  }
+
+  .stackedInner {
+    padding: 24px 18px 16px;
+  }
 }

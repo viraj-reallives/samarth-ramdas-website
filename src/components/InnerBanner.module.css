@@ -9,12 +9,17 @@
 .bannerInner {
   position: relative;
   width: 100%;
+  height: clamp(440px, calc(72dvh - var(--site-header-offset, 96px)), 600px);
+  min-height: 440px;
+  overflow: hidden;
 }
 
 .bannerImage {
   display: block;
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
   animation: bannerFadeIn 0.9s ease-out;
 }
 
@@ -86,6 +91,11 @@
 }
 
 @media (max-width: 768px) {
+  .bannerInner {
+    height: clamp(300px, 52vw, 440px);
+    min-height: 300px;
+  }
+
   .scrollCue {
     bottom: 14px;
     width: 38px;

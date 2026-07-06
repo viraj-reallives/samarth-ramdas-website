@@ -1,119 +1,83 @@
 import { useEffect, useState } from 'react'
 import InnerBanner from '../components/InnerBanner'
+import AudioPlayerModal from '../components/AudioPlayerModal'
+import { AudioDownloadCard, LiteratureDownloadCard } from '../components/DownloadContentCards'
 import pageUi from '../styles/pageUi.module.css'
 import { Link, useParams } from 'react-router-dom'
 import {
-  getAudiosForLanguageSubject,
   getLanguageBySlug,
   getLanguageSubjectUrl,
-  getLiteratureForLanguageSubject,
-  getOtherSubjectsForLanguage,
+  getSubjectsForLanguage,
 } from '../data/languages'
 import { getSubjectBySlug } from '../data/subjects'
+import { fetchBrowseItems, getDefaultDownloadTab, loadSubjectsForLanguage } from '../utils/browseApi'
 import styles from './SubjectAuthor.module.css'
-
-function Mp3Icon() {
-  return (
-    <svg
-      className={styles.mp3Icon}
-      viewBox="0 0 64 80"
-      aria-hidden="true"
-      focusable="false"
-    >
-      <path
-        d="M8 4h32l16 16v56a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4V8a4 4 0 0 1 4-4z"
-        fill="#ffffff"
-        stroke="#e8661a"
-        strokeWidth="2"
-      />
-      <path d="M40 4v16h16" fill="none" stroke="#e8661a" strokeWidth="2" />
-      <text x="32" y="48" textAnchor="middle" fontSize="13" fontWeight="700" fill="#e8661a">
-        MP3
-      </text>
-      <path d="M24 58h6v8h-6zM34 54h6v12h-6z" fill="#e8661a" />
-      <path d="M50 8l6 4v6l-6-4z" fill="#c41e1e" stroke="#c41e1e" strokeWidth="1" />
-      <path
-        d="M53 14v8M50 17h6"
-        fill="none"
-        stroke="#ffffff"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-      />
-    </svg>
-  )
-}
-
-function PdfIcon() {
-  return (
-    <svg
-      className={styles.pdfIcon}
-      viewBox="0 0 64 80"
-      aria-hidden="true"
-      focusable="false"
-    >
-      <path
-        d="M8 4h32l16 16v56a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4V8a4 4 0 0 1 4-4z"
-        fill="#ffffff"
-        stroke="#333333"
-        strokeWidth="2"
-      />
-      <path d="M40 4v16h16" fill="none" stroke="#333333" strokeWidth="2" />
-      <text x="32" y="52" textAnchor="middle" fontSize="14" fontWeight="700" fill="#c41e1e">
-        PDF
-      </text>
-      <path
-        d="M32 58v12M26 64l6 6 6-6"
-        fill="none"
-        stroke="#c41e1e"
-        strokeWidth="2.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  )
-}
-
-function LiteratureCard({ titleMr, titleEn, cardType = 'pdf' }) {
-  const Icon = cardType === 'mp3' ? Mp3Icon : PdfIcon
-
-  return (
-    <article className={styles.downloadCard}>
-      <Icon />
-      <div className={styles.cardText}>
-        <p className={styles.cardTitleMr}>{titleMr}</p>
-        <p className={styles.cardTitleEn}>{titleEn}</p>
-      </div>
-      <a href="#" className={styles.downloadButton}>
-        Download File
-      </a>
-    </article>
-  )
-}
-
-function AudioCard({ titleMr, titleEn }) {
-  return (
-    <article className={styles.downloadCard}>
-      <Mp3Icon />
-      <div className={styles.cardText}>
-        <p className={styles.cardTitleMr}>{titleMr}</p>
-        <p className={styles.cardTitleEn}>{titleEn}</p>
-      </div>
-      <a href="#" className={styles.downloadButton}>
-        Download File
-      </a>
-    </article>
-  )
-}
 
 function LanguageSubject() {
   const { languageSlug, subjectSlug } = useParams()
   const [activeTab, setActiveTab] = useState('audios')
+  const [audios, setAudios] = useState([])
+  const [literature, setLiterature] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+  const [playingTrack, setPlayingTrack] = useState(null)
+  const [otherSubjects, setOtherSubjects] = useState([])
 
   const language = getLanguageBySlug(languageSlug)
   const subject = getSubjectBySlug(subjectSlug)
-  const otherSubjects = getOtherSubjectsForLanguage(languageSlug, subjectSlug)
-  const audios = getAudiosForLanguageSubject(languageSlug, subjectSlug)
-  const literature = getLiteratureForLanguageSubject(languageSlug, subjectSlug)
+
+  useEffect(() => {
+    if (!languageSlug) return undefined
+
+    let active = true
+
+    loadSubjectsForLanguage(languageSlug, getSubjectsForLanguage(languageSlug))
+      .then((items) => {
+        if (!active) return
+        setOtherSubjects(items.filter((item) => item.slug !== subjectSlug))
+      })
+      .catch(() => {
+        if (!active) return
+        setOtherSubjects([])
+      })
+
+    return () => {
+      active = false
+    }
+  }, [languageSlug, subjectSlug])
+
+  useEffect(() => {
+    if (!languageSlug || !subjectSlug) return undefined
+
+    let active = true
+    setLoading(true)
+    setError(null)
+
+    Promise.all([
+      fetchBrowseItems({ subject: subjectSlug, language: languageSlug, type: 'audio' }),
+      fetchBrowseItems({ subject: subjectSlug, language: languageSlug, type: 'pdf' }),
+    ])
+      .then(([audioItems, pdfItems]) => {
+        if (!active) return
+        setAudios(audioItems)
+        setLiterature(pdfItems)
+        setActiveTab(getDefaultDownloadTab(audioItems.length, pdfItems.length))
+      })
+      .catch((err) => {
+        if (!active) return
+        setError(err.message)
+        setAudios([])
+        setLiterature([])
+        setActiveTab('audios')
+      })
+      .finally(() => {
+        if (active) setLoading(false)
+      })
+
+    return () => {
+      active = false
+    }
+  }, [languageSlug, subjectSlug])
 
   useEffect(() => {
     if (subject && language) {
@@ -137,15 +101,10 @@ function LanguageSubject() {
     )
   }
 
-  const showAudios = activeTab === 'audios' && audios.length > 0
-  const showLiterature = activeTab === 'literature' && literature.length > 0
-  const emptyMessage =
-    activeTab === 'audios' ? 'No Audios available.' : 'No Literature available.'
+  const gridClassName = styles.downloadGrid
   const activeItems = activeTab === 'audios' ? audios : literature
-  const gridClassName =
-    activeItems.length > 8
-      ? `${styles.downloadGrid} ${styles.downloadGridWide}`
-      : styles.downloadGrid
+
+  const playerSubtitle = `${language.titleMr} · ${subject.titleMr}`
 
   return (
     <div className={styles.page}>
@@ -165,6 +124,9 @@ function LanguageSubject() {
                 onClick={() => setActiveTab('audios')}
               >
                 ध्वनिफीत / Audios
+                {audios.length > 0 && (
+                  <span className={styles.tabCount}>{audios.length}</span>
+                )}
               </button>
               <button
                 type="button"
@@ -174,34 +136,53 @@ function LanguageSubject() {
                 onClick={() => setActiveTab('literature')}
               >
                 वाङ्मय / Literature
+                {literature.length > 0 && (
+                  <span className={styles.tabCount}>{literature.length}</span>
+                )}
               </button>
             </div>
 
             <div className={styles.panel} role="tabpanel">
               <p className={styles.breadcrumb}>
-                {language.titleMr} # {language.titleEn} -&gt; {subject.titleMr} #{' '}
-                {subject.titleEn}
+                {language.titleMr} · {language.titleEn} → {subject.titleMr} · {subject.titleEn}
               </p>
-              {showAudios ? (
-                <div className={gridClassName}>
-                  {audios.map((item) => (
-                    <AudioCard key={item.titleEn} {...item} />
-                  ))}
+
+              {loading ? (
+                <div className={pageUi.empty}>
+                  <p>साहित्य लोड होत आहे...</p>
+                  <p className={pageUi.emptySub}>Loading downloads...</p>
                 </div>
-              ) : showLiterature ? (
+              ) : error ? (
+                <div className={pageUi.empty}>
+                  <p>साहित्य लोड करता आले नाही.</p>
+                  <p className={pageUi.emptySub}>Could not load downloads. Please try again later.</p>
+                </div>
+              ) : activeItems.length > 0 ? (
                 <div className={gridClassName}>
-                  {literature.map((item) => (
-                    <LiteratureCard key={item.titleEn} {...item} />
-                  ))}
+                  {activeTab === 'audios'
+                    ? audios.map((item) => (
+                        <AudioDownloadCard
+                          key={item.slug}
+                          item={item}
+                          onListen={setPlayingTrack}
+                        />
+                      ))
+                    : literature.map((item) => (
+                        <LiteratureDownloadCard key={item.slug} item={item} />
+                      ))}
                 </div>
               ) : (
-                <p className={styles.emptyMessage}>{emptyMessage}</p>
+                <p className={styles.emptyMessage}>
+                  {activeTab === 'audios'
+                    ? 'No audios available for this language and subject.'
+                    : 'No literature available for this language and subject.'}
+                </p>
               )}
             </div>
           </div>
 
           <aside className={styles.sidebar}>
-            <div className={styles.sidebarHeader}>विषय # Subject</div>
+            <div className={styles.sidebarHeader}>विषय / Subject</div>
             {otherSubjects.length > 0 ? (
               <nav className={styles.sidebarNav} aria-label="Other subjects">
                 {otherSubjects.map(({ slug, titleMr, titleEn }) => (
@@ -210,7 +191,7 @@ function LanguageSubject() {
                     to={getLanguageSubjectUrl(languageSlug, slug)}
                     className={styles.sidebarLink}
                   >
-                    {titleMr} # {titleEn}
+                    {titleMr} · {titleEn}
                   </Link>
                 ))}
               </nav>
@@ -220,6 +201,14 @@ function LanguageSubject() {
           </aside>
         </div>
       </div>
+
+      {playingTrack && (
+        <AudioPlayerModal
+          track={playingTrack}
+          subtitle={playerSubtitle}
+          onClose={() => setPlayingTrack(null)}
+        />
+      )}
     </div>
   )
 }

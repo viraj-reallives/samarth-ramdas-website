@@ -1,4 +1,5 @@
 import { getAuthorBySlug } from './authors'
+import { downloadContentFile } from '../utils/downloadContent'
 
 // NOTE: Ringtone DATA now comes from the API (/api/collections/ringtones).
 // This file keeps only the author-attribution logic and the download helper,
@@ -74,32 +75,10 @@ export function getRingtoneFileName(ringtone) {
 }
 
 export async function downloadRingtone(ringtone) {
-  const url = ringtone.audioUrl
-  const fileName = getRingtoneFileName(ringtone)
-
-  try {
-    const response = await fetch(url)
-    if (!response.ok) {
-      throw new Error('Download failed')
-    }
-
-    const blob = await response.blob()
-    const objectUrl = URL.createObjectURL(blob)
-    const link = document.createElement('a')
-    link.href = objectUrl
-    link.download = fileName
-    document.body.appendChild(link)
-    link.click()
-    link.remove()
-    URL.revokeObjectURL(objectUrl)
-  } catch {
-    const link = document.createElement('a')
-    link.href = url
-    link.download = fileName
-    link.target = '_blank'
-    link.rel = 'noopener noreferrer'
-    document.body.appendChild(link)
-    link.click()
-    link.remove()
-  }
+  await downloadContentFile({
+    fileUrl: ringtone.audioUrl,
+    titleEn: ringtone.titleEn,
+    fileType: 'audio',
+    slug: ringtone.slug,
+  })
 }

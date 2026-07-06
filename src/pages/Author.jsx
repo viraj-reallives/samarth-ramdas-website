@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import InnerBanner from '../components/InnerBanner'
+import { CATEGORY_CARD_IMAGES } from '../data/categoryCardImages'
 import pageUi from '../styles/pageUi.module.css'
 import { Link } from 'react-router-dom'
 import { FiSearch, FiUsers } from 'react-icons/fi'
@@ -92,7 +93,11 @@ function Author() {
 
   return (
     <div className={styles.page}>
-      <InnerBanner contentId="author-content" />
+      <InnerBanner
+        contentId="author-content"
+        image={CATEGORY_CARD_IMAGES.author}
+        imageAlt="लेखकानुसार वर्गीकरण / Author-wise Classification"
+      />
 
       <div className={`${styles.content} ${pageUi.content}`} id="author-content">
         <header className={styles.pageHeader}>

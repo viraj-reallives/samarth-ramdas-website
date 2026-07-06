@@ -1,0 +1,29 @@
+{
+  "generatedAt": "2026-07-03T07:11:29.902Z",
+  "contentItems": 505,
+  "itemsWithFile": 505,
+  "itemsWithoutFile": 0,
+  "nonPdfAudioFiles": 5,
+  "facets": {
+    "total": 47,
+    "byType": {
+      "subject": 16,
+      "author": 23,
+      "language": 8
+    },
+    "contentFacetLinks": 1129
+  },
+  "r2Files": {
+    "total": 502,
+    "pdf": 122,
+    "audio": 374,
+    "image": 2,
+    "other": 4
+  },
+  "duplicateSlugFixes": [],
+  "unmappedSlugs": [],
+  "skippedContent": [],
+  "warnings": [
+    "5 item(s) have non-pdf/mp3 files (file_key stored, file_type NULL)"
+  ]
+}

@@ -61,12 +61,11 @@ function AppRoutes() {
   }, [location.pathname, initialLoading])
 
   const showLoader = initialLoading || navigating
-  const isHome = location.pathname === '/'
 
   return (
     <>
       <PageLoader visible={showLoader} />
-      <div className={`appShell${isHome ? ' appShellHome' : ''}`}>
+      <div className="appShell">
         <Header />
         <main className="appMain">
           <Routes>

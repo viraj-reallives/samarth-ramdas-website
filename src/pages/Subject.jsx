@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import InnerBanner from '../components/InnerBanner'
+import { CATEGORY_CARD_IMAGES } from '../data/categoryCardImages'
 import pageUi from '../styles/pageUi.module.css'
 import { Link, useSearchParams } from 'react-router-dom'
 import { FiBookOpen, FiSearch, FiUsers } from 'react-icons/fi'
@@ -167,7 +168,12 @@ function Subject() {
 
   return (
     <div className={styles.page}>
-      <InnerBanner contentId="subject-content" scrollLabel="विषयांकडे स्क्रोल करा / Scroll to subjects" />
+      <InnerBanner
+        contentId="subject-content"
+        scrollLabel="विषयांकडे स्क्रोल करा / Scroll to subjects"
+        image={CATEGORY_CARD_IMAGES.subject}
+        imageAlt="विषयानुसार वर्गीकरण / Subject-wise Classification"
+      />
 
       <div className={`${styles.content} ${pageUi.content}`} id="subject-content">
         <header className={styles.pageHeader}>

@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import InnerBanner from '../components/InnerBanner'
 import pageUi from '../styles/pageUi.module.css'
 import { Link, useParams } from 'react-router-dom'
@@ -8,6 +8,7 @@ import {
   getOtherLanguages,
   getSubjectsForLanguage,
 } from '../data/languages'
+import { loadSubjectsForLanguage } from '../utils/browseApi'
 import styles from './LanguageDetail.module.css'
 
 function SubjectCard({ languageSlug, slug, titleMr, titleEn }) {
@@ -33,8 +34,36 @@ function SubjectCard({ languageSlug, slug, titleMr, titleEn }) {
 function LanguageDetail() {
   const { slug } = useParams()
   const language = getLanguageBySlug(slug)
-  const subjects = getSubjectsForLanguage(slug)
   const otherLanguages = getOtherLanguages(slug)
+  const [subjects, setSubjects] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+
+  useEffect(() => {
+    if (!slug) return undefined
+
+    let active = true
+    setLoading(true)
+    setError(null)
+
+    loadSubjectsForLanguage(slug, getSubjectsForLanguage(slug))
+      .then((items) => {
+        if (!active) return
+        setSubjects(items)
+      })
+      .catch((err) => {
+        if (!active) return
+        setError(err.message)
+        setSubjects([])
+      })
+      .finally(() => {
+        if (active) setLoading(false)
+      })
+
+    return () => {
+      active = false
+    }
+  }, [slug])
 
   useEffect(() => {
     if (language) {
@@ -99,20 +128,39 @@ function LanguageDetail() {
               <span className={styles.sectionTitle}>
                 विषय निवडा / Choose Subject
               </span>
-              <span className={styles.subjectCount}>
-                {subjects.length} विषय · {subjects.length} Subjects
-              </span>
+              {!loading && (
+                <span className={styles.subjectCount}>
+                  {subjects.length} विषय · {subjects.length} Subjects
+                </span>
+              )}
             </div>
 
-            <div className={styles.subjectGrid}>
-              {subjects.map((subject) => (
-                <SubjectCard
-                  key={subject.slug}
-                  languageSlug={slug}
-                  {...subject}
-                />
-              ))}
-            </div>
+            {loading ? (
+              <div className={pageUi.empty}>
+                <p>विषय लोड होत आहेत...</p>
+                <p className={pageUi.emptySub}>Loading subjects...</p>
+              </div>
+            ) : error ? (
+              <div className={pageUi.empty}>
+                <p>विषय लोड करता आले नाहीत.</p>
+                <p className={pageUi.emptySub}>Could not load subjects. Please try again later.</p>
+              </div>
+            ) : subjects.length === 0 ? (
+              <div className={pageUi.empty}>
+                <p>या भाषेसाठी साहित्य उपलब्ध नाही.</p>
+                <p className={pageUi.emptySub}>No literature is available for this language yet.</p>
+              </div>
+            ) : (
+              <div className={styles.subjectGrid}>
+                {subjects.map((subject) => (
+                  <SubjectCard
+                    key={subject.slug}
+                    languageSlug={slug}
+                    {...subject}
+                  />
+                ))}
+              </div>
+            )}
           </div>
 
           <aside className={styles.sidebar}>

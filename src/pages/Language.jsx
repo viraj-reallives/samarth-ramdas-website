@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import InnerBanner from '../components/InnerBanner'
+import { CATEGORY_CARD_IMAGES } from '../data/categoryCardImages'
 import pageUi from '../styles/pageUi.module.css'
 import { Link } from 'react-router-dom'
 import { FiGlobe, FiSearch } from 'react-icons/fi'
@@ -69,7 +70,11 @@ function Language() {
 
   return (
     <div className={styles.page}>
-      <InnerBanner contentId="language-content" />
+      <InnerBanner
+        contentId="language-content"
+        image={CATEGORY_CARD_IMAGES.language}
+        imageAlt="भाषेनुसार वर्गीकरण / Language-wise Classification"
+      />
 
       <div className={`${styles.content} ${pageUi.content}`} id="language-content">
         <header className={styles.pageHeader}>

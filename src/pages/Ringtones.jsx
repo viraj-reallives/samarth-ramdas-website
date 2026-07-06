@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import InnerBanner from '../components/InnerBanner'
+import { CATEGORY_CARD_IMAGES } from '../data/categoryCardImages'
 import pageUi from '../styles/pageUi.module.css'
 import { FiCheck, FiCopy, FiDownload, FiMail, FiPause, FiPlay, FiSearch, FiShare2, FiX } from 'react-icons/fi'
 import { FaFacebookF, FaTelegram, FaWhatsapp } from 'react-icons/fa'
@@ -254,7 +255,7 @@ function RingtonePlayerModal({ ringtone, onClose }) {
   return (
     <div className={styles.modalOverlay} onClick={onClose} role="presentation">
       <div
-        className={`${styles.modal} ${isPlaying ? styles.modalPlaying : ''}`}
+        className={styles.modal}
         role="dialog"
         aria-modal="true"
         aria-labelledby="ringtone-modal-title"
@@ -278,8 +279,6 @@ function RingtonePlayerModal({ ringtone, onClose }) {
             <span>॥</span>
           </p>
           <p className={styles.modalMantraSub}>श्री समर्थ रामदास</p>
-          <div className={styles.modalMantraShine} aria-hidden="true" />
-          <div className={styles.modalMantraGlow} aria-hidden="true" />
         </div>
 
         <div className={styles.modalBody}>
@@ -500,7 +499,11 @@ function Ringtones() {
 
   return (
     <div className={styles.page}>
-      <InnerBanner contentId="ringtones-content" />
+      <InnerBanner
+        contentId="ringtones-content"
+        image={CATEGORY_CARD_IMAGES.ringtones}
+        imageAlt="रिंगटोन्स / Ringtones"
+      />
 
       <div className={`${styles.content} ${pageUi.content}`} id="ringtones-content">
         <h1 className={styles.pageTitle}>रिंगटोन्स / Ringtones</h1>

@@ -9,7 +9,7 @@ import styles from './HeroSlider.module.css'
 const slides = [
   {
     id: 1,
-    image: '/assets/slides/slide1.jpg',
+    image: '/assets/home-banner.png',
     kicker: '॥ श्री समर्थ रामदास ॥',
     title: 'श्री समर्थ रामदास स्वामी',
     subtitle: 'आध्यात्मिक वारसा आणि प्रेरणादायी विचार',
@@ -18,7 +18,7 @@ const slides = [
   },
   {
     id: 2,
-    image: '/assets/slides/slide2.jpg',
+    image: '/assets/shivtarghal1.png',
     kicker: 'पवित्र तीर्थक्षेत्र',
     title: 'शिवथरघळ',
     subtitle: 'दासबोधाची पवित्र भूमी — समर्थांच्या वाणीचा उगम',
@@ -27,7 +27,7 @@ const slides = [
   },
   {
     id: 3,
-    image: '/assets/slides/slide3.jpg',
+    image: '/assets/life-journey/journey.png',
     kicker: 'जीवन आणि कार्य',
     title: 'जीवन प्रवास',
     subtitle: 'समर्थांच्या कार्याचा प्रेरणादायी इतिहास',

@@ -1,10 +1,12 @@
 .section {
-  padding: 48px 0 80px;
-  background: var(--site-surface-alt);
+  padding: 56px 0 88px;
+  background:
+    radial-gradient(ellipse 120% 80% at 50% 0%, rgba(232, 102, 26, 0.06) 0%, transparent 55%),
+    var(--site-surface-alt);
 }
 
 .container {
-  max-width: 920px;
+  max-width: 980px;
   margin: 0 auto;
   padding: 0 40px;
 }
@@ -12,13 +14,16 @@
 /* ── Search hero ─────────────────────────────────────────────── */
 
 .searchHero {
-  margin-bottom: 24px;
-  padding: 36px 36px 28px;
-  border: 1px solid var(--site-border-warm);
-  border-radius: 18px;
+  margin-bottom: 32px;
+  padding: 40px 40px 32px;
+  border: 1px solid #edd9c0;
+  border-radius: 20px;
   background:
-    radial-gradient(ellipse 90% 80% at 50% 0%, rgba(232, 102, 26, 0.07) 0%, transparent 65%),
-    var(--site-surface);
+    radial-gradient(ellipse 100% 90% at 50% -10%, rgba(232, 102, 26, 0.1) 0%, transparent 60%),
+    linear-gradient(180deg, #ffffff 0%, #fffaf5 100%);
+  box-shadow:
+    0 4px 24px rgba(78, 52, 46, 0.05),
+    0 1px 3px rgba(78, 52, 46, 0.04);
   text-align: center;
 }
 
@@ -27,8 +32,8 @@
 }
 
 .mantra {
-  margin: 0 0 12px;
-  font-size: clamp(1.35rem, 3vw, 1.75rem);
+  margin: 0 0 14px;
+  font-size: clamp(1.4rem, 3.2vw, 1.85rem);
   font-weight: 700;
   letter-spacing: 0.02em;
   line-height: 1.3;
@@ -36,18 +41,18 @@
 }
 
 .subtitle {
-  margin: 0 auto 4px;
-  max-width: 480px;
-  font-size: 0.92rem;
+  margin: 0 auto 6px;
+  max-width: 520px;
+  font-size: 0.95rem;
   line-height: 1.55;
   color: var(--site-text-muted);
 }
 
 .subtitleEn {
   margin: 0 auto;
-  max-width: 480px;
+  max-width: 520px;
   font-family: var(--font-en);
-  font-size: 0.84rem;
+  font-size: 0.86rem;
   line-height: 1.5;
   color: var(--site-text-faint);
 }
@@ -55,12 +60,12 @@
 .searchWrap {
   display: flex;
   justify-content: center;
-  margin-bottom: 20px;
+  margin-bottom: 22px;
 }
 
 .searchBar {
   width: 100%;
-  max-width: 560px;
+  max-width: 580px;
 }
 
 .browseCallout {
@@ -68,24 +73,29 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 6px 12px;
+  gap: 8px 14px;
   margin: 0 auto;
-  max-width: 560px;
-  padding: 12px 16px;
-  border: 1px solid rgba(255, 107, 0, 0.2);
-  border-radius: 12px;
-  background: linear-gradient(135deg, #fff8f0 0%, #fff3e6 100%);
+  max-width: 580px;
+  padding: 14px 18px;
+  border: 1px solid rgba(232, 102, 26, 0.28);
+  border-radius: 14px;
+  background: linear-gradient(135deg, #fff8f0 0%, #ffedd8 100%);
   text-decoration: none;
+  box-shadow: 0 2px 8px rgba(232, 102, 26, 0.08);
   transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease,
-    transform 0.2s ease;
+    border-color 0.22s ease,
+    box-shadow 0.22s ease,
+    transform 0.22s ease;
 }
 
 .browseCallout:hover {
-  border-color: rgba(255, 107, 0, 0.38);
-  box-shadow: 0 4px 16px rgba(255, 107, 0, 0.1);
-  transform: translateY(-1px);
+  border-color: #e8661a;
+  box-shadow: 0 8px 24px rgba(232, 102, 26, 0.16);
+  transform: translateY(-2px);
+}
+
+.browseCallout:active {
+  transform: translateY(0);
 }
 
 .browseCalloutText {
@@ -97,7 +107,7 @@
 }
 
 .browseCalloutMr {
-  font-size: 0.92rem;
+  font-size: 0.94rem;
   font-weight: 700;
   color: var(--site-text);
 }
@@ -109,7 +119,7 @@
 
 .browseCalloutEn {
   font-family: var(--font-en);
-  font-size: 0.84rem;
+  font-size: 0.86rem;
   font-weight: 600;
   color: #c46a20;
 }
@@ -123,9 +133,16 @@
 
 .browseCalloutArrow {
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  background: #e8661a;
+  color: #ffffff;
   font-size: 1rem;
-  color: #e8661a;
-  transition: transform 0.2s ease;
+  transition: transform 0.22s ease;
 }
 
 .browseCallout:hover .browseCalloutArrow {
@@ -135,10 +152,7 @@
 /* ── Discovery panel ─────────────────────────────────────────── */
 
 .discoveryPanel {
-  padding: 28px 28px 32px;
-  border: 1px solid var(--site-border-warm);
-  border-radius: 16px;
-  background: var(--site-surface);
+  padding: 8px 4px 4px;
 }
 
 .pathHeading {
@@ -147,16 +161,16 @@
   align-items: baseline;
   justify-content: center;
   gap: 8px;
-  margin: 0 0 18px;
-  font-size: 0.98rem;
-  font-weight: 600;
+  margin: 0 0 22px;
+  font-size: 1.02rem;
+  font-weight: 700;
   color: var(--site-text);
   text-align: center;
 }
 
 .pathHeadingEn {
   font-family: var(--font-en);
-  font-size: 0.82rem;
+  font-size: 0.84rem;
   font-weight: 500;
   color: var(--site-text-muted);
 }
@@ -164,12 +178,14 @@
 .pathGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
+  gap: 18px;
 }
 
 @media (max-width: 820px) {
   .pathGrid {
     grid-template-columns: 1fr;
+    max-width: 400px;
+    margin: 0 auto;
   }
 }
 
@@ -179,7 +195,7 @@
   }
 
   .section {
-    padding: 32px 0 56px;
+    padding: 36px 0 64px;
   }
 
   .searchHero {
@@ -187,6 +203,6 @@
   }
 
   .discoveryPanel {
-    padding: 22px 20px 26px;
+    padding: 4px 0;
   }
 }

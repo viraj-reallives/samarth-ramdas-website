@@ -4,7 +4,7 @@ import styles from './InnerBanner.module.css'
 function InnerBanner({
   contentId = 'page-content',
   scrollLabel = 'खाली स्क्रोल करा / Scroll down',
-  image = '/assets/inner-banner.png',
+  image = '/assets/inner-banner.jpeg',
   imageAlt = '|| जय जय रघुवीर समर्थ ||',
 }) {
   const scrollToContent = () => {
