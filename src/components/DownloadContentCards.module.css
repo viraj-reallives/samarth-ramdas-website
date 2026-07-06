@@ -9,6 +9,7 @@
 }
 
 .btnListen,
+.btnRead,
 .btnDownload {
   display: flex;
   align-items: center;
@@ -34,13 +35,15 @@
     color 0.2s ease;
 }
 
-.btnListen {
+.btnListen,
+.btnRead {
   border: 1px solid #e8661a;
   background: #ffffff;
   color: #e8661a;
 }
 
-.btnListen:hover {
+.btnListen:hover,
+.btnRead:hover {
   background: #fff3e6;
 }
 

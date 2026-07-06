@@ -10,6 +10,7 @@ const slides = [
   {
     id: 1,
     image: '/assets/home-banner.png',
+    imageMobile: '/assets/banner-1-mobile.png',
     kicker: '॥ श्री समर्थ रामदास ॥',
     title: 'श्री समर्थ रामदास स्वामी',
     subtitle: 'आध्यात्मिक वारसा आणि प्रेरणादायी विचार',
@@ -19,6 +20,7 @@ const slides = [
   {
     id: 2,
     image: '/assets/shivtarghal1.png',
+    imageMobile: '/assets/banner-2-mobile.png',
     kicker: 'पवित्र तीर्थक्षेत्र',
     title: 'शिवथरघळ',
     subtitle: 'दासबोधाची पवित्र भूमी — समर्थांच्या वाणीचा उगम',
@@ -28,6 +30,7 @@ const slides = [
   {
     id: 3,
     image: '/assets/life-journey/journey.png',
+    imageMobile: '/assets/banner-3-mobile.png',
     kicker: 'जीवन आणि कार्य',
     title: 'जीवन प्रवास',
     subtitle: 'समर्थांच्या कार्याचा प्रेरणादायी इतिहास',
@@ -86,16 +89,20 @@ function HeroSlider() {
         }}
         onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
       >
-        {slides.map(({ id, image, kicker, title, subtitle, button, href }) => (
+        {slides.map(({ id, image, imageMobile, kicker, title, subtitle, button, href }) => (
           <SwiperSlide key={id}>
             <div className={styles.slide}>
               <div className={styles.imageWrap}>
-                <img
-                  src={image}
-                  alt=""
-                  className={styles.slideImage}
-                  loading={id === 1 ? 'eager' : 'lazy'}
-                />
+                <picture>
+                  <source media="(max-width: 768px)" srcSet={imageMobile} />
+                  <img
+                    src={image}
+                    alt=""
+                    className={styles.slideImage}
+                    loading={id === 1 ? 'eager' : 'lazy'}
+                    decoding="async"
+                  />
+                </picture>
               </div>
               <div className={styles.overlayTop} aria-hidden="true" />
               <div className={styles.overlayMain} aria-hidden="true" />

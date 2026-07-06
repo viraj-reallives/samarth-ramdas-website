@@ -29,6 +29,12 @@
   overflow: hidden;
 }
 
+.imageWrap picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
 .slideImage {
   display: block;
   width: 100%;
@@ -378,8 +384,9 @@
 
 @media (max-width: 768px) {
   .heroSlider {
-    height: clamp(300px, calc(62dvh - var(--site-header-offset, 96px)), 420px);
-    min-height: 300px;
+    /* lvh = viewport with browser chrome hidden (same as after scroll) */
+    height: clamp(360px, calc(62lvh - var(--site-header-offset, 56px)), 480px);
+    min-height: 360px;
   }
 
   .content {

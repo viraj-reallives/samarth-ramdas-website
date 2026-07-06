@@ -117,6 +117,11 @@ export function AudioDownloadCard({ item, onListen }) {
 export function LiteratureDownloadCard({ item }) {
   const [isDownloading, setIsDownloading] = useState(false)
 
+  const handleRead = () => {
+    if (!item.fileUrl) return
+    window.open(item.fileUrl, '_blank', 'noopener,noreferrer')
+  }
+
   const handleDownload = async () => {
     if (!item.fileUrl || isDownloading) return
     setIsDownloading(true)
@@ -141,6 +146,13 @@ export function LiteratureDownloadCard({ item }) {
       </div>
       {item.fileUrl ? (
         <div className={styles.cardActions}>
+          <button
+            type="button"
+            className={styles.btnRead}
+            onClick={handleRead}
+          >
+            वाचा / Read
+          </button>
           <button
             type="button"
             className={styles.btnDownload}

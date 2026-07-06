@@ -38,6 +38,13 @@
   --site-overlay: rgba(0, 0, 0, 0.4);
 }
 
+/* Mobile header hides the mantra bar — match main bar height only */
+@media (max-width: 640px) {
+  :root {
+    --site-header-offset: 56px;
+  }
+}
+
 html,
 body {
   background: var(--site-bg);
