@@ -1,7 +1,14 @@
 <!doctype html>
-<html lang="en">
+<html lang="mr">
   <head>
     <meta charset="UTF-8" />
+    <script>
+      (function () {
+        var stored = localStorage.getItem('samarth-ramdas-locale')
+        document.documentElement.lang = stored === 'en' ? 'en' : 'mr'
+      })()
+    </script>
+    <link rel="icon" type="image/webp" href="/assets/favicon.webp" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -17,7 +24,7 @@
       <div class="initial-loader-inner">
         <div class="initial-loader-spinner" aria-hidden="true"></div>
         <p class="initial-loader-text">|| जय जय रघुवीर समर्थ ||</p>
-        <p class="initial-loader-sub">लोड होत आहे… / Loading…</p>
+        <p class="initial-loader-sub">लोड होत आहे…</p>
       </div>
     </div>
     <style>

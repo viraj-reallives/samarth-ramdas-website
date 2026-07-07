@@ -1,18 +1,24 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { FiSearch } from 'react-icons/fi'
+import { useI18n } from '../i18n/useI18n'
 import styles from './SearchBar.module.css'
 
 function SearchBar({
-  placeholderMr = 'साहित्य शोधा…',
-  placeholderEn = 'Search literature…',
+  placeholderMr,
+  placeholderEn,
   defaultValue = '',
   className = '',
   large = false,
   onSearch,
 }) {
   const navigate = useNavigate()
+  const { t, pick } = useI18n()
   const [query, setQuery] = useState(defaultValue)
+  const placeholder = pick(
+    placeholderMr ?? t('common.searchLiterature'),
+    placeholderEn ?? t('common.searchLiterature'),
+  )
 
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -33,18 +39,18 @@ function SearchBar({
       role="search"
     >
       <label className={styles.label}>
-        <span className={styles.srOnly}>{placeholderMr} / {placeholderEn}</span>
+        <span className={styles.srOnly}>{placeholder}</span>
         <FiSearch className={styles.icon} aria-hidden="true" />
         <input
           type="search"
           className={styles.input}
           value={query}
           onChange={(event) => setQuery(event.target.value)}
-          placeholder={`${placeholderMr} / ${placeholderEn}`}
+          placeholder={placeholder}
         />
       </label>
       <button type="submit" className={styles.submit}>
-        शोधा / Search
+        {t('common.search')}
       </button>
     </form>
   )

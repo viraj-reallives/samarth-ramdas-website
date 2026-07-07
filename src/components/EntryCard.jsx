@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { FiArrowRight } from 'react-icons/fi'
+import { useI18n } from '../i18n/useI18n'
 import styles from './EntryCard.module.css'
 
 function EntryCard({
@@ -13,22 +14,18 @@ function EntryCard({
   comingSoon = false,
   children,
 }) {
+  const { pickField, t } = useI18n()
   const className = `${styles.card} ${styles[variant]} ${disabled ? styles.disabled : ''}`
+  const title = pickField({ titleMr, titleEn }, 'title')
+  const description = pickField({ descriptionMr, descriptionEn }, 'description')
 
   const content = (
     <>
       <div className={styles.text}>
         <h3 className={styles.title}>
-          <span className={styles.titleMr}>{titleMr}</span>
-          <span className={styles.titleEn}>{titleEn}</span>
+          <span className={styles.titleMr}>{title}</span>
         </h3>
-        {(descriptionMr || descriptionEn) && (
-          <p className={styles.description}>
-            {descriptionMr && <span>{descriptionMr}</span>}
-            {descriptionMr && descriptionEn && <span className={styles.descSep}>·</span>}
-            {descriptionEn && <span className={styles.descEn}>{descriptionEn}</span>}
-          </p>
-        )}
+        {description ? <p className={styles.description}>{description}</p> : null}
         {children}
       </div>
       {!disabled && (
@@ -36,7 +33,7 @@ function EntryCard({
           <FiArrowRight />
         </span>
       )}
-      {comingSoon && <span className={styles.comingSoon}>लवकरच / Coming soon</span>}
+      {comingSoon && <span className={styles.comingSoon}>{t('common.comingSoon')}</span>}
     </>
   )
 

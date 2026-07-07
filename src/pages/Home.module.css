@@ -94,6 +94,10 @@
   transform: translateY(-2px);
 }
 
+.browseCallout:hover .browseCalloutText {
+  color: #1a1a1a;
+}
+
 .browseCallout:active {
   transform: translateY(0);
 }
@@ -104,6 +108,9 @@
   align-items: baseline;
   justify-content: center;
   gap: 6px;
+  font-size: 0.94rem;
+  font-weight: 700;
+  color: #1a1a1a;
 }
 
 .browseCalloutMr {

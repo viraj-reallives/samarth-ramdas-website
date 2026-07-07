@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { FiCheck, FiDownload, FiHeadphones, FiPause, FiPlay, FiX } from 'react-icons/fi'
 import { downloadContentFile } from '../utils/downloadContent'
+import { useI18n } from '../i18n/useI18n'
 import styles from './AudioPlayerModal.module.css'
 
 function formatTime(seconds) {
@@ -28,6 +29,7 @@ function WaveBars({ active }) {
 }
 
 function AudioPlayerModal({ track, subtitle, onClose }) {
+  const { t, pickField } = useI18n()
   const audioRef = useRef(null)
   const [isPlaying, setIsPlaying] = useState(false)
   const [hasEnded, setHasEnded] = useState(false)
@@ -152,16 +154,16 @@ function AudioPlayerModal({ track, subtitle, onClose }) {
   }
 
   const statusLabel = hasEnded
-    ? 'संपले / Finished'
+    ? t('pages.player.finished')
     : isPlaying
-      ? 'आता वाजत आहे / Now Playing'
-      : 'ऑडिओ / Audio'
+      ? t('pages.player.nowPlaying')
+      : t('pages.player.audio')
 
   const hintLabel = hasEnded
-    ? 'पुन्हा ऐका / Play again'
+    ? t('pages.player.playAgain')
     : isPlaying
-      ? 'वाजत आहे / Playing'
-      : 'ऐकण्यासाठी प्ले दाबा / Press play to listen'
+      ? t('pages.player.playing')
+      : t('pages.player.pressPlay')
 
   return (
     <div className={styles.modalOverlay} onClick={onClose} role="presentation">
@@ -177,7 +179,7 @@ function AudioPlayerModal({ track, subtitle, onClose }) {
             type="button"
             className={styles.modalClose}
             onClick={onClose}
-            aria-label="Close player"
+            aria-label={t('pages.player.close')}
           >
             <FiX />
           </button>
@@ -218,9 +220,8 @@ function AudioPlayerModal({ track, subtitle, onClose }) {
                 {statusLabel}
               </span>
               <h2 id="audio-modal-title" className={styles.modalTitleMr}>
-                {track.titleMr}
+                {pickField(track, 'title')}
               </h2>
-              <p className={styles.modalTitleEn}>{track.titleEn}</p>
               {subtitle && <p className={styles.modalSubtitle}>{subtitle}</p>}
             </div>
           </div>
@@ -237,13 +238,13 @@ function AudioPlayerModal({ track, subtitle, onClose }) {
                 step={0.1}
                 value={Math.min(currentTime, duration || 0)}
                 onChange={handleSeek}
-                aria-label="Seek audio"
+                aria-label={t('pages.player.seek')}
                 style={{ '--progress': `${progress}%` }}
               />
               <div className={styles.timeRow}>
                 <span>{formatTime(currentTime)}</span>
                 <span className={styles.timeRemaining}>
-                  {hasEnded ? 'Done' : `-${formatTime(Math.max(duration - currentTime, 0))}`}
+                  {hasEnded ? t('pages.player.done') : `-${formatTime(Math.max(duration - currentTime, 0))}`}
                 </span>
               </div>
             </div>
@@ -255,10 +256,10 @@ function AudioPlayerModal({ track, subtitle, onClose }) {
                 onClick={togglePlayback}
                 aria-label={
                   hasEnded
-                    ? `Play again ${track.titleEn}`
+                    ? `${t('pages.player.playAgain')} ${pickField(track, 'title')}`
                     : isPlaying
-                      ? `Pause ${track.titleEn}`
-                      : `Play ${track.titleEn}`
+                      ? `${t('common.listen')} ${pickField(track, 'title')}`
+                      : `${t('common.play')} ${pickField(track, 'title')}`
                 }
               >
                 {hasEnded ? <FiPlay /> : isPlaying ? <FiPause /> : <FiPlay />}
@@ -277,14 +278,14 @@ function AudioPlayerModal({ track, subtitle, onClose }) {
               >
                 {downloadDone ? <FiCheck /> : <FiDownload />}
                 <span>
-                  {downloadDone ? 'Saved!' : isDownloading ? 'Saving...' : 'Download'}
+                  {downloadDone ? t('common.saved') : isDownloading ? t('common.saving') : t('common.download')}
                 </span>
               </button>
             </div>
           </div>
 
           <p className={styles.modalFooterHint}>
-            <kbd>Space</kbd> play/pause · <kbd>Esc</kbd> close
+            <kbd>Space</kbd> {t('pages.player.spaceHint')}
           </p>
         </div>
 

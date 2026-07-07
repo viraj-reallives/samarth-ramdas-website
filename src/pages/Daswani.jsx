@@ -2,9 +2,11 @@ import { useEffect, useState } from 'react'
 import InnerBanner from '../components/InnerBanner'
 import pageUi from '../styles/pageUi.module.css'
 import { FiChevronLeft, FiChevronRight, FiGrid, FiX, FiZoomIn } from 'react-icons/fi'
+import { useI18n } from '../i18n/useI18n'
 import styles from './Daswani.module.css'
 
 function Daswani() {
+  const { t } = useI18n()
   const [activeIndex, setActiveIndex] = useState(null)
   const [daswaniImages, setDaswaniImages] = useState([])
   const [loading, setLoading] = useState(true)
@@ -37,11 +39,11 @@ function Daswani() {
   }
 
   useEffect(() => {
-    document.title = 'दासवाणी – श्री समर्थ रामदास'
+    document.title = t('pages.daswani.documentTitle')
     return () => {
-      document.title = 'श्री समर्थ रामदास - श्री रामदासांचे साहित्य'
+      document.title = t('site.title')
     }
-  }, [])
+  }, [t])
 
   useEffect(() => {
     if (activeIndex === null) {
@@ -86,14 +88,9 @@ function Daswani() {
 
       <div className={`${styles.content} ${pageUi.content}`} id="daswani-content">
         <header className={styles.pageHeader}>
-          <p className={styles.eyebrow}>॥ श्री समर्थ दासवाणी ॥</p>
-          <h1 className={styles.pageTitle}>दासवाणी / Daswani</h1>
-          <p className={styles.pageIntro}>
-            समर्थ रामदासांच्या दैनंदिन दासवाणीचे ५० पाने — प्रत्येक पृष्ठ उघडण्यासाठी क्लिक करा.
-            <span className={styles.pageIntroEn}>
-              Browse all 50 pages of daily Daswani — click any image to open the reader.
-            </span>
-          </p>
+          <p className={styles.eyebrow}>{t('pages.daswani.eyebrow')}</p>
+          <h1 className={styles.pageTitle}>{t('pages.daswani.title')}</h1>
+          <p className={styles.pageIntro}>{t('pages.daswani.intro')}</p>
         </header>
 
         <section className={styles.gallerySection} id="gallery" aria-labelledby="daswani-gallery-title">
@@ -104,25 +101,25 @@ function Daswani() {
               </span>
               <div>
                 <h2 className={styles.galleryTitle} id="daswani-gallery-title">
-                  गॅलरी / Gallery
+                  {t('pages.daswani.galleryTitle')}
                 </h2>
                 <p className={styles.gallerySub}>
-                  दासवाणी पृष्ठ संग्रह · {daswaniImages.length} pages
+                  {t('pages.daswani.pagesArchive')} · {t('pages.daswani.pageCount', { count: daswaniImages.length })}
                 </p>
               </div>
             </div>
-            <span className={styles.galleryBadge}>{daswaniImages.length} पाने</span>
+            <span className={styles.galleryBadge}>
+              {t('pages.daswani.pageCount', { count: daswaniImages.length })}
+            </span>
           </div>
 
           {loading ? (
             <div className={pageUi.empty}>
-              <p>दासवाणी पाने लोड होत आहेत...</p>
-              <p className={pageUi.emptySub}>Loading Daswani pages...</p>
+              <p>{t('pages.daswani.loading')}</p>
             </div>
           ) : error ? (
             <div className={pageUi.empty}>
-              <p>दासवाणी पाने लोड करता आली नाहीत.</p>
-              <p className={pageUi.emptySub}>Could not load Daswani pages. Please try again later.</p>
+              <p>{t('pages.daswani.loadError')}</p>
             </div>
           ) : (
             <div className={styles.grid}>
@@ -133,7 +130,7 @@ function Daswani() {
                   className={`${styles.card} ${pageUi.cardAnim}`}
                   style={{ animationDelay: `${Math.min(index, 10) * 35}ms` }}
                   onClick={() => openLightbox(index)}
-                  aria-label={`Open ${image.alt}`}
+                  aria-label={`${t('pages.daswani.openReader')} ${image.alt}`}
                 >
                   <div className={styles.cardImageWrap}>
                     <img
@@ -144,12 +141,11 @@ function Daswani() {
                     />
                     <span className={styles.cardOverlay} aria-hidden="true">
                       <FiZoomIn />
-                      <span>पहा</span>
+                      <span>{t('pages.daswani.view')}</span>
                     </span>
                   </div>
                   <span className={styles.cardLabel}>
-                    पृष्ठ {image.num}
-                    <span>Page {index + 1}</span>
+                    {t('pages.daswani.pageLabel', { num: image.num })}
                   </span>
                 </button>
               ))}
@@ -163,13 +159,13 @@ function Daswani() {
           className={styles.viewer}
           role="dialog"
           aria-modal="true"
-          aria-label="Daswani gallery reader"
+          aria-label={t('pages.daswani.readerAria')}
         >
           <button
             type="button"
             className={styles.viewerClose}
             onClick={closeLightbox}
-            aria-label="Close"
+            aria-label={t('pages.daswani.closeReader')}
           >
             <FiX />
           </button>
@@ -178,7 +174,7 @@ function Daswani() {
             type="button"
             className={styles.viewerNavLeft}
             onClick={showPrevious}
-            aria-label="Previous page"
+            aria-label={t('pages.daswani.previousPage')}
           >
             <FiChevronLeft />
           </button>
@@ -187,7 +183,7 @@ function Daswani() {
             type="button"
             className={styles.viewerNavRight}
             onClick={showNext}
-            aria-label="Next page"
+            aria-label={t('pages.daswani.nextPage')}
           >
             <FiChevronRight />
           </button>
@@ -203,8 +199,14 @@ function Daswani() {
 
           <div className={styles.viewerBar}>
             <p className={styles.viewerTitle}>
-              दासवाणी {activeImage.num}
-              <span> · Page {activeIndex + 1} of {daswaniImages.length}</span>
+              {t('pages.daswani.title')} {activeImage.num}
+              <span>
+                {' '}
+                · {t('pages.daswani.pageOf', {
+                  current: activeIndex + 1,
+                  total: daswaniImages.length,
+                })}
+              </span>
             </p>
 
             <div className={styles.viewerPager}>
@@ -230,7 +232,7 @@ function Daswani() {
               rel="noopener noreferrer"
               className={styles.viewerOpen}
             >
-              Full size
+              {t('pages.daswani.fullSize')}
             </a>
           </div>
         </div>

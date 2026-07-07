@@ -9,13 +9,14 @@ import {
   getOtherAuthors,
   getSubjectsForAuthor,
 } from '../data/authors'
+import { useI18n } from '../i18n/useI18n'
 import styles from './AuthorDetail.module.css'
 
-function AuthorAvatar({ titleMr, image }) {
+function AuthorAvatar({ title, image }) {
   if (image) {
     return (
       <div className={styles.photoFrame}>
-        <img src={image} alt={titleMr} className={styles.authorPhoto} loading="lazy" />
+        <img src={image} alt={title} className={styles.authorPhoto} loading="lazy" />
       </div>
     )
   }
@@ -33,15 +34,15 @@ function AuthorAvatar({ titleMr, image }) {
 }
 
 function SubjectCard({ slug, titleMr, titleEn, authorSlug }) {
+  const { t, pickField } = useI18n()
+
   return (
     <Link to={getAuthorSubjectUrl(slug, authorSlug)} className={styles.subjectCard}>
       <div className={styles.subjectCardBorder} aria-hidden="true" />
       <div className={styles.subjectCardContent}>
-        <span className={styles.subjectTitleMr}>{titleMr}</span>
-        <span className={styles.separator}>#</span>
-        <span className={styles.subjectTitleEn}>{titleEn}</span>
+        <span className={styles.subjectTitleMr}>{pickField({ titleMr, titleEn }, 'title')}</span>
         <span className={styles.subjectCta}>
-          पहा / View
+          {t('common.view')}
           <span aria-hidden="true">→</span>
         </span>
       </div>
@@ -50,6 +51,7 @@ function SubjectCard({ slug, titleMr, titleEn, authorSlug }) {
 }
 
 function AuthorDetail() {
+  const { t, pickField } = useI18n()
   const { slug } = useParams()
   const author = getAuthorBySlug(slug)
   const authorSubjects = getSubjectsForAuthor(slug)
@@ -57,20 +59,20 @@ function AuthorDetail() {
 
   useEffect(() => {
     if (author) {
-      document.title = `${author.titleMr} – श्री समर्थ रामदास`
+      document.title = t('common.documentTitleWithName', { name: pickField(author, 'title') })
     }
     return () => {
-      document.title = 'श्री समर्थ रामदास - श्री रामदासांचे साहित्य'
+      document.title = t('site.title')
     }
-  }, [author])
+  }, [author, t, pickField])
 
   if (!author) {
     return (
       <div className={styles.page}>
         <div className={`${styles.content} ${pageUi.content}`} id="author-detail-content">
-          <p className={styles.notFound}>Author not found.</p>
+          <p className={styles.notFound}>{t('common.authorNotFound')}</p>
           <Link to="/author" className={styles.backLink}>
-            Back to Author
+            {t('common.backToAuthor')}
           </Link>
         </div>
       </div>
@@ -84,36 +86,26 @@ function AuthorDetail() {
       <div className={`${styles.content} ${pageUi.content}`} id="author-detail-content">
         <nav className={styles.breadcrumb} aria-label="Breadcrumb">
           <Link to="/browse" className={styles.breadcrumbLink}>
-            साहित्य शोधा / Browse
+            {t('pages.browse.title')}
           </Link>
           <span className={styles.breadcrumbSep} aria-hidden="true">›</span>
           <Link to="/author" className={styles.breadcrumbLink}>
-            लेखक / Author
+            {t('common.author')}
           </Link>
           <span className={styles.breadcrumbSep} aria-hidden="true">›</span>
           <span className={styles.breadcrumbCurrent}>
-            {author.titleMr} / {author.titleEn}
+            {pickField(author, 'title')}
           </span>
         </nav>
 
         <div className={styles.authorHero}>
-          <AuthorAvatar titleMr={author.titleMr} image={author.image} />
+          <AuthorAvatar title={pickField(author, 'title')} image={author.image} />
           <div className={styles.authorHeroText}>
-            <p className={styles.stepLabel}>
-              पायरी २ · विषय निवडा
-              <span className={styles.stepLabelEn}>Step 2 — Choose subject</span>
-            </p>
-            <h1 className={styles.pageTitle}>
-              {author.titleMr} · {author.titleEn}
-            </h1>
-            <p className={styles.pageSubtitle}>
-              या लेखकाचे विषय निवडा, नंतर ऑडिओ व साहित्य पहा.
-              <span className={styles.pageSubtitleEn}>
-                Choose a subject by this author, then view audio & literature.
-              </span>
-            </p>
+            <p className={styles.stepLabel}>{t('common.step2ChooseSubject')}</p>
+            <h1 className={styles.pageTitle}>{pickField(author, 'title')}</h1>
+            <p className={styles.pageSubtitle}>{t('pages.authorDetail.intro')}</p>
             <span className={styles.subjectCountBadge}>
-              {authorSubjects.length} विषय · {authorSubjects.length} Subjects
+              {t('pages.authorDetail.countSubjects', { count: authorSubjects.length })}
             </span>
           </div>
         </div>
@@ -121,7 +113,7 @@ function AuthorDetail() {
         <div className={styles.layout}>
           <div className={styles.mainColumn}>
             <div className={styles.sectionBar}>
-              <span className={styles.sectionTitle}>विषय निवडा / Choose Subject</span>
+              <span className={styles.sectionTitle}>{t('common.chooseSubject')}</span>
             </div>
 
             {authorSubjects.length > 0 ? (
@@ -135,13 +127,13 @@ function AuthorDetail() {
                 ))}
               </div>
             ) : (
-              <p className={styles.emptyMessage}>या लेखकासाठी विषय उपलब्ध नाहीत.</p>
+              <p className={styles.emptyMessage}>{t('common.noSubjectsForAuthor')}</p>
             )}
           </div>
 
           <aside className={styles.sidebar}>
             <div className={styles.sidebarHeader}>
-              <span>इतर लेखक / Other Authors</span>
+              <span>{t('common.otherAuthors')}</span>
               <span className={styles.sidebarCount}>{otherAuthors.length}</span>
             </div>
             <nav className={styles.sidebarNav} aria-label="Other authors">
@@ -163,8 +155,7 @@ function AuthorDetail() {
                       </span>
                     )}
                     <span className={styles.sidebarLinkText}>
-                      <span className={styles.sidebarMr}>{titleMr}</span>
-                      <span className={styles.sidebarEn}>{titleEn}</span>
+                      <span className={styles.sidebarMr}>{pickField({ titleMr, titleEn }, 'title')}</span>
                     </span>
                   </span>
                   <span className={styles.sidebarArrow} aria-hidden="true">→</span>

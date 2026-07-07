@@ -8,10 +8,13 @@ import {
   getOtherLanguages,
   getSubjectsForLanguage,
 } from '../data/languages'
+import { useI18n } from '../i18n/useI18n'
 import { loadSubjectsForLanguage } from '../utils/browseApi'
 import styles from './LanguageDetail.module.css'
 
 function SubjectCard({ languageSlug, slug, titleMr, titleEn }) {
+  const { t, pickField } = useI18n()
+
   return (
     <Link
       to={getLanguageSubjectUrl(languageSlug, slug)}
@@ -19,11 +22,9 @@ function SubjectCard({ languageSlug, slug, titleMr, titleEn }) {
     >
       <div className={styles.subjectCardBorder} aria-hidden="true" />
       <div className={styles.subjectCardContent}>
-        <span className={styles.subjectTitleMr}>{titleMr}</span>
-        <span className={styles.subjectSep}>#</span>
-        <span className={styles.subjectTitleEn}>{titleEn}</span>
+        <span className={styles.subjectTitleMr}>{pickField({ titleMr, titleEn }, 'title')}</span>
         <span className={styles.subjectCta}>
-          पहा / View
+          {t('common.view')}
           <span aria-hidden="true">→</span>
         </span>
       </div>
@@ -32,6 +33,7 @@ function SubjectCard({ languageSlug, slug, titleMr, titleEn }) {
 }
 
 function LanguageDetail() {
+  const { t, pickField } = useI18n()
   const { slug } = useParams()
   const language = getLanguageBySlug(slug)
   const otherLanguages = getOtherLanguages(slug)
@@ -67,20 +69,20 @@ function LanguageDetail() {
 
   useEffect(() => {
     if (language) {
-      document.title = `${language.titleMr} – श्री समर्थ रामदास`
+      document.title = t('common.documentTitleWithName', { name: pickField(language, 'title') })
     }
     return () => {
-      document.title = 'श्री समर्थ रामदास - श्री रामदासांचे साहित्य'
+      document.title = t('site.title')
     }
-  }, [language])
+  }, [language, t, pickField])
 
   if (!language) {
     return (
       <div className={styles.page}>
         <div className={`${styles.content} ${pageUi.content}`} id="language-detail-content">
-          <p className={styles.notFound}>Language not found.</p>
+          <p className={styles.notFound}>{t('common.languageNotFound')}</p>
           <Link to="/language" className={styles.backLink}>
-            Back to Language
+            {t('common.backToLanguage')}
           </Link>
         </div>
       </div>
@@ -94,61 +96,46 @@ function LanguageDetail() {
       <div className={`${styles.content} ${pageUi.content}`} id="language-detail-content">
         <nav className={styles.breadcrumb} aria-label="Breadcrumb">
           <Link to="/browse" className={styles.breadcrumbLink}>
-            साहित्य शोधा / Browse
+            {t('pages.browse.title')}
           </Link>
           <span className={styles.breadcrumbSep} aria-hidden="true">›</span>
           <Link to="/language" className={styles.breadcrumbLink}>
-            भाषा / Language
+            {t('common.language')}
           </Link>
           <span className={styles.breadcrumbSep} aria-hidden="true">›</span>
           <span className={styles.breadcrumbCurrent}>
-            {language.titleMr} / {language.titleEn}
+            {pickField(language, 'title')}
           </span>
         </nav>
 
-        <p className={styles.stepLabel}>
-          पायरी २ · विषय निवडा
-          <span className={styles.stepLabelEn}>Step 2 — Choose subject</span>
-        </p>
+        <p className={styles.stepLabel}>{t('common.step2ChooseSubject')}</p>
 
-        <h1 className={styles.pageTitle}>
-          {language.titleMr} · {language.titleEn}
-        </h1>
+        <h1 className={styles.pageTitle}>{pickField(language, 'title')}</h1>
 
-        <p className={styles.pageIntro}>
-          या भाषेतील विषय निवडा, नंतर साहित्य पहा.
-          <span className={styles.pageIntroEn}>
-            Choose a subject in this language, then browse literature.
-          </span>
-        </p>
+        <p className={styles.pageIntro}>{t('pages.languageDetail.intro')}</p>
 
         <div className={styles.layout}>
           <div className={styles.mainColumn}>
             <div className={styles.sectionBar}>
-              <span className={styles.sectionTitle}>
-                विषय निवडा / Choose Subject
-              </span>
+              <span className={styles.sectionTitle}>{t('common.chooseSubject')}</span>
               {!loading && (
                 <span className={styles.subjectCount}>
-                  {subjects.length} विषय · {subjects.length} Subjects
+                  {t('pages.authorDetail.countSubjects', { count: subjects.length })}
                 </span>
               )}
             </div>
 
             {loading ? (
               <div className={pageUi.empty}>
-                <p>विषय लोड होत आहेत...</p>
-                <p className={pageUi.emptySub}>Loading subjects...</p>
+                <p>{t('common.loadingSubjects')}</p>
               </div>
             ) : error ? (
               <div className={pageUi.empty}>
-                <p>विषय लोड करता आले नाहीत.</p>
-                <p className={pageUi.emptySub}>Could not load subjects. Please try again later.</p>
+                <p>{t('common.loadSubjectsError')}</p>
               </div>
             ) : subjects.length === 0 ? (
               <div className={pageUi.empty}>
-                <p>या भाषेसाठी साहित्य उपलब्ध नाही.</p>
-                <p className={pageUi.emptySub}>No literature is available for this language yet.</p>
+                <p>{t('common.noLiteratureForLanguage')}</p>
               </div>
             ) : (
               <div className={styles.subjectGrid}>
@@ -165,7 +152,7 @@ function LanguageDetail() {
 
           <aside className={styles.sidebar}>
             <div className={styles.sidebarHeader}>
-              <span>इतर भाषा / Other Language</span>
+              <span>{t('common.otherLanguages')}</span>
               <span className={styles.sidebarCount}>{otherLanguages.length}</span>
             </div>
             <nav className={styles.sidebarNav} aria-label="Other languages">
@@ -176,9 +163,7 @@ function LanguageDetail() {
                   className={styles.sidebarLink}
                 >
                   <span className={styles.sidebarLinkText}>
-                    <span className={styles.sidebarMr}>{titleMr}</span>
-                    <span className={styles.sidebarSep}>#</span>
-                    <span className={styles.sidebarEn}>{titleEn}</span>
+                    <span className={styles.sidebarMr}>{pickField({ titleMr, titleEn }, 'title')}</span>
                   </span>
                   <span className={styles.sidebarArrow} aria-hidden="true">→</span>
                 </Link>

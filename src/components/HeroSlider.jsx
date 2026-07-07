@@ -2,39 +2,31 @@ import { useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { EffectFade, Autoplay, Navigation, Pagination } from 'swiper/modules'
+import { useI18n } from '../i18n/useI18n'
 import 'swiper/css'
 import 'swiper/css/effect-fade'
 import styles from './HeroSlider.module.css'
 
-const slides = [
+const SLIDE_CONFIG = [
   {
     id: 1,
     image: '/assets/home-banner.png',
     imageMobile: '/assets/banner-1-mobile.png',
-    kicker: '॥ श्री समर्थ रामदास ॥',
-    title: 'श्री समर्थ रामदास स्वामी',
-    subtitle: 'आध्यात्मिक वारसा आणि प्रेरणादायी विचार',
-    button: 'अधिक जाणून घ्या',
+    copyKey: 'slide1',
     href: '/life-journey',
   },
   {
     id: 2,
     image: '/assets/shivtarghal1.png',
     imageMobile: '/assets/banner-2-mobile.png',
-    kicker: 'पवित्र तीर्थक्षेत्र',
-    title: 'शिवथरघळ',
-    subtitle: 'दासबोधाची पवित्र भूमी — समर्थांच्या वाणीचा उगम',
-    button: 'दासबोध वाचा',
+    copyKey: 'slide2',
     href: '/subject/dasbodh',
   },
   {
     id: 3,
     image: '/assets/life-journey/journey.png',
     imageMobile: '/assets/banner-3-mobile.png',
-    kicker: 'जीवन आणि कार्य',
-    title: 'जीवन प्रवास',
-    subtitle: 'समर्थांच्या कार्याचा प्रेरणादायी इतिहास',
-    button: 'प्रवास पहा',
+    copyKey: 'slide3',
     href: '/life-journey',
   },
 ]
@@ -42,6 +34,7 @@ const slides = [
 const AUTOPLAY_MS = 5500
 
 function HeroSlider() {
+  const { t } = useI18n()
   const prevRef = useRef(null)
   const nextRef = useRef(null)
   const paginationRef = useRef(null)
@@ -89,7 +82,7 @@ function HeroSlider() {
         }}
         onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
       >
-        {slides.map(({ id, image, imageMobile, kicker, title, subtitle, button, href }) => (
+        {SLIDE_CONFIG.map(({ id, image, imageMobile, copyKey, href }) => (
           <SwiperSlide key={id}>
             <div className={styles.slide}>
               <div className={styles.imageWrap}>
@@ -109,11 +102,11 @@ function HeroSlider() {
               <div className={styles.overlayBottom} aria-hidden="true" />
               <div className={styles.content}>
                 <div className={styles.contentInner}>
-                  <p className={styles.kicker}>{kicker}</p>
-                  <h2 className={styles.title}>{title}</h2>
-                  <p className={styles.subtitle}>{subtitle}</p>
+                  <p className={styles.kicker}>{t(`hero.${copyKey}.kicker`)}</p>
+                  <h2 className={styles.title}>{t(`hero.${copyKey}.title`)}</h2>
+                  <p className={styles.subtitle}>{t(`hero.${copyKey}.subtitle`)}</p>
                   <Link to={href} className={styles.cta}>
-                    <span>{button}</span>
+                    <span>{t(`hero.${copyKey}.button`)}</span>
                     <span className={styles.ctaIcon} aria-hidden="true">
                       <svg viewBox="0 0 24 24" fill="none">
                         <path
@@ -140,7 +133,7 @@ function HeroSlider() {
               {String(activeIndex + 1).padStart(2, '0')}
             </span>
             <span className={styles.slideDivider}>/</span>
-            <span className={styles.slideTotal}>{String(slides.length).padStart(2, '0')}</span>
+            <span className={styles.slideTotal}>{String(SLIDE_CONFIG.length).padStart(2, '0')}</span>
           </span>
           <div className={styles.progressTrack} aria-hidden="true">
             <span
@@ -156,7 +149,7 @@ function HeroSlider() {
             ref={prevRef}
             type="button"
             className={`${styles.navButton} ${styles.navPrev}`}
-            aria-label="Previous slide"
+            aria-label={t('hero.prevSlide')}
           >
             <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <path
@@ -172,7 +165,7 @@ function HeroSlider() {
             ref={nextRef}
             type="button"
             className={`${styles.navButton} ${styles.navNext}`}
-            aria-label="Next slide"
+            aria-label={t('hero.nextSlide')}
           >
             <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <path

@@ -5,6 +5,7 @@ import pageUi from '../styles/pageUi.module.css'
 import { Link } from 'react-router-dom'
 import { FiSearch, FiUsers } from 'react-icons/fi'
 import { authors, getAuthorUrl, getSubjectsForAuthor } from '../data/authors'
+import { useI18n } from '../i18n/useI18n'
 import styles from './Author.module.css'
 
 function AuthorAvatar({ titleMr, image }) {
@@ -29,6 +30,8 @@ function AuthorAvatar({ titleMr, image }) {
 }
 
 function AuthorCard({ slug, titleMr, titleEn, image, subjectCount, index }) {
+  const { t, pickField } = useI18n()
+
   return (
     <Link
       to={getAuthorUrl(slug)}
@@ -39,16 +42,14 @@ function AuthorCard({ slug, titleMr, titleEn, image, subjectCount, index }) {
       <div className={styles.cardContent}>
         <AuthorAvatar titleMr={titleMr} image={image} />
         <div className={styles.text}>
-          <span className={styles.titleMr}>{titleMr}</span>
-          <span className={styles.separator}>#</span>
-          <span className={styles.titleEn}>{titleEn}</span>
+          <span className={styles.titleMr}>{pickField({ titleMr, titleEn }, 'title')}</span>
         </div>
         <div className={styles.cardMeta}>
           <span className={styles.subjectBadge}>
-            {subjectCount} विषय · {subjectCount} Subjects
+            {t('pages.authorDetail.countSubjects', { count: subjectCount })}
           </span>
           <span className={styles.cardCta}>
-            साहित्य पहा
+            {t('common.viewLiterature')}
             <span aria-hidden="true">→</span>
           </span>
         </div>
@@ -58,14 +59,15 @@ function AuthorCard({ slug, titleMr, titleEn, image, subjectCount, index }) {
 }
 
 function Author() {
+  const { t } = useI18n()
   const [search, setSearch] = useState('')
 
   useEffect(() => {
-    document.title = 'लेखक – श्री समर्थ रामदास'
+    document.title = t('pages.author.documentTitle')
     return () => {
-      document.title = 'श्री समर्थ रामदास - श्री रामदासांचे साहित्य'
+      document.title = t('site.title')
     }
-  }, [])
+  }, [t])
 
   const authorsWithCounts = useMemo(
     () =>
@@ -96,39 +98,30 @@ function Author() {
       <InnerBanner
         contentId="author-content"
         image={CATEGORY_CARD_IMAGES.author}
-        imageAlt="लेखकानुसार वर्गीकरण / Author-wise Classification"
+        imageAlt={t('pages.author.bannerAlt')}
+        scrollLabel={t('pages.author.scrollLabel')}
       />
 
       <div className={`${styles.content} ${pageUi.content}`} id="author-content">
         <header className={styles.pageHeader}>
-          <h1 className={styles.pageTitle}>
-            लेखकानुसार वर्गीकरण / Author-wise Classification
-          </h1>
-          <p className={styles.pageIntro}>
-            खालील लेखक निवडा → विषय पहा → ऑडिओ व साहित्य डाउनलोड करा.
-            <span className={styles.pageIntroEn}>
-              Select an author below → browse subjects → download audio & literature.
-            </span>
-          </p>
+          <h1 className={styles.pageTitle}>{t('pages.author.title')}</h1>
+          <p className={styles.pageIntro}>{t('pages.author.intro')}</p>
         </header>
 
         <div className={`${styles.steps} ${pageUi.steps}`} aria-label="How to use this page">
           <div className={`${styles.step} ${pageUi.step}`}>
-            <span className={styles.stepNum}>१</span>
-            <span className={styles.stepText}>लेखक निवडा</span>
-            <span className={styles.stepSub}>Choose Author</span>
+            <span className={styles.stepNum}>{t('pages.author.step1Num')}</span>
+            <span className={styles.stepText}>{t('pages.author.step1')}</span>
           </div>
           <span className={styles.stepArrow} aria-hidden="true">→</span>
           <div className={`${styles.step} ${pageUi.step}`}>
-            <span className={styles.stepNum}>२</span>
-            <span className={styles.stepText}>विषय पहा</span>
-            <span className={styles.stepSub}>Browse Subjects</span>
+            <span className={styles.stepNum}>{t('pages.author.step2Num')}</span>
+            <span className={styles.stepText}>{t('pages.author.step2')}</span>
           </div>
           <span className={styles.stepArrow} aria-hidden="true">→</span>
           <div className={`${styles.step} ${pageUi.step}`}>
-            <span className={styles.stepNum}>३</span>
-            <span className={styles.stepText}>साहित्य पहा</span>
-            <span className={styles.stepSub}>View Content</span>
+            <span className={styles.stepNum}>{t('pages.author.step3Num')}</span>
+            <span className={styles.stepText}>{t('pages.author.step3')}</span>
           </div>
         </div>
 
@@ -138,7 +131,7 @@ function Author() {
             <input
               type="search"
               className={styles.searchInput}
-              placeholder="लेखक शोधा / Search author..."
+              placeholder={t('pages.author.searchPlaceholder')}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
@@ -146,20 +139,20 @@ function Author() {
           <div className={styles.countBadges}>
             <span className={styles.countBadge}>
               <FiUsers aria-hidden="true" />
-              {filteredAuthors.length} लेखक · {filteredAuthors.length} Authors
+              {t('pages.subject.countAuthors', { count: filteredAuthors.length })}
             </span>
             <span className={styles.countBadgeMuted}>
-              {withPhotoCount} with photo
+              {t('pages.author.withPhoto', { count: withPhotoCount })}
             </span>
           </div>
         </div>
 
         {filteredAuthors.length === 0 ? (
           <div className={pageUi.empty}>
-            <p>कोणताही लेखक सापडला नाही.</p>
-            <p className={pageUi.emptySub}>No authors found. Try a different search.</p>
+            <p>{t('pages.author.empty')}</p>
+            <p className={pageUi.emptySub}>{t('pages.author.emptySub')}</p>
             <button type="button" className={pageUi.emptyReset} onClick={() => setSearch('')}>
-              सर्व लेखक पहा / View all authors
+              {t('pages.author.viewAll')}
             </button>
           </div>
         ) : (

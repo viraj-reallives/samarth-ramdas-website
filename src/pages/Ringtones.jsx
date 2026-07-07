@@ -5,22 +5,23 @@ import pageUi from '../styles/pageUi.module.css'
 import { FiCheck, FiCopy, FiDownload, FiMail, FiPause, FiPlay, FiSearch, FiShare2, FiX } from 'react-icons/fi'
 import { FaFacebookF, FaTelegram, FaWhatsapp } from 'react-icons/fa'
 import { downloadRingtone, getRingtoneAuthor } from '../data/ringtones'
+import { useI18n } from '../i18n/useI18n'
 import styles from './Ringtones.module.css'
 
-function buildShareMessage(ringtone, audioUrl) {
-  return `श्री समर्थ रामदास – ${ringtone.titleMr} (${ringtone.titleEn})\n${audioUrl}`
+function buildShareMessage(ringtone, audioUrl, title) {
+  return `श्री समर्थ रामदास – ${title}\n${audioUrl}`
 }
 
-function buildShareLinks(ringtone, audioUrl) {
-  const message = buildShareMessage(ringtone, audioUrl)
-  const title = `श्री समर्थ रामदास – ${ringtone.titleMr}`
+function buildShareLinks(ringtone, audioUrl, title) {
+  const message = buildShareMessage(ringtone, audioUrl, title)
+  const shareTitle = `श्री समर्थ रामदास – ${title}`
 
   return {
     message,
     whatsapp: `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`,
-    telegram: `https://t.me/share/url?url=${encodeURIComponent(audioUrl)}&text=${encodeURIComponent(title)}`,
+    telegram: `https://t.me/share/url?url=${encodeURIComponent(audioUrl)}&text=${encodeURIComponent(shareTitle)}`,
     facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(audioUrl)}`,
-    email: `mailto:?subject=${encodeURIComponent(`Ringtone: ${ringtone.titleEn}`)}&body=${encodeURIComponent(message)}`,
+    email: `mailto:?subject=${encodeURIComponent(`Ringtone: ${title}`)}&body=${encodeURIComponent(message)}`,
   }
 }
 
@@ -51,6 +52,8 @@ function WaveBars({ active }) {
 }
 
 function RingtoneCard({ ringtone, onOpenPlayer, index }) {
+  const { t, pickField } = useI18n()
+
   return (
     <article
       className={`${styles.card} ${pageUi.cardAnim}`}
@@ -61,24 +64,24 @@ function RingtoneCard({ ringtone, onOpenPlayer, index }) {
       </div>
 
       <div className={styles.cardBody}>
-        <p className={styles.titleMr}>{ringtone.titleMr}</p>
-        <p className={styles.titleEn}>{ringtone.titleEn}</p>
+        <p className={styles.titleMr}>{pickField(ringtone, 'title')}</p>
       </div>
 
       <button
         type="button"
         className={styles.playBtn}
         onClick={() => onOpenPlayer(ringtone)}
-        aria-label={`Play ${ringtone.titleEn}`}
+        aria-label={`${t('common.play')} ${pickField(ringtone, 'title')}`}
       >
         <FiPlay />
-        Play
+        {t('common.play')}
       </button>
     </article>
   )
 }
 
 function RingtonePlayerModal({ ringtone, onClose }) {
+  const { t, pickField } = useI18n()
   const audioRef = useRef(null)
   const [isPlaying, setIsPlaying] = useState(false)
   const [hasEnded, setHasEnded] = useState(false)
@@ -200,7 +203,8 @@ function RingtonePlayerModal({ ringtone, onClose }) {
   }
 
   const audioShareUrl = ringtone.audioUrl
-  const shareLinks = buildShareLinks(ringtone, audioShareUrl)
+  const ringtoneTitle = pickField(ringtone, 'title')
+  const shareLinks = buildShareLinks(ringtone, audioShareUrl, ringtoneTitle)
   const author = getRingtoneAuthor(ringtone)
   const authorImage = author?.image ?? '/assets/authors/other-authors.png'
   const showAuthorLine = !!author
@@ -214,7 +218,7 @@ function RingtonePlayerModal({ ringtone, onClose }) {
 
     try {
       await navigator.share({
-        title: `श्री समर्थ रामदास – ${ringtone.titleMr}`,
+        title: `श्री समर्थ रामदास – ${ringtoneTitle}`,
         text: shareLinks.message,
         url: audioShareUrl,
       })
@@ -241,16 +245,16 @@ function RingtonePlayerModal({ ringtone, onClose }) {
   }
 
   const statusLabel = hasEnded
-    ? 'संपले / Finished'
+    ? t('pages.ringtones.finished')
     : isPlaying
-      ? 'आता वाजत आहे / Now Playing'
-      : 'रिंगटोन / Ringtone'
+      ? t('pages.ringtones.nowPlaying')
+      : t('pages.ringtones.ringtone')
 
   const hintLabel = hasEnded
-    ? 'पुन्हा ऐका / Play again'
+    ? t('pages.ringtones.playAgain')
     : isPlaying
-      ? 'ऐकत राहा / Listening...'
-      : 'प्ले दाबा / Press play'
+      ? t('pages.ringtones.listening')
+      : t('pages.ringtones.pressPlay')
 
   return (
     <div className={styles.modalOverlay} onClick={onClose} role="presentation">
@@ -266,7 +270,7 @@ function RingtonePlayerModal({ ringtone, onClose }) {
             type="button"
             className={styles.modalClose}
             onClick={onClose}
-            aria-label="Close player"
+            aria-label={t('pages.player.close')}
           >
             <FiX />
           </button>
@@ -289,7 +293,7 @@ function RingtonePlayerModal({ ringtone, onClose }) {
               <img
                 key={`${ringtone.slug}-${authorImage}`}
                 src={authorImage}
-                alt={author?.titleMr ?? 'Ringtone author'}
+                alt={author ? pickField(author, 'title') : t('pages.player.ringtoneAuthor')}
                 className={styles.authorAvatarImage}
               />
             </div>
@@ -301,14 +305,11 @@ function RingtonePlayerModal({ ringtone, onClose }) {
                 {statusLabel}
               </span>
               <h2 id="ringtone-modal-title" className={styles.modalTitleMr}>
-                {ringtone.titleMr}
+                {pickField(ringtone, 'title')}
               </h2>
-              <p className={styles.modalTitleEn}>{ringtone.titleEn}</p>
               {showAuthorLine && (
                 <p className={styles.modalAuthorLine}>
-                  {author.titleMr}
-                  <span className={styles.modalAuthorSep}> · </span>
-                  <span className={styles.modalAuthorEn}>{author.titleEn}</span>
+                  {pickField(author, 'title')}
                 </p>
               )}
             </div>
@@ -332,7 +333,7 @@ function RingtonePlayerModal({ ringtone, onClose }) {
               <div className={styles.timeRow}>
                 <span>{formatTime(currentTime)}</span>
                 <span className={styles.timeRemaining}>
-                  {hasEnded ? 'Done' : `-${formatTime(Math.max(duration - currentTime, 0))}`}
+                  {hasEnded ? t('pages.player.done') : `-${formatTime(Math.max(duration - currentTime, 0))}`}
                 </span>
               </div>
             </div>
@@ -344,10 +345,10 @@ function RingtonePlayerModal({ ringtone, onClose }) {
                 onClick={togglePlayback}
                 aria-label={
                   hasEnded
-                    ? `Play again ${ringtone.titleEn}`
+                    ? `${t('pages.ringtones.playAgain')} ${pickField(ringtone, 'title')}`
                     : isPlaying
-                      ? `Pause ${ringtone.titleEn}`
-                      : `Play ${ringtone.titleEn}`
+                      ? `${t('common.listen')} ${pickField(ringtone, 'title')}`
+                      : `${t('common.play')} ${pickField(ringtone, 'title')}`
                 }
               >
                 {hasEnded ? <FiPlay /> : isPlaying ? <FiPause /> : <FiPlay />}
@@ -366,14 +367,14 @@ function RingtonePlayerModal({ ringtone, onClose }) {
               >
                 {downloadDone ? <FiCheck /> : <FiDownload />}
                 <span>
-                  {downloadDone ? 'Saved!' : isDownloading ? 'Saving...' : 'Download'}
+                  {downloadDone ? t('common.saved') : isDownloading ? t('common.saving') : t('common.download')}
                 </span>
               </button>
             </div>
           </div>
 
           <div className={styles.shareSection}>
-            <p className={styles.shareLabel}>ऑडिओ लिंक शेअर करा / Share audio link</p>
+            <p className={styles.shareLabel}>{t('pages.ringtones.shareAudioLink')}</p>
 
             <div className={styles.sharePlatforms}>
               <button
@@ -447,13 +448,13 @@ function RingtonePlayerModal({ ringtone, onClose }) {
                 aria-label="Copy audio link"
               >
                 {linkCopied ? <FiCheck /> : <FiCopy />}
-                <span>{linkCopied ? 'Copied' : 'Copy'}</span>
+                <span>{linkCopied ? t('common.copied') : t('common.copy')}</span>
               </button>
             </div>
           </div>
 
           <p className={styles.modalFooterHint}>
-            <kbd>Space</kbd> प्ले/पॉज / Play or pause
+            <kbd>Space</kbd> {t('pages.ringtones.playOrPause')}
           </p>
         </div>
 
@@ -464,6 +465,7 @@ function RingtonePlayerModal({ ringtone, onClose }) {
 }
 
 function Ringtones() {
+  const { t } = useI18n()
   const [search, setSearch] = useState('')
   const [modalRingtone, setModalRingtone] = useState(null)
   const [ringtones, setRingtones] = useState([])
@@ -491,28 +493,23 @@ function Ringtones() {
   }, [search, ringtones])
 
   useEffect(() => {
-    document.title = 'रिंगटोन्स – श्री समर्थ रामदास'
+    document.title = t('pages.ringtones.documentTitle')
     return () => {
-      document.title = 'श्री समर्थ रामदास - श्री रामदासांचे साहित्य'
+      document.title = t('site.title')
     }
-  }, [])
+  }, [t])
 
   return (
     <div className={styles.page}>
       <InnerBanner
         contentId="ringtones-content"
         image={CATEGORY_CARD_IMAGES.ringtones}
-        imageAlt="रिंगटोन्स / Ringtones"
+        imageAlt={t('pages.ringtones.bannerAlt')}
       />
 
       <div className={`${styles.content} ${pageUi.content}`} id="ringtones-content">
-        <h1 className={styles.pageTitle}>रिंगटोन्स / Ringtones</h1>
-        <p className={styles.pageIntro}>
-          मनाचे श्लोक रिंगटोन्स ऐका आणि डाउनलोड करा.
-          <span className={styles.pageIntroEn}>
-            Listen and download Manache Shlok ringtones for your mobile.
-          </span>
-        </p>
+        <h1 className={styles.pageTitle}>{t('pages.ringtones.title')}</h1>
+        <p className={styles.pageIntro}>{t('pages.ringtones.intro')}</p>
 
         <div className={styles.toolbar}>
           <label className={styles.searchWrap}>
@@ -520,32 +517,30 @@ function Ringtones() {
             <input
               type="search"
               className={styles.searchInput}
-              placeholder="शोधा / Search ringtones..."
+              placeholder={t('pages.ringtones.searchPlaceholder')}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
           </label>
           <span className={styles.countBadge}>
-            {filtered.length} रिंगटोन्स · {filtered.length} Ringtones
+            {t('common.countTracks', { count: filtered.length })}
           </span>
         </div>
 
         {loading ? (
           <div className={pageUi.empty}>
-            <p>रिंगटोन्स लोड होत आहेत...</p>
-            <p className={pageUi.emptySub}>Loading ringtones...</p>
+            <p>{t('pages.ringtones.loading')}</p>
           </div>
         ) : error ? (
           <div className={pageUi.empty}>
-            <p>रिंगटोन्स लोड करता आले नाहीत.</p>
-            <p className={pageUi.emptySub}>Could not load ringtones. Please try again later.</p>
+            <p>{t('pages.ringtones.loadError')}</p>
           </div>
         ) : filtered.length === 0 ? (
           <div className={pageUi.empty}>
-            <p>कोणतेही रिंगटोन्स सापडले नाहीत.</p>
-            <p className={pageUi.emptySub}>No ringtones found. Try a different search.</p>
+            <p>{t('pages.ringtones.empty')}</p>
+            <p className={pageUi.emptySub}>{t('pages.ringtones.emptySub')}</p>
             <button type="button" className={pageUi.emptyReset} onClick={() => setSearch('')}>
-              सर्व रिंगटोन्स पहा / View all ringtones
+              {t('pages.ringtones.viewAll')}
             </button>
           </div>
         ) : (

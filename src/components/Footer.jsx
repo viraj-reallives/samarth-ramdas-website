@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { contactInfo, contentLinks, exploreLinks } from '../data/navigation'
+import { useI18n } from '../i18n/useI18n'
 import styles from './Footer.module.css'
 
 function FooterLink({ href, children }) {
@@ -12,6 +13,7 @@ function FooterLink({ href, children }) {
 
 function Footer() {
   const year = new Date().getFullYear()
+  const { t, pickField, locale } = useI18n()
 
   return (
     <footer className={styles.footer}>
@@ -27,20 +29,17 @@ function Footer() {
                 className={styles.logo}
               />
             </Link>
-            <p className={styles.mantra}>|| जय जय रघुवीर समर्थ ||</p>
-            <p className={styles.brandText}>
-              श्री समर्थ रामदासांचे साहित्य, प्रवचने आणि भक्तीगीत — एकाच ठिकाणी.
-            </p>
+            <p className={styles.mantra}>{t('site.mantra')}</p>
+            <p className={styles.brandText}>{t('footer.brandText')}</p>
           </section>
 
           <section className={styles.column}>
-            <h2 className={styles.columnTitle}>अन्वेषण # Explore</h2>
+            <h2 className={styles.columnTitle}>{t('footer.explore')}</h2>
             <ul className={styles.linkList}>
-              {exploreLinks.map(({ labelMr, labelEn, href }) => (
-                <li key={href}>
-                  <FooterLink href={href}>
-                    <span className={styles.linkMr}>{labelMr}</span>
-                    <span className={styles.linkEn}>{labelEn}</span>
+              {exploreLinks.map((link) => (
+                <li key={link.href}>
+                  <FooterLink href={link.href}>
+                    <span className={styles.linkMr}>{pickField(link, 'label')}</span>
                   </FooterLink>
                 </li>
               ))}
@@ -48,46 +47,49 @@ function Footer() {
           </section>
 
           <section className={styles.column}>
-            <h2 className={styles.columnTitle}>साहित्य # Content</h2>
+            <h2 className={styles.columnTitle}>{t('footer.content')}</h2>
             <ul className={styles.linkList}>
-              {contentLinks.map(({ label, href }) => (
-                <li key={href}>
-                  <FooterLink href={href}>{label}</FooterLink>
+              {contentLinks.map((link) => (
+                <li key={link.href}>
+                  <FooterLink href={link.href}>
+                    <span className={styles.linkMr}>{pickField(link, 'label')}</span>
+                  </FooterLink>
                 </li>
               ))}
             </ul>
           </section>
 
           <section className={styles.column}>
-            <h2 className={styles.columnTitle}>संपर्क # Contact</h2>
+            <h2 className={styles.columnTitle}>{t('footer.contact')}</h2>
             <div className={styles.contactBlocks}>
-              {contactInfo.map((block) => (
-                <address key={block.title} className={styles.contactBlock}>
-                  <strong className={styles.contactTitle}>{block.title}</strong>
-                  {block.lines.map((line) => (
-                    <span key={line} className={styles.contactLine}>
-                      {line}
-                    </span>
-                  ))}
-                </address>
-              ))}
+              {contactInfo.map((block) => {
+                const lines = locale === 'mr' ? block.linesMr : block.linesEn
+                return (
+                  <address key={block.id} className={styles.contactBlock}>
+                    <strong className={styles.contactTitle}>{pickField(block, 'title')}</strong>
+                    {lines.map((line) => (
+                      <span key={line} className={styles.contactLine}>
+                        {line}
+                      </span>
+                    ))}
+                  </address>
+                )
+              })}
             </div>
             <Link to="/contact" className={styles.contactButton}>
-              संपर्क फॉर्म # Contact Form
+              {t('footer.contactForm')}
             </Link>
           </section>
         </div>
 
         <div className={styles.bottomBar}>
-          <p className={styles.copyright}>
-            © {year} Copyright, All Rights Reserved by samarthramdas400.in
-          </p>
+          <p className={styles.copyright}>{t('footer.copyright', { year })}</p>
           <button
             type="button"
             className={styles.backToTop}
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           >
-            Back to Top ↑
+            {t('footer.backToTop')} ↑
           </button>
         </div>
       </div>

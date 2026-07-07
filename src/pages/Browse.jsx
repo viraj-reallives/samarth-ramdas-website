@@ -16,6 +16,7 @@ import {
   getCollectionLabel,
 } from '../utils/collectionNav'
 import { searchBrowseContent } from '../utils/browseApi'
+import { useI18n } from '../i18n/useI18n'
 import styles from './Browse.module.css'
 import downloadStyles from './SubjectAuthor.module.css'
 
@@ -50,6 +51,7 @@ function collectionTags(collection) {
 }
 
 function Browse() {
+  const { t, pickField } = useI18n()
   const [searchParams, setSearchParams] = useSearchParams()
   const [collections, setCollections] = useState([])
   const [loading, setLoading] = useState(true)
@@ -77,11 +79,11 @@ function Browse() {
   }, [])
 
   useEffect(() => {
-    document.title = 'साहित्य शोधा / Browse – श्री समर्थ रामदास'
+    document.title = t('pages.browse.documentTitle')
     return () => {
-      document.title = 'श्री समर्थ रामदास - श्री रामदासांचे साहित्य'
+      document.title = t('site.title')
     }
-  }, [])
+  }, [t])
 
   useEffect(() => {
     if (!isContentSearch) {
@@ -141,7 +143,7 @@ function Browse() {
         id: `q:${query}`,
         facetId: 'search',
         labelMr: `"${query.trim()}"`,
-        labelEn: 'Search',
+        labelEn: `"${query.trim()}"`,
       })
     }
     return filters
@@ -232,13 +234,8 @@ function Browse() {
       <div className={`${styles.content} ${pageUi.content}`} id="browse-content">
         <section className={styles.searchHero}>
           <header className={styles.pageHeader}>
-            <h1 className={styles.pageTitle}>साहित्य शोधा / Browse</h1>
-            <p className={styles.pageIntro}>
-              एकाच ठिकाणी शोधा — जे माहित आहे ते निवडा, नंतर फिल्टर करा.
-              <span className={styles.pageIntroEn}>
-                Search in one place — start with what you know, then narrow down.
-              </span>
-            </p>
+            <h1 className={styles.pageTitle}>{t('pages.browse.title')}</h1>
+            <p className={styles.pageIntro}>{t('pages.browse.intro')}</p>
           </header>
 
           <div className={styles.searchRow}>
@@ -247,8 +244,6 @@ function Browse() {
               defaultValue={query}
               large
               className={styles.searchBar}
-              placeholderMr="साहित्य शोधा…"
-              placeholderEn="Search literature…"
               onSearch={handleSearchNavigate}
             />
           </div>
@@ -256,10 +251,7 @@ function Browse() {
 
         {!showFilteredResults && (
           <section className={styles.discoveryPanel} aria-label="Browse paths">
-            <h2 className={styles.sectionTitle}>
-              जे माहित आहे ते निवडा
-              <span className={styles.sectionTitleEn}>Start with what you know</span>
-            </h2>
+            <h2 className={styles.sectionTitle}>{t('pages.browse.startHeading')}</h2>
             <div className={styles.pathGrid}>
               {browseByLinks.map((link) => (
                 <BrowsePathCard
@@ -276,15 +268,11 @@ function Browse() {
             </div>
 
             <div className={styles.shortcutBlock}>
-              <p className={styles.shortcutLabel}>लोकप्रिय / Popular</p>
+              <p className={styles.shortcutLabel}>{t('pages.browse.popular')}</p>
               <div className={styles.shortcutRow}>
                 {popularLibraryLinks.map((link) => (
                   <Link key={link.href} to={link.href} className={styles.shortcut}>
-                    <span className={styles.shortcutMr}>{link.labelMr}</span>
-                    <span className={styles.shortcutSep} aria-hidden="true">
-                      ·
-                    </span>
-                    <span className={styles.shortcutEn}>{link.labelEn}</span>
+                    {pickField(link, 'label')}
                   </Link>
                 ))}
               </div>
@@ -299,15 +287,11 @@ function Browse() {
         >
           <div className={styles.collectionsHeader}>
             <h2 className={styles.sectionTitle}>
-              {showFilteredResults ? 'निकाल' : 'संग्रह'}
-              <span className={styles.sectionTitleEn}>
-                {showFilteredResults ? 'Results' : 'Collections'}
-              </span>
+              {showFilteredResults ? t('pages.browse.results') : t('pages.browse.collections')}
             </h2>
             {!resultsLoading && !resultsError && (
               <span className={styles.countBadge}>
-                {resultCount} निकाल
-                <span className={styles.countBadgeEn}>{resultCount} results</span>
+                {t('pages.browse.countResults', { count: resultCount })}
               </span>
             )}
           </div>
@@ -324,13 +308,13 @@ function Browse() {
           )}
 
           {typeMenuOpen && (
-            <div className={styles.typeMenu} role="group" aria-label="Filter by type">
+            <div className={styles.typeMenu} role="group" aria-label={t('common.filterByType')}>
               <button
                 type="button"
                 className={`${styles.typeOption} ${!activeType ? styles.typeOptionActive : ''}`}
                 onClick={() => handleTypeSelect('')}
               >
-                सर्व / All
+                {t('common.all')}
               </button>
               {typeMenuOptions.map((opt) => (
                 <button
@@ -341,7 +325,7 @@ function Browse() {
                   }`}
                   onClick={() => handleTypeSelect(opt.value)}
                 >
-                  {opt.labelMr} / {opt.labelEn}
+                  {pickField(opt, 'label')}
                 </button>
               ))}
             </div>
@@ -349,34 +333,34 @@ function Browse() {
 
           {resultsLoading ? (
             <div className={pageUi.empty}>
-              <p>{isContentSearch ? 'साहित्य लोड होत आहे...' : 'संग्रह लोड होत आहेत...'}</p>
-              <p className={pageUi.emptySub}>
-                {isContentSearch ? 'Loading results...' : 'Loading collections...'}
+              <p>
+                {isContentSearch
+                  ? t('pages.browse.loadingContent')
+                  : t('common.loadingCollections')}
               </p>
             </div>
           ) : resultsError ? (
             <div className={pageUi.empty}>
-              <p>{isContentSearch ? 'साहित्य लोड करता आले नाही.' : 'संग्रह लोड करता आले नाहीत.'}</p>
-              <p className={pageUi.emptySub}>
+              <p>
                 {isContentSearch
-                  ? 'Could not load results. Please try again later.'
-                  : 'Could not load collections. Please try again later.'}
+                  ? t('pages.browse.loadingContentError')
+                  : t('common.loadCollectionsError')}
               </p>
             </div>
           ) : isContentSearch ? (
             searchResults.length === 0 ? (
               <div className={pageUi.empty}>
-                <p>कोणतेही निकाल सापडले नाहीत.</p>
-                <p className={pageUi.emptySub}>No results found. Try adjusting your filters.</p>
+                <p>{t('common.noResults')}</p>
+                <p className={pageUi.emptySub}>{t('pages.browse.adjustFilters')}</p>
               </div>
             ) : (
               <>
                 {searchTotal > searchResults.length && (
                   <p className={styles.resultNote}>
-                    पहिले {searchResults.length} निकाल दाखवत आहे (एकूण {searchTotal})
-                    <span className={styles.resultNoteEn}>
-                      Showing first {searchResults.length} of {searchTotal} results
-                    </span>
+                    {t('common.showingResults', {
+                      shown: searchResults.length,
+                      total: searchTotal,
+                    })}
                   </p>
                 )}
                 <div className={`${downloadStyles.downloadGrid} ${downloadStyles.downloadGridCompact}`}>
@@ -396,8 +380,8 @@ function Browse() {
             )
           ) : filtered.length === 0 ? (
             <div className={pageUi.empty}>
-              <p>कोणतेही निकाल सापडले नाहीत.</p>
-              <p className={pageUi.emptySub}>No results found. Try adjusting your filters.</p>
+              <p>{t('common.noResults')}</p>
+              <p className={pageUi.emptySub}>{t('pages.browse.adjustFilters')}</p>
             </div>
           ) : (
             <div className={styles.grid}>

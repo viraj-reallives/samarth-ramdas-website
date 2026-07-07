@@ -10,10 +10,12 @@ import {
   getSubjectsForLanguage,
 } from '../data/languages'
 import { getSubjectBySlug } from '../data/subjects'
+import { useI18n } from '../i18n/useI18n'
 import { fetchBrowseItems, getDefaultDownloadTab, loadSubjectsForLanguage } from '../utils/browseApi'
 import styles from './SubjectAuthor.module.css'
 
 function LanguageSubject() {
+  const { t, pickField, joinFields } = useI18n()
   const { languageSlug, subjectSlug } = useParams()
   const [activeTab, setActiveTab] = useState('audios')
   const [audios, setAudios] = useState([])
@@ -81,20 +83,23 @@ function LanguageSubject() {
 
   useEffect(() => {
     if (subject && language) {
-      document.title = `${subject.titleMr} (${language.titleMr}) – श्री समर्थ रामदास`
+      document.title = t('common.documentTitleWithPair', {
+        primary: pickField(subject, 'title'),
+        secondary: pickField(language, 'title'),
+      })
     }
     return () => {
-      document.title = 'श्री समर्थ रामदास - श्री रामदासांचे साहित्य'
+      document.title = t('site.title')
     }
-  }, [subject, language])
+  }, [subject, language, t, pickField])
 
   if (!language || !subject) {
     return (
       <div className={styles.page}>
         <div className={`${styles.content} ${pageUi.content}`} id="language-subject-content">
-          <p className={styles.notFound}>Content not found.</p>
+          <p className={styles.notFound}>{t('common.contentNotFound')}</p>
           <Link to="/language" className={styles.backLink}>
-            Back to Language
+            {t('common.backToLanguage')}
           </Link>
         </div>
       </div>
@@ -103,15 +108,14 @@ function LanguageSubject() {
 
   const gridClassName = styles.downloadGrid
   const activeItems = activeTab === 'audios' ? audios : literature
-
-  const playerSubtitle = `${language.titleMr} · ${subject.titleMr}`
+  const playerSubtitle = `${pickField(language, 'title')} · ${pickField(subject, 'title')}`
 
   return (
     <div className={styles.page}>
       <InnerBanner contentId="language-subject-content" />
 
       <div className={`${styles.content} ${pageUi.content}`} id="language-subject-content">
-        <h1 className={styles.pageTitle}>Downloads</h1>
+        <h1 className={styles.pageTitle}>{t('common.downloads')}</h1>
 
         <div className={styles.layout}>
           <div className={styles.mainColumn}>
@@ -123,7 +127,7 @@ function LanguageSubject() {
                 className={activeTab === 'audios' ? styles.tabActive : styles.tab}
                 onClick={() => setActiveTab('audios')}
               >
-                ध्वनिफीत / Audios
+                {t('common.audios')}
                 {audios.length > 0 && (
                   <span className={styles.tabCount}>{audios.length}</span>
                 )}
@@ -135,7 +139,7 @@ function LanguageSubject() {
                 className={activeTab === 'literature' ? styles.tabActive : styles.tab}
                 onClick={() => setActiveTab('literature')}
               >
-                वाङ्मय / Literature
+                {t('common.literature')}
                 {literature.length > 0 && (
                   <span className={styles.tabCount}>{literature.length}</span>
                 )}
@@ -144,18 +148,16 @@ function LanguageSubject() {
 
             <div className={styles.panel} role="tabpanel">
               <p className={styles.breadcrumb}>
-                {language.titleMr} · {language.titleEn} → {subject.titleMr} · {subject.titleEn}
+                {joinFields([language, subject], 'title')}
               </p>
 
               {loading ? (
                 <div className={pageUi.empty}>
-                  <p>साहित्य लोड होत आहे...</p>
-                  <p className={pageUi.emptySub}>Loading downloads...</p>
+                  <p>{t('common.loadingDownloads')}</p>
                 </div>
               ) : error ? (
                 <div className={pageUi.empty}>
-                  <p>साहित्य लोड करता आले नाही.</p>
-                  <p className={pageUi.emptySub}>Could not load downloads. Please try again later.</p>
+                  <p>{t('common.loadDownloadsError')}</p>
                 </div>
               ) : activeItems.length > 0 ? (
                 <div className={gridClassName}>
@@ -174,15 +176,15 @@ function LanguageSubject() {
               ) : (
                 <p className={styles.emptyMessage}>
                   {activeTab === 'audios'
-                    ? 'No audios available for this language and subject.'
-                    : 'No literature available for this language and subject.'}
+                    ? t('common.noAudiosForPair')
+                    : t('common.noLiteratureForPair')}
                 </p>
               )}
             </div>
           </div>
 
           <aside className={styles.sidebar}>
-            <div className={styles.sidebarHeader}>विषय / Subject</div>
+            <div className={styles.sidebarHeader}>{t('common.subject')}</div>
             {otherSubjects.length > 0 ? (
               <nav className={styles.sidebarNav} aria-label="Other subjects">
                 {otherSubjects.map(({ slug, titleMr, titleEn }) => (
@@ -191,12 +193,12 @@ function LanguageSubject() {
                     to={getLanguageSubjectUrl(languageSlug, slug)}
                     className={styles.sidebarLink}
                   >
-                    {titleMr} · {titleEn}
+                    {pickField({ titleMr, titleEn }, 'title')}
                   </Link>
                 ))}
               </nav>
             ) : (
-              <p className={styles.sidebarEmpty}>No other subjects available.</p>
+              <p className={styles.sidebarEmpty}>{t('common.noOtherSubjects')}</p>
             )}
           </aside>
         </div>

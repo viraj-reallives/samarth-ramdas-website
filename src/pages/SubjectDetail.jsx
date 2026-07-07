@@ -8,13 +8,14 @@ import {
   getSubjectBySlug,
   subjectAuthors,
 } from '../data/subjects'
+import { useI18n } from '../i18n/useI18n'
 import styles from './SubjectDetail.module.css'
 
-function AuthorAvatar({ titleMr, image }) {
+function AuthorAvatar({ title, image }) {
   if (image) {
     return (
       <div className={styles.photoFrame}>
-        <img src={image} alt={titleMr} className={styles.authorPhoto} loading="lazy" />
+        <img src={image} alt={title} className={styles.authorPhoto} loading="lazy" />
       </div>
     )
   }
@@ -32,20 +33,20 @@ function AuthorAvatar({ titleMr, image }) {
 }
 
 function AuthorCard({ slug, authorSlug, titleMr, titleEn, image, subjectSlug }) {
+  const { t, pickField } = useI18n()
   const linkSlug = authorSlug ?? slug
+  const title = pickField({ titleMr, titleEn }, 'title')
 
   return (
     <Link to={getSubjectAuthorUrl(subjectSlug, linkSlug)} className={styles.authorCard}>
       <div className={styles.authorCardBorder} aria-hidden="true" />
       <div className={styles.authorCardContent}>
-        <AuthorAvatar titleMr={titleMr} image={image} />
+        <AuthorAvatar title={title} image={image} />
         <div className={styles.authorText}>
-          <span className={styles.authorTitleMr}>{titleMr}</span>
-          <span className={styles.separator}>#</span>
-          <span className={styles.authorTitleEn}>{titleEn}</span>
+          <span className={styles.authorTitleMr}>{title}</span>
         </div>
         <span className={styles.authorCta}>
-          साहित्य पहा
+          {t('common.viewLiterature')}
           <span aria-hidden="true">→</span>
         </span>
       </div>
@@ -54,6 +55,7 @@ function AuthorCard({ slug, authorSlug, titleMr, titleEn, image, subjectSlug }) 
 }
 
 function SubjectDetail() {
+  const { t, pickField } = useI18n()
   const { slug } = useParams()
   const subject = getSubjectBySlug(slug)
   const authors = subjectAuthors[slug] ?? []
@@ -61,20 +63,20 @@ function SubjectDetail() {
 
   useEffect(() => {
     if (subject) {
-      document.title = `${subject.titleMr} – श्री समर्थ रामदास`
+      document.title = t('common.documentTitleWithName', { name: pickField(subject, 'title') })
     }
     return () => {
-      document.title = 'श्री समर्थ रामदास - श्री रामदासांचे साहित्य'
+      document.title = t('site.title')
     }
-  }, [subject])
+  }, [subject, t, pickField])
 
   if (!subject) {
     return (
       <div className={styles.page}>
         <div className={`${styles.content} ${pageUi.content}`} id="subject-detail-content">
-          <p className={styles.notFound}>Subject not found.</p>
+          <p className={styles.notFound}>{t('common.subjectNotFound')}</p>
           <Link to="/subject" className={styles.backLink}>
-            Back to Subject
+            {t('common.backToSubject')}
           </Link>
         </div>
       </div>
@@ -88,42 +90,30 @@ function SubjectDetail() {
       <div className={`${styles.content} ${pageUi.content}`} id="subject-detail-content">
         <nav className={styles.breadcrumb} aria-label="Breadcrumb">
           <Link to="/browse" className={styles.breadcrumbLink}>
-            साहित्य शोधा / Browse
+            {t('pages.browse.title')}
           </Link>
           <span className={styles.breadcrumbSep} aria-hidden="true">›</span>
           <Link to="/subject" className={styles.breadcrumbLink}>
-            विषय / Subject
+            {t('common.subject')}
           </Link>
           <span className={styles.breadcrumbSep} aria-hidden="true">›</span>
           <span className={styles.breadcrumbCurrent}>
-            {subject.titleMr} / {subject.titleEn}
+            {pickField(subject, 'title')}
           </span>
         </nav>
 
-        <p className={styles.stepLabel}>
-          पायरी २ · लेखक निवडा
-          <span className={styles.stepLabelEn}>Step 2 — Choose author</span>
-        </p>
+        <p className={styles.stepLabel}>{t('common.step2ChooseAuthor')}</p>
 
-        <h1 className={styles.pageTitle}>
-          {subject.titleMr} · {subject.titleEn}
-        </h1>
+        <h1 className={styles.pageTitle}>{pickField(subject, 'title')}</h1>
 
-        <p className={styles.pageIntro}>
-          या विषयासाठी लेखक निवडा, नंतर ऑडिओ व साहित्य पहा.
-          <span className={styles.pageIntroEn}>
-            Choose an author for this subject, then view audio & literature.
-          </span>
-        </p>
+        <p className={styles.pageIntro}>{t('pages.subjectDetail.intro')}</p>
 
         <div className={styles.layout}>
           <div className={styles.mainColumn}>
             <div className={styles.sectionBar}>
-              <span className={styles.sectionTitle}>
-                लेखक निवडा / Choose Author
-              </span>
+              <span className={styles.sectionTitle}>{t('common.chooseAuthor')}</span>
               <span className={styles.authorCount}>
-                {authors.length} लेखक · {authors.length} Authors
+                {t('pages.subjectDetail.countAuthors', { count: authors.length })}
               </span>
             </div>
 
@@ -144,7 +134,7 @@ function SubjectDetail() {
 
           <aside className={styles.sidebar}>
             <div className={styles.sidebarHeader}>
-              <span>इतर विषय / Other Subjects</span>
+              <span>{t('common.otherSubjects')}</span>
               <span className={styles.sidebarCount}>{otherSubjects.length}</span>
             </div>
             <nav className={styles.sidebarNav} aria-label="Other subjects">
@@ -155,8 +145,7 @@ function SubjectDetail() {
                   className={styles.sidebarLink}
                 >
                   <span className={styles.sidebarLinkText}>
-                    <span className={styles.sidebarMr}>{titleMr}</span>
-                    <span className={styles.sidebarEn}>{titleEn}</span>
+                    <span className={styles.sidebarMr}>{pickField({ titleMr, titleEn }, 'title')}</span>
                   </span>
                   <span className={styles.sidebarArrow} aria-hidden="true">→</span>
                 </Link>

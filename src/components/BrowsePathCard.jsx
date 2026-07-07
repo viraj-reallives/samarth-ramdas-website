@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { FiArrowRight } from 'react-icons/fi'
+import { useI18n } from '../i18n/useI18n'
 import styles from './BrowsePathCard.module.css'
 
 function BrowsePathCard({
@@ -13,10 +14,15 @@ function BrowsePathCard({
   icon,
   image,
   layout = 'horizontal',
-  ctaMr = 'निवडा',
-  ctaEn = 'Choose',
+  ctaMr,
+  ctaEn,
 }) {
+  const { pick, pickField, t } = useI18n()
   const isStacked = layout === 'stacked'
+  const title = pickField({ titleMr, titleEn }, 'title')
+  const description = pickField({ descriptionMr, descriptionEn }, 'description')
+  const step = pickField({ stepMr, stepEn }, 'step')
+  const cta = pick(ctaMr ?? t('common.choose'), ctaEn ?? t('common.choose'))
 
   return (
     <Link to={to} className={`${styles.card} ${styles[layout]}`}>
@@ -35,22 +41,15 @@ function BrowsePathCard({
             ) : null}
             <div className={styles.body}>
               <h3 className={styles.title}>
-                <span className={styles.titleMr}>{titleMr}</span>
-                <span className={styles.titleEn}>{titleEn}</span>
+                <span className={styles.titleMr}>{title}</span>
               </h3>
-              {(descriptionMr || descriptionEn) && (
-                <p className={styles.description}>
-                  {descriptionMr}
-                  {descriptionEn && <span className={styles.descEn}>{descriptionEn}</span>}
-                </p>
-              )}
+              {description ? (
+                <p className={styles.description}>{description}</p>
+              ) : null}
             </div>
           </div>
           <span className={styles.stackedCta}>
-            <span className={styles.ctaLabel}>
-              {ctaMr}
-              <span className={styles.ctaLabelEn}>{ctaEn}</span>
-            </span>
+            <span className={styles.ctaLabel}>{cta}</span>
             <FiArrowRight className={styles.ctaIcon} aria-hidden="true" />
           </span>
         </>
@@ -60,22 +59,13 @@ function BrowsePathCard({
             {icon}
           </div>
           <div className={styles.body}>
-            {stepMr && (
-              <p className={styles.step}>
-                {stepMr}
-                <span className={styles.stepEn}>{stepEn}</span>
-              </p>
-            )}
+            {step ? (
+              <p className={styles.step}>{step}</p>
+            ) : null}
             <h3 className={styles.title}>
-              <span className={styles.titleMr}>{titleMr}</span>
-              <span className={styles.titleEn}>{titleEn}</span>
+              <span className={styles.titleMr}>{title}</span>
             </h3>
-            {(descriptionMr || descriptionEn) && (
-              <p className={styles.description}>
-                {descriptionMr}
-                {descriptionEn && <span className={styles.descEn}>{descriptionEn}</span>}
-              </p>
-            )}
+            {description ? <p className={styles.description}>{description}</p> : null}
           </div>
           <span className={styles.horizontalCta} aria-hidden="true">
             <FiArrowRight />

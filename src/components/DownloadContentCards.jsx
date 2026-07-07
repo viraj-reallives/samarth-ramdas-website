@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { downloadContentFile } from '../utils/downloadContent'
+import { useI18n } from '../i18n/useI18n'
 import cardStyles from '../pages/SubjectAuthor.module.css'
 import styles from './DownloadContentCards.module.css'
 
@@ -65,6 +66,7 @@ function PdfIcon() {
 }
 
 export function AudioDownloadCard({ item, onListen }) {
+  const { t, pickField } = useI18n()
   const [isDownloading, setIsDownloading] = useState(false)
 
   const handleDownload = async () => {
@@ -86,8 +88,7 @@ export function AudioDownloadCard({ item, onListen }) {
     <article className={cardStyles.downloadCard}>
       <Mp3Icon />
       <div className={cardStyles.cardText}>
-        <p className={cardStyles.cardTitleMr}>{item.titleMr}</p>
-        <p className={cardStyles.cardTitleEn}>{item.titleEn}</p>
+        <p className={cardStyles.cardTitleMr}>{pickField(item, 'title')}</p>
       </div>
       {item.fileUrl ? (
         <div className={styles.cardActions}>
@@ -96,7 +97,7 @@ export function AudioDownloadCard({ item, onListen }) {
             className={styles.btnListen}
             onClick={() => onListen(item)}
           >
-            ऐका / Listen
+            {t('common.listen')}
           </button>
           <button
             type="button"
@@ -104,17 +105,18 @@ export function AudioDownloadCard({ item, onListen }) {
             onClick={handleDownload}
             disabled={isDownloading}
           >
-            {isDownloading ? 'Saving...' : 'डाउनलोड / Download'}
+            {isDownloading ? t('common.saving') : t('common.download')}
           </button>
         </div>
       ) : (
-        <span className={styles.btnUnavailable}>Unavailable</span>
+        <span className={styles.btnUnavailable}>{t('common.unavailable')}</span>
       )}
     </article>
   )
 }
 
 export function LiteratureDownloadCard({ item }) {
+  const { t, pickField } = useI18n()
   const [isDownloading, setIsDownloading] = useState(false)
 
   const handleRead = () => {
@@ -141,8 +143,7 @@ export function LiteratureDownloadCard({ item }) {
     <article className={cardStyles.downloadCard}>
       <PdfIcon />
       <div className={cardStyles.cardText}>
-        <p className={cardStyles.cardTitleMr}>{item.titleMr}</p>
-        <p className={cardStyles.cardTitleEn}>{item.titleEn}</p>
+        <p className={cardStyles.cardTitleMr}>{pickField(item, 'title')}</p>
       </div>
       {item.fileUrl ? (
         <div className={styles.cardActions}>
@@ -151,7 +152,7 @@ export function LiteratureDownloadCard({ item }) {
             className={styles.btnRead}
             onClick={handleRead}
           >
-            वाचा / Read
+            {t('common.read')}
           </button>
           <button
             type="button"
@@ -159,11 +160,11 @@ export function LiteratureDownloadCard({ item }) {
             onClick={handleDownload}
             disabled={isDownloading}
           >
-            {isDownloading ? 'Saving...' : 'डाउनलोड / Download'}
+            {isDownloading ? t('common.saving') : t('common.download')}
           </button>
         </div>
       ) : (
-        <span className={styles.btnUnavailable}>Unavailable</span>
+        <span className={styles.btnUnavailable}>{t('common.unavailable')}</span>
       )}
     </article>
   )

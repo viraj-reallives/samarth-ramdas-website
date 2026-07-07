@@ -1,0 +1,118 @@
+.root {
+  position: relative;
+}
+
+.trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 40px;
+  padding: 0 12px;
+  border: 1px solid rgba(78, 52, 46, 0.12);
+  border-radius: 10px;
+  background: #ffffff;
+  color: var(--header-brown, #4e342e);
+  font-family: var(--font-en);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    border-color 0.22s ease,
+    background-color 0.22s ease,
+    box-shadow 0.22s ease;
+}
+
+.trigger:hover,
+.triggerOpen {
+  border-color: rgba(255, 107, 0, 0.35);
+  background: #fff8f0;
+}
+
+.icon {
+  flex-shrink: 0;
+  font-size: 1rem;
+  color: #e8661a;
+}
+
+.current {
+  white-space: nowrap;
+  text-align: left;
+}
+
+.chevron {
+  flex-shrink: 0;
+  font-size: 0.9rem;
+  opacity: 0.7;
+  transition: transform 0.22s ease;
+}
+
+.triggerOpen .chevron {
+  transform: rotate(180deg);
+}
+
+.menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 1001;
+  min-width: 140px;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  border: 1px solid rgba(78, 52, 46, 0.08);
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow:
+    0 4px 12px rgba(78, 52, 46, 0.06),
+    0 16px 40px rgba(78, 52, 46, 0.12);
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 10px 12px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--header-brown, #4e342e);
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.option:hover {
+  background: #fff8f0;
+  color: #e8661a;
+}
+
+.optionActive {
+  background: rgba(255, 107, 0, 0.1);
+  color: #e8661a;
+}
+
+.optionLabel {
+  font-family: var(--font-mr);
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.optionShort {
+  font-family: var(--font-en);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  opacity: 0.7;
+}
+
+@media (max-width: 640px) {
+  .trigger {
+    height: 38px;
+    padding: 0 10px;
+  }
+
+  .current {
+    font-size: 0.78rem;
+  }
+}

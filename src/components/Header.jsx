@@ -2,6 +2,8 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { FiChevronDown } from 'react-icons/fi'
 import { libraryRoutePrefixes, mainNavItems, mediaMenu, mediaRoutePrefixes } from '../data/headerNav'
+import { useI18n } from '../i18n/useI18n'
+import LanguageSwitcher from './LanguageSwitcher'
 import SiteLogo from './SiteLogo'
 import styles from './Header.module.css'
 
@@ -67,26 +69,23 @@ function getActiveDropdownLinkId(pathname, hash, links) {
 }
 
 function NavLabel({ labelMr, labelEn, stacked = true }) {
+  const { pick } = useI18n()
+  const label = pick(labelMr, labelEn)
+
   if (!stacked) {
-    return (
-      <span className={styles.navLabelInline}>
-        <span className={styles.navMr}>{labelMr}</span>
-        <span className={styles.navSep}>/</span>
-        <span className={styles.navEn}>{labelEn}</span>
-      </span>
-    )
+    return <span className={styles.navMr}>{label}</span>
   }
 
   return (
     <span className={styles.navLabel}>
-      <span className={styles.navMr}>{labelMr}</span>
-      <span className={styles.navEn}>{labelEn}</span>
+      <span className={styles.navMr}>{label}</span>
     </span>
   )
 }
 
 function Header() {
   const { pathname, hash } = useLocation()
+  const { pick, pickField, t } = useI18n()
   const headerRef = useRef(null)
   const menuCloseTimer = useRef(null)
   const [scrolled, setScrolled] = useState(false)
@@ -180,7 +179,7 @@ function Header() {
           className={`${styles.navTrigger} ${isActive ? styles.navTriggerActive : ''}`}
           aria-expanded={isOpen}
           aria-haspopup="true"
-          title={`${item.labelMr} / ${item.labelEn}`}
+          title={pick(item.labelMr, item.labelEn)}
           onClick={() => setOpenMenu((c) => (c === item.id ? null : item.id))}
         >
           <NavLabel labelMr={item.labelMr} labelEn={item.labelEn} stacked={false} />
@@ -193,18 +192,13 @@ function Header() {
             <div className={styles.megaHeader}>
               <div>
                 <p className={styles.megaEyebrow}>श्री समर्थ वाङ्मय</p>
-                <h3 className={styles.megaTitle}>
-                  {item.labelMr} <span>/ {item.labelEn}</span>
-                </h3>
+                <h3 className={styles.megaTitle}>{pick(item.labelMr, item.labelEn)}</h3>
                 {item.introMr && (
-                  <p className={styles.megaIntro}>
-                    {item.introMr}
-                    <span className={styles.megaIntroEn}>{item.introEn}</span>
-                  </p>
+                  <p className={styles.megaIntro}>{pick(item.introMr, item.introEn)}</p>
                 )}
               </div>
               <Link to={item.href} className={styles.megaCta} onClick={closeMenus}>
-                साहित्य शोधा / Browse all
+                {t('nav.browseAll')}
               </Link>
             </div>
             <div className={styles.megaGrid}>
@@ -220,15 +214,13 @@ function Header() {
                         }`}
                         onClick={closeMenus}
                       >
-                        <span className={styles.megaFeaturedTitle}>{column.titleMr}</span>
-                        <span className={styles.megaFeaturedTitleEn}>{column.titleEn}</span>
+                        <span className={styles.megaFeaturedTitle}>
+                          {pickField(column, 'title')}
+                        </span>
                         {column.hintMr && (
-                          <p className={styles.megaFeaturedHint}>
-                            {column.hintMr}
-                            <span>{column.hintEn}</span>
-                          </p>
+                          <p className={styles.megaFeaturedHint}>{pickField(column, 'hint')}</p>
                         )}
-                        <span className={styles.megaFeaturedCta}>शोधा / Search →</span>
+                        <span className={styles.megaFeaturedCta}>{t('common.search')} →</span>
                       </Link>
                     </div>
                   )
@@ -237,8 +229,7 @@ function Header() {
                 return (
                   <div key={column.titleEn} className={styles.megaColumn}>
                     <Link to={column.href} className={styles.megaColumnTitle} onClick={closeMenus}>
-                      <span>{column.titleMr}</span>
-                      <span className={styles.megaColumnTitleEn}>{column.titleEn}</span>
+                      <span>{pickField(column, 'title')}</span>
                     </Link>
                     <ul className={styles.megaList}>
                       {column.links.map((link) => (
@@ -250,12 +241,9 @@ function Header() {
                             }`}
                             onClick={closeMenus}
                           >
-                            <span className={styles.megaLinkMr}>{link.labelMr}</span>
-                            <span className={styles.megaLinkEn}>{link.labelEn}</span>
+                            <span className={styles.megaLinkMr}>{pickField(link, 'label')}</span>
                             {link.hintMr && (
-                              <span className={styles.megaLinkHint}>
-                                {link.hintMr} · {link.hintEn}
-                              </span>
+                              <span className={styles.megaLinkHint}>{pickField(link, 'hint')}</span>
                             )}
                           </Link>
                         </li>
@@ -288,7 +276,7 @@ function Header() {
           className={`${styles.navTrigger} ${isActive || isOpen ? styles.navTriggerActive : ''}`}
           aria-expanded={isOpen}
           aria-haspopup="true"
-          title={`${item.labelMr} / ${item.labelEn}`}
+          title={pick(item.labelMr, item.labelEn)}
           onClick={() => setOpenMenu((c) => (c === item.id ? null : item.id))}
         >
           <NavLabel labelMr={item.labelMr} labelEn={item.labelEn} stacked={false} />
@@ -307,8 +295,7 @@ function Header() {
                   }`}
                   onClick={closeMenus}
                 >
-                  <span className={styles.dropLinkMr}>{link.labelMr}</span>
-                  <span className={styles.dropLinkEn}>{link.labelEn}</span>
+                  <span className={styles.dropLinkMr}>{pickField(link, 'label')}</span>
                 </Link>
               </li>
             ))}
@@ -327,7 +314,7 @@ function Header() {
           to={item.href}
           className={`${styles.navLink} ${isActive ? styles.navLinkActive : ''}`}
           aria-current={isActive ? 'page' : undefined}
-          title={`${item.labelMr} / ${item.labelEn}`}
+          title={pick(item.labelMr, item.labelEn)}
           onClick={closeMenus}
         >
           <NavLabel labelMr={item.labelMr} labelEn={item.labelEn} stacked={false} />
@@ -344,7 +331,7 @@ function Header() {
     >
       <div className={styles.topBar}>
         <div className={styles.topShell}>
-          <p className={styles.mantra}>॥ जय जय रघुवीर समर्थ ॥</p>
+          <p className={styles.mantra}>{t('site.mantra')}</p>
         </div>
       </div>
 
@@ -365,6 +352,7 @@ function Header() {
           </nav>
 
           <div className={styles.actions}>
+            <LanguageSwitcher />
             <button
               type="button"
               className={`${styles.menuBtn} ${mobileOpen ? styles.menuBtnOpen : ''}`}
@@ -387,7 +375,7 @@ function Header() {
         aria-hidden={!mobileOpen}
       >
         <div className={styles.mobileInner}>
-          <p className={styles.mobileHeading}>मुख्य मेनू</p>
+          <p className={styles.mobileHeading}>{t('nav.mainMenu')}</p>
           <ul className={styles.mobileList}>
             {mainNavItems.map((item) => {
               if (item.type === 'link') {
@@ -431,7 +419,7 @@ function Header() {
                                 className={styles.mobileFeaturedLink}
                                 onClick={closeMenus}
                               >
-                                {column.titleMr} / {column.titleEn}
+                                {pickField(column, 'title')}
                               </Link>
                             )
                           }
@@ -443,7 +431,7 @@ function Header() {
                                 className={styles.mobileGroupTitle}
                                 onClick={closeMenus}
                               >
-                                {column.titleMr} / {column.titleEn}
+                                {pickField(column, 'title')}
                               </Link>
                               <ul className={styles.mobileSubList}>
                                 {column.links.map((link) => (
@@ -453,8 +441,7 @@ function Header() {
                                       className={styles.mobileSubLink}
                                       onClick={closeMenus}
                                     >
-                                      {link.labelMr}
-                                      <span>{link.labelEn}</span>
+                                      {pickField(link, 'label')}
                                     </Link>
                                   </li>
                                 ))}
@@ -469,8 +456,7 @@ function Header() {
                             className={styles.mobileSubLink}
                             onClick={closeMenus}
                           >
-                            {link.labelMr}
-                            <span>{link.labelEn}</span>
+                            {pickField(link, 'label')}
                           </Link>
                         ))}
                   </div>

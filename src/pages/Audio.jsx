@@ -4,9 +4,12 @@ import { FiHeadphones, FiSearch } from 'react-icons/fi'
 import InnerBanner from '../components/InnerBanner'
 import pageUi from '../styles/pageUi.module.css'
 import { getAllAudioEntries } from '../data/subjects'
+import { useI18n } from '../i18n/useI18n'
 import styles from './Audio.module.css'
 
 function AudioCard({ entry, index }) {
+  const { t, pickField } = useI18n()
+
   return (
     <Link
       to={entry.browseUrl}
@@ -17,20 +20,22 @@ function AudioCard({ entry, index }) {
         <FiHeadphones />
       </span>
       <div className={styles.cardBody}>
-        <p className={styles.titleMr}>{entry.titleMr}</p>
-        <p className={styles.titleEn}>{entry.titleEn}</p>
+        <p className={styles.titleMr}>{pickField(entry, 'title')}</p>
         <p className={styles.meta}>
-          {entry.subjectTitleMr} · {entry.authorTitleMr}
+          {pickField({ titleMr: entry.subjectTitleMr, titleEn: entry.subjectTitleEn }, 'title')}
+          {' · '}
+          {pickField({ titleMr: entry.authorTitleMr, titleEn: entry.authorTitleEn }, 'title')}
         </p>
       </div>
       <span className={styles.cardCta} aria-hidden="true">
-        ऐका →
+        {t('common.listen')} →
       </span>
     </Link>
   )
 }
 
 function Audio() {
+  const { t } = useI18n()
   const [search, setSearch] = useState('')
   const allEntries = useMemo(() => getAllAudioEntries(), [])
 
@@ -47,24 +52,19 @@ function Audio() {
   }, [allEntries, search])
 
   useEffect(() => {
-    document.title = 'ऑडिओ – श्री समर्थ रामदास'
+    document.title = t('pages.audio.documentTitle')
     return () => {
-      document.title = 'श्री समर्थ रामदास - श्री रामदासांचे साहित्य'
+      document.title = t('site.title')
     }
-  }, [])
+  }, [t])
 
   return (
     <>
       <InnerBanner contentId="audio-content" />
 
       <div className={`${styles.content} ${pageUi.content}`} id="audio-content">
-        <h1 className={styles.pageTitle}>ऑडिओ / Audio</h1>
-        <p className={styles.pageIntro}>
-          समर्थ वाङ्मयाची ध्वनिफीत — विषय आणि लेखकानुसार ऐका.
-          <span className={styles.pageIntroEn}>
-            Listen to spiritual audio by subject and author.
-          </span>
-        </p>
+        <h1 className={styles.pageTitle}>{t('pages.audio.title')}</h1>
+        <p className={styles.pageIntro}>{t('pages.audio.intro')}</p>
 
         <div className={styles.toolbar}>
           <label className={styles.searchWrap}>
@@ -74,18 +74,18 @@ function Audio() {
               className={styles.searchInput}
               value={search}
               onChange={(event) => setSearch(event.target.value)}
-              placeholder="शोधा / Search audio..."
+              placeholder={t('pages.audio.searchPlaceholder')}
             />
           </label>
           <p className={styles.count}>
-            {filtered.length} ऑडिओ · {filtered.length} tracks
+            {t('common.countTracks', { count: filtered.length })}
           </p>
         </div>
 
         {filtered.length === 0 ? (
           <div className={pageUi.empty}>
-            <p className={pageUi.emptyTitle}>ऑडिओ सापडले नाहीत</p>
-            <p className={pageUi.emptySub}>No audio found. Try a different search.</p>
+            <p className={pageUi.emptyTitle}>{t('pages.audio.empty')}</p>
+            <p className={pageUi.emptySub}>{t('pages.audio.emptySub')}</p>
           </div>
         ) : (
           <div className={styles.grid}>

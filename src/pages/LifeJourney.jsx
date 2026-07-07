@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import LifeJourneySlider from '../components/LifeJourneySlider'
 import pageUi from '../styles/pageUi.module.css'
+import { useI18n } from '../i18n/useI18n'
 import styles from './LifeJourney.module.css'
 
 const marathiSections = [
@@ -67,62 +68,33 @@ const englishSections = [
 ]
 
 function LifeJourney() {
-  const [activeTab, setActiveTab] = useState('marathi')
+  const { t, locale } = useI18n()
 
   useEffect(() => {
-    document.title = 'जीवन प्रवास – श्री समर्थ रामदास'
+    document.title = t('pages.lifeJourney.documentTitle')
     return () => {
-      document.title = 'श्री समर्थ रामदास - श्री रामदासांचे साहित्य'
+      document.title = t('site.title')
     }
-  }, [])
+  }, [t])
+
+  const sections = locale === 'mr' ? marathiSections : englishSections
 
   return (
     <div className={styles.page}>
       <LifeJourneySlider contentId="life-journey-content" />
 
       <div className={`${styles.section} ${pageUi.content}`} id="life-journey-content">
-        <div className={styles.tabBar} role="tablist" aria-label="Life journey content">
-          <button
-            type="button"
-            role="tab"
-            aria-selected={activeTab === 'marathi'}
-            className={activeTab === 'marathi' ? styles.tabActive : styles.tab}
-            onClick={() => setActiveTab('marathi')}
-          >
-            श्री समर्थ चरित्र
-          </button>
-          <button
-            type="button"
-            role="tab"
-            aria-selected={activeTab === 'english'}
-            className={activeTab === 'english' ? styles.tabActive : styles.tab}
-            onClick={() => setActiveTab('english')}
-          >
-            Life Journey
-          </button>
-        </div>
-
         <div className={styles.content}>
-          {activeTab === 'marathi' ? (
-            <div role="tabpanel" className={styles.textBlock}>
-              {marathiSections.map((section, index) => (
-                <p key={index} className={styles.paragraph}>
-                  {section.title && (
-                    <strong className={styles.sectionTitle}>{section.title} – </strong>
-                  )}
-                  {section.text}
-                </p>
-              ))}
-            </div>
-          ) : (
-            <div role="tabpanel" className={styles.textBlock}>
-              {englishSections.map((section, index) => (
-                <p key={index} className={styles.paragraph}>
-                  {section.text}
-                </p>
-              ))}
-            </div>
-          )}
+          <div role="tabpanel" className={styles.textBlock}>
+            {sections.map((section, index) => (
+              <p key={index} className={styles.paragraph}>
+                {section.title && (
+                  <strong className={styles.sectionTitle}>{section.title} – </strong>
+                )}
+                {section.text}
+              </p>
+            ))}
+          </div>
         </div>
       </div>
     </div>

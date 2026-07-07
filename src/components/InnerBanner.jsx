@@ -1,4 +1,5 @@
 import { FiChevronDown } from 'react-icons/fi'
+import { useI18n } from '../i18n/useI18n'
 import styles from './InnerBanner.module.css'
 
 const DEFAULT_BANNER_IMAGE = '/assets/inner-banner.jpeg'
@@ -6,11 +7,14 @@ const DEFAULT_BANNER_IMAGE_MOBILE = '/assets/inner-banner-mobile.jpeg'
 
 function InnerBanner({
   contentId = 'page-content',
-  scrollLabel = 'खाली स्क्रोल करा / Scroll down',
+  scrollLabel,
   image = DEFAULT_BANNER_IMAGE,
   imageMobile,
-  imageAlt = '|| जय जय रघुवीर समर्थ ||',
+  imageAlt,
 }) {
+  const { t } = useI18n()
+  const resolvedScrollLabel = scrollLabel ?? t('common.scrollDown')
+  const resolvedImageAlt = imageAlt ?? t('site.mantra')
   const scrollToContent = () => {
     document.getElementById(contentId)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
@@ -24,17 +28,17 @@ function InnerBanner({
         {mobileImage ? (
           <picture className={styles.bannerPicture}>
             <source media="(max-width: 768px)" srcSet={mobileImage} />
-            <img src={image} alt={imageAlt} className={styles.bannerImage} />
+            <img src={image} alt={resolvedImageAlt} className={styles.bannerImage} />
           </picture>
         ) : (
-          <img src={image} alt={imageAlt} className={styles.bannerImage} />
+          <img src={image} alt={resolvedImageAlt} className={styles.bannerImage} />
         )}
         <div className={styles.bannerOverlay} aria-hidden="true" />
         <button
           type="button"
           className={styles.scrollCue}
           onClick={scrollToContent}
-          aria-label={scrollLabel}
+          aria-label={resolvedScrollLabel}
         >
           <FiChevronDown aria-hidden="true" />
         </button>

@@ -3,6 +3,7 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import { Autoplay, EffectFade } from 'swiper/modules'
 import { FiChevronDown } from 'react-icons/fi'
 import { lifeJourneySlides } from '../data/lifeJourneySlides'
+import { useI18n } from '../i18n/useI18n'
 import 'swiper/css'
 import 'swiper/css/effect-fade'
 import styles from './LifeJourneySlider.module.css'
@@ -10,10 +11,8 @@ import styles from './LifeJourneySlider.module.css'
 const AUTOPLAY_MS = 6000
 const TOTAL = lifeJourneySlides.length
 
-const SAMARTH_INTRO_MR =
-  'श्री समर्थ रामदास स्वामी — भक्ती, ज्ञान, शक्ती आणि कर्तव्य यांच्या मार्गाने समाज जागृतीचे अपूर्व कार्य.'
-
 function LifeJourneySlider({ contentId = 'life-journey-content' }) {
+  const { t, pickField } = useI18n()
   const sectionRef = useRef(null)
   const thumbRailRef = useRef(null)
   const swiperRef = useRef(null)
@@ -91,7 +90,7 @@ function LifeJourneySlider({ contentId = 'life-journey-content' }) {
     <section
       ref={sectionRef}
       className={styles.hero}
-      aria-label="जीवन प्रवास चित्रमाला"
+      aria-label={t('pages.lifeJourney.galleryAria')}
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => {
         setIsPaused(false)
@@ -133,7 +132,7 @@ function LifeJourneySlider({ contentId = 'life-journey-content' }) {
                 <div className={styles.slideFrame}>
                   <img
                     src={slide.src}
-                    alt={slide.titleMr}
+                    alt={pickField(slide, 'title')}
                     className={styles.slideImage}
                     loading={index === 0 ? 'eager' : 'lazy'}
                     decoding="async"
@@ -147,13 +146,13 @@ function LifeJourneySlider({ contentId = 'life-journey-content' }) {
             type="button"
             className={styles.navZoneLeft}
             onClick={goPrev}
-            aria-label="मागील चित्र"
+            aria-label={t('pages.lifeJourney.prevImage')}
           />
           <button
             type="button"
             className={styles.navZoneRight}
             onClick={goNext}
-            aria-label="पुढील चित्र"
+            aria-label={t('pages.lifeJourney.nextImage')}
           />
 
           <div className={styles.imageOverlay}>
@@ -163,11 +162,10 @@ function LifeJourneySlider({ contentId = 'life-journey-content' }) {
                   {String(activeIndex + 1).padStart(2, '0')} / {String(TOTAL).padStart(2, '0')}
                 </span>
                 <div>
-                  <p className={styles.slideCaptionTitle}>{activeSlide.titleMr}</p>
-                  <p className={styles.slideCaptionEn}>{activeSlide.titleEn}</p>
+                  <p className={styles.slideCaptionTitle}>{pickField(activeSlide, 'title')}</p>
                 </div>
               </div>
-              <p className={styles.samarthIntroText}>{SAMARTH_INTRO_MR}</p>
+              <p className={styles.samarthIntroText}>{t('pages.lifeJourney.intro')}</p>
             </div>
           </div>
         </div>
@@ -176,8 +174,8 @@ function LifeJourneySlider({ contentId = 'life-journey-content' }) {
       <div className={styles.footer}>
         <div className={styles.footerTop}>
           <div className={styles.footerLead}>
-            <p className={styles.samarthKicker}>॥ जय जय रघुवीर समर्थ ॥</p>
-            <p className={styles.mobileActiveTitle}>{activeSlide.titleMr}</p>
+            <p className={styles.samarthKicker}>{t('site.mantra')}</p>
+            <p className={styles.mobileActiveTitle}>{pickField(activeSlide, 'title')}</p>
           </div>
 
           <div className={styles.dots} role="tablist" aria-label="Slide navigation">
@@ -187,7 +185,7 @@ function LifeJourneySlider({ contentId = 'life-journey-content' }) {
                 type="button"
                 role="tab"
                 aria-selected={index === activeIndex}
-                aria-label={slide.titleMr}
+                aria-label={pickField(slide, 'title')}
                 className={index === activeIndex ? styles.dotActive : styles.dot}
                 onClick={() => goToSlide(index)}
               />
@@ -198,7 +196,7 @@ function LifeJourneySlider({ contentId = 'life-journey-content' }) {
             type="button"
             className={styles.scrollCue}
             onClick={scrollToContent}
-            aria-label="खाली स्क्रोल करा / Scroll down"
+            aria-label={t('common.scrollDown')}
           >
             <FiChevronDown aria-hidden="true" />
           </button>
@@ -221,7 +219,7 @@ function LifeJourneySlider({ contentId = 'life-journey-content' }) {
                 <img src={slide.src} alt="" loading="lazy" />
                 {index === activeIndex && <span className={styles.thumbActiveRing} aria-hidden="true" />}
               </span>
-              <span className={styles.thumbLabel}>{slide.titleMr}</span>
+              <span className={styles.thumbLabel}>{pickField(slide, 'title')}</span>
             </button>
           ))}
         </div>

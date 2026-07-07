@@ -1,5 +1,6 @@
 import { useCallback, useMemo, useState } from 'react'
 import { FiRefreshCw, FiShield } from 'react-icons/fi'
+import { useI18n } from '../i18n/useI18n'
 import styles from './SimpleCaptcha.module.css'
 
 function createChallenge() {
@@ -9,11 +10,13 @@ function createChallenge() {
 }
 
 function SimpleCaptcha({ value, onChange, onRefresh, challenge, error }) {
+  const { t } = useI18n()
+
   return (
     <div className={styles.captcha}>
       <span className={styles.label}>
         <FiShield aria-hidden="true" />
-        सुरक्षा तपासणी / Security check
+        {t('pages.captcha.securityCheck')}
       </span>
 
       <div className={styles.row}>
@@ -27,7 +30,7 @@ function SimpleCaptcha({ value, onChange, onRefresh, challenge, error }) {
           className={error ? styles.inputError : styles.input}
           value={value}
           onChange={(event) => onChange(event.target.value)}
-          placeholder="उत्तर / Answer"
+          placeholder={t('pages.captcha.answer')}
           aria-label="Captcha answer"
           autoComplete="off"
         />
@@ -35,7 +38,7 @@ function SimpleCaptcha({ value, onChange, onRefresh, challenge, error }) {
           type="button"
           className={styles.refresh}
           onClick={onRefresh}
-          aria-label="New captcha question"
+          aria-label={t('pages.captcha.refresh')}
         >
           <FiRefreshCw aria-hidden="true" />
         </button>
@@ -47,6 +50,7 @@ function SimpleCaptcha({ value, onChange, onRefresh, challenge, error }) {
 }
 
 export function useSimpleCaptcha() {
+  const { t } = useI18n()
   const [challenge, setChallenge] = useState(createChallenge)
   const [value, setValue] = useState('')
   const [error, setError] = useState('')
@@ -66,16 +70,16 @@ export function useSimpleCaptcha() {
   const validate = useCallback(() => {
     const trimmed = value.trim()
     if (!trimmed) {
-      setError('कृपया उत्तर लिहा. / Please enter the answer.')
+      setError(t('pages.captcha.enterAnswer'))
       return false
     }
     if (Number(trimmed) !== challenge.answer) {
-      setError('चुकीचे उत्तर. पुन्हा प्रयत्न करा. / Wrong answer. Please try again.')
+      setError(t('pages.captcha.wrongAnswer'))
       return false
     }
     setError('')
     return true
-  }, [value, challenge.answer])
+  }, [value, challenge.answer, t])
 
   return {
     challenge,

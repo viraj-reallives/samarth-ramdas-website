@@ -5,10 +5,13 @@ import pageUi from '../styles/pageUi.module.css'
 import { Link } from 'react-router-dom'
 import { FiGlobe, FiSearch } from 'react-icons/fi'
 import { languageCategories, languages } from '../data/languages'
+import { useI18n } from '../i18n/useI18n'
 import styles from './Language.module.css'
 
 function LanguageCard({ titleMr, titleEn, href, badge, hintMr, hintEn, featured, index }) {
+  const { t, pickField } = useI18n()
   const cardClass = featured ? styles.cardFeatured : styles.card
+
   return (
     <Link
       to={href}
@@ -19,16 +22,13 @@ function LanguageCard({ titleMr, titleEn, href, badge, hintMr, hintEn, featured,
       <div className={styles.cardContent}>
         <span className={styles.badge}>{badge}</span>
         <div className={styles.titles}>
-          <span className={styles.titleMr}>{titleMr}</span>
-          <span className={styles.titleEn}>{titleEn}</span>
+          <span className={styles.titleMr}>{pickField({ titleMr, titleEn }, 'title')}</span>
         </div>
         <p className={styles.hint}>
-          <span>{hintMr}</span>
-          <span className={styles.hintSep}>·</span>
-          <span>{hintEn}</span>
+          {pickField({ hintMr, hintEn }, 'hint')}
         </p>
         <span className={styles.cta}>
-          पहा / Explore
+          {t('common.explore')}
           <span aria-hidden="true">→</span>
         </span>
       </div>
@@ -37,15 +37,16 @@ function LanguageCard({ titleMr, titleEn, href, badge, hintMr, hintEn, featured,
 }
 
 function Language() {
+  const { t, pickField } = useI18n()
   const [activeCategory, setActiveCategory] = useState('all')
   const [search, setSearch] = useState('')
 
   useEffect(() => {
-    document.title = 'भाषा – श्री समर्थ रामदास'
+    document.title = t('pages.language.documentTitle')
     return () => {
-      document.title = 'श्री समर्थ रामदास - श्री रामदासांचे साहित्य'
+      document.title = t('site.title')
     }
-  }, [])
+  }, [t])
 
   const filtered = useMemo(() => {
     const query = search.trim().toLowerCase()
@@ -73,33 +74,25 @@ function Language() {
       <InnerBanner
         contentId="language-content"
         image={CATEGORY_CARD_IMAGES.language}
-        imageAlt="भाषेनुसार वर्गीकरण / Language-wise Classification"
+        imageAlt={t('pages.language.bannerAlt')}
+        scrollLabel={t('pages.language.scrollLabel')}
       />
 
       <div className={`${styles.content} ${pageUi.content}`} id="language-content">
         <header className={styles.pageHeader}>
-          <h1 className={styles.pageTitle}>
-            भाषेनुसार वर्गीकरण / Language-wise Classification
-          </h1>
-          <p className={styles.pageIntro}>
-            भाषा निवडा आणि त्या भाषेतील साहित्य पहा.
-            <span className={styles.pageIntroEn}>
-              Choose a language to browse available literature and audio.
-            </span>
-          </p>
+          <h1 className={styles.pageTitle}>{t('pages.language.title')}</h1>
+          <p className={styles.pageIntro}>{t('pages.language.intro')}</p>
         </header>
 
         <div className={`${styles.steps} ${pageUi.steps}`} aria-label="How to use this page">
           <div className={`${styles.step} ${pageUi.step}`}>
-            <span className={styles.stepNum}>१</span>
-            <span className={styles.stepText}>भाषा निवडा</span>
-            <span className={styles.stepSub}>Choose Language</span>
+            <span className={styles.stepNum}>{t('pages.language.step1Num')}</span>
+            <span className={styles.stepText}>{t('pages.language.step1')}</span>
           </div>
           <span className={styles.stepArrow} aria-hidden="true">→</span>
           <div className={`${styles.step} ${pageUi.step}`}>
-            <span className={styles.stepNum}>२</span>
-            <span className={styles.stepText}>साहित्य पहा</span>
-            <span className={styles.stepSub}>Browse Content</span>
+            <span className={styles.stepNum}>{t('pages.language.step2Num')}</span>
+            <span className={styles.stepText}>{t('pages.language.step2')}</span>
           </div>
         </div>
 
@@ -109,40 +102,39 @@ function Language() {
             <input
               type="search"
               className={styles.searchInput}
-              placeholder="भाषा शोधा / Search language..."
+              placeholder={t('pages.language.searchPlaceholder')}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
           </label>
           <span className={styles.countBadge}>
             <FiGlobe aria-hidden="true" />
-            {filtered.length} भाषा · {filtered.length} Languages
+            {t('pages.language.countLanguages', { count: filtered.length })}
           </span>
         </div>
 
         <div className={styles.filters} role="tablist" aria-label="Filter languages">
-          {languageCategories.map(({ id, titleMr, titleEn }) => (
+          {languageCategories.map((category) => (
             <button
-              key={id}
+              key={category.id}
               type="button"
               role="tab"
-              aria-selected={activeCategory === id}
-              className={activeCategory === id ? styles.filterActive : styles.filterBtn}
-              onClick={() => setActiveCategory(id)}
+              aria-selected={activeCategory === category.id}
+              className={activeCategory === category.id ? styles.filterActive : styles.filterBtn}
+              onClick={() => setActiveCategory(category.id)}
             >
               <span className={styles.filterLabel}>
-                <span className={styles.filterMr}>{titleMr}</span>
-                <span className={styles.filterEn}>{titleEn}</span>
+                <span className={styles.filterMr}>{pickField(category, 'title')}</span>
               </span>
-              <span className={styles.filterCount}>{categoryCounts[id] ?? 0}</span>
+              <span className={styles.filterCount}>{categoryCounts[category.id] ?? 0}</span>
             </button>
           ))}
         </div>
 
         {filtered.length === 0 ? (
           <div className={pageUi.empty}>
-            <p>कोणतीही भाषा सापडली नाही.</p>
-            <p className={pageUi.emptySub}>No languages found. Try a different search or category.</p>
+            <p>{t('pages.language.empty')}</p>
+            <p className={pageUi.emptySub}>{t('pages.language.emptySub')}</p>
             <button
               type="button"
               className={pageUi.emptyReset}
@@ -151,7 +143,7 @@ function Language() {
                 setActiveCategory('all')
               }}
             >
-              सर्व भाषा पहा / View all languages
+              {t('pages.language.viewAllLanguages')}
             </button>
           </div>
         ) : (

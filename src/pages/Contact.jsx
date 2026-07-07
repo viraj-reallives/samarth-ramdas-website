@@ -1,64 +1,29 @@
-import { useEffect, useId, useRef, useState } from 'react'
+import { useEffect, useId, useState } from 'react'
 import InnerBanner from '../components/InnerBanner'
 import SimpleCaptcha, { useSimpleCaptcha } from '../components/SimpleCaptcha'
 import pageUi from '../styles/pageUi.module.css'
-import { FiMail, FiMapPin, FiSend, FiUpload, FiUser } from 'react-icons/fi'
-import {
-  WEB3FORMS_ACCESS_KEY,
-  WEB3FORMS_ENDPOINT,
-  WEB3FORMS_MAX_FILE_SIZE_MB,
-} from '../config/web3forms'
+import { FiMail, FiMapPin, FiSend, FiUser } from 'react-icons/fi'
+import { WEB3FORMS_ACCESS_KEY, WEB3FORMS_ENDPOINT } from '../config/web3forms'
 import { contactInfo } from '../data/navigation'
+import { useI18n } from '../i18n/useI18n'
 import styles from './Contact.module.css'
 
 const FORM_SUBJECT = 'This is update from samarthramdas400.in website'
 
-const MAX_FILE_SIZE_BYTES = WEB3FORMS_MAX_FILE_SIZE_MB * 1024 * 1024
-
 function Contact() {
+  const { t, pickField, locale } = useI18n()
   const [activeTab, setActiveTab] = useState('participation')
   const [status, setStatus] = useState('idle')
   const [statusMessage, setStatusMessage] = useState('')
-  const [selectedFileName, setSelectedFileName] = useState('')
-  const fileInputRef = useRef(null)
   const formId = useId()
   const captcha = useSimpleCaptcha()
 
   useEffect(() => {
-    document.title = 'संपर्क – श्री समर्थ रामदास'
+    document.title = t('pages.contact.documentTitle')
     return () => {
-      document.title = 'श्री समर्थ रामदास - श्री रामदासांचे साहित्य'
+      document.title = t('site.title')
     }
-  }, [])
-
-  const resetFileInput = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.value = ''
-    }
-    setSelectedFileName('')
-  }
-
-  const handleFileChange = (event) => {
-    const file = event.target.files?.[0]
-    if (!file) {
-      setSelectedFileName('')
-      return
-    }
-
-    if (file.size > MAX_FILE_SIZE_BYTES) {
-      setStatus('error')
-      setStatusMessage(
-        `फाईल ${WEB3FORMS_MAX_FILE_SIZE_MB} MB पेक्षा लहान असावी. / File must be smaller than ${WEB3FORMS_MAX_FILE_SIZE_MB} MB.`,
-      )
-      event.target.value = ''
-      setSelectedFileName('')
-      return
-    }
-
-    setStatus('idle')
-    setStatusMessage('')
-    setSelectedFileName(file.name)
-  }
+  }, [t])
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -90,18 +55,12 @@ function Contact() {
         result?.message ||
         result?.body?.message ||
         result?.error ||
-        'संदेश पाठवता आला नाही. कृपया पुन्हा प्रयत्न करा. / Could not send your message. Please try again.'
+        t('pages.contact.sendError')
 
       if (response.ok && success) {
-        const hadFile = Boolean(fileInputRef.current?.files?.[0])
         setStatus('success')
-        setStatusMessage(
-          hadFile
-            ? 'धन्यवाद! आपली माहिती आणि फाईल ई-मेलवर पाठवली गेली. / Thank you! Your details and file have been emailed.'
-            : 'धन्यवाद! आपली माहिती पाठवली गेली. / Thank you! Your details have been sent.',
-        )
+        setStatusMessage(t('pages.contact.success'))
         form.reset()
-        resetFileInput()
         captcha.refresh()
         window.setTimeout(() => {
           setStatus('idle')
@@ -114,9 +73,7 @@ function Contact() {
       setStatusMessage(message)
     } catch {
       setStatus('error')
-      setStatusMessage(
-        'नेटवर्क त्रुटी. कृपया पुन्हा प्रयत्न करा. / Network error. Please try again.',
-      )
+      setStatusMessage(t('pages.contact.networkError'))
     }
   }
 
@@ -126,30 +83,31 @@ function Contact() {
 
       <div className={`${styles.content} ${pageUi.content}`} id="contact-content">
         <header className={styles.pageHeader}>
-          <h1 className={styles.pageTitle}>संपर्क / Contact</h1>
-          <p className={styles.pageIntro}>
-            खालील पत्त्यावर संपर्क करा किंवा फॉर्म भरून आम्हाला लिहा.
-          </p>
+          <h1 className={styles.pageTitle}>{t('pages.contact.title')}</h1>
+          <p className={styles.pageIntro}>{t('pages.contact.intro')}</p>
         </header>
 
         <div className={styles.layout}>
           <aside className={styles.infoColumn}>
-            <h2 className={styles.infoHeading}>संपर्क माहिती / Contact Details</h2>
-            {contactInfo.map((block) => (
-              <div key={block.title} className={styles.infoCard}>
-                <span className={styles.infoIcon} aria-hidden="true">
-                  <FiMapPin />
-                </span>
-                <div>
-                  <p className={styles.infoTitle}>{block.title}</p>
-                  {block.lines.map((line) => (
-                    <p key={line} className={styles.infoLine}>
-                      {line}
-                    </p>
-                  ))}
+            <h2 className={styles.infoHeading}>{t('pages.contact.detailsHeading')}</h2>
+            {contactInfo.map((block) => {
+              const lines = locale === 'mr' ? block.linesMr : block.linesEn
+              return (
+                <div key={block.id} className={styles.infoCard}>
+                  <span className={styles.infoIcon} aria-hidden="true">
+                    <FiMapPin />
+                  </span>
+                  <div>
+                    <p className={styles.infoTitle}>{pickField(block, 'title')}</p>
+                    {lines.map((line) => (
+                      <p key={line} className={styles.infoLine}>
+                        {line}
+                      </p>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            ))}
+              )
+            })}
           </aside>
 
           <div className={styles.formPanel}>
@@ -165,12 +123,10 @@ function Contact() {
                   setActiveTab('participation')
                   setStatus('idle')
                   setStatusMessage('')
-                  resetFileInput()
                   captcha.refresh()
                 }}
               >
-                <span className={styles.tabMr}>सहभाग</span>
-                <span className={styles.tabEn}>Participation</span>
+                {t('pages.contact.participation')}
               </button>
               <button
                 type="button"
@@ -183,12 +139,10 @@ function Contact() {
                   setActiveTab('feedback')
                   setStatus('idle')
                   setStatusMessage('')
-                  resetFileInput()
                   captcha.refresh()
                 }}
               >
-                <span className={styles.tabMr}>प्रतिक्रिया</span>
-                <span className={styles.tabEn}>Feedback</span>
+                {t('pages.contact.feedback')}
               </button>
             </div>
 
@@ -199,7 +153,6 @@ function Contact() {
               className={styles.form}
               action={WEB3FORMS_ENDPOINT}
               method="POST"
-              encType="multipart/form-data"
               onSubmit={handleSubmit}
             >
               <input type="hidden" name="access_key" value={WEB3FORMS_ACCESS_KEY} />
@@ -214,20 +167,20 @@ function Contact() {
 
               <p className={styles.formHint}>
                 {activeTab === 'participation'
-                  ? 'सहभागासाठी आपली माहिती भरा. / Fill in your details to participate.'
-                  : 'आपली प्रतिक्रिया किंवा सूचना पाठवा. / Send your feedback or suggestions.'}
+                  ? t('pages.contact.participationHint')
+                  : t('pages.contact.feedbackHint')}
               </p>
 
               <label className={styles.field}>
                 <span className={styles.label}>
                   <FiUser aria-hidden="true" />
-                  आपले नाव / Your name
+                  {t('pages.contact.yourName')}
                 </span>
                 <input
                   type="text"
                   name="name"
                   className={styles.input}
-                  placeholder="नाव लिहा / Enter your name"
+                  placeholder={t('pages.contact.namePlaceholder')}
                   required
                 />
               </label>
@@ -235,7 +188,7 @@ function Contact() {
               <label className={styles.field}>
                 <span className={styles.label}>
                   <FiMail aria-hidden="true" />
-                  ई-मेल / Your email
+                  {t('pages.contact.yourEmail')}
                 </span>
                 <input
                   type="email"
@@ -247,39 +200,19 @@ function Contact() {
               </label>
 
               <label className={styles.field}>
-                <span className={styles.label}>संदेश / Message</span>
+                <span className={styles.label}>{t('pages.contact.message')}</span>
                 <textarea
                   name="message"
                   rows={5}
                   className={styles.textarea}
-                  placeholder="आपला संदेश लिहा / Write your message..."
+                  placeholder={t('pages.contact.messagePlaceholder')}
                   required
                 />
               </label>
 
-              {activeTab === 'participation' ? (
+              {activeTab === 'feedback' && (
                 <label className={styles.field}>
-                  <span className={styles.label}>
-                    <FiUpload aria-hidden="true" />
-                    फाईल (ऐच्छिक) / File (optional)
-                  </span>
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    name="attachment"
-                    className={styles.fileInput}
-                    accept="image/*,.pdf,.doc,.docx,.txt"
-                    onChange={handleFileChange}
-                  />
-                  <span className={styles.fileHint}>
-                    {selectedFileName
-                      ? `निवडलेली फाईल: ${selectedFileName} / Selected: ${selectedFileName}`
-                      : `जास्तीत जास्त ${WEB3FORMS_MAX_FILE_SIZE_MB} MB — ई-मेलमध्ये जोडली जाईल / Max ${WEB3FORMS_MAX_FILE_SIZE_MB} MB, sent as email attachment`}
-                  </span>
-                </label>
-              ) : (
-                <label className={styles.field}>
-                  <span className={styles.label}>दूरध्वनी / Your phone</span>
+                  <span className={styles.label}>{t('pages.contact.yourPhone')}</span>
                   <input
                     type="tel"
                     name="phone"
@@ -315,7 +248,7 @@ function Contact() {
                 disabled={status === 'submitting'}
               >
                 <FiSend aria-hidden="true" />
-                {status === 'submitting' ? 'पाठवत आहे... / Sending...' : 'पाठवा / Submit'}
+                {status === 'submitting' ? t('common.sending') : t('common.submit')}
               </button>
             </form>
           </div>

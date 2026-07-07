@@ -10,10 +10,12 @@ import {
   getSubjectAuthorUrl,
   getSubjectBySlug,
 } from '../data/subjects'
+import { useI18n } from '../i18n/useI18n'
 import { fetchBrowseItems, getDefaultDownloadTab } from '../utils/browseApi'
 import styles from './SubjectAuthor.module.css'
 
 function SubjectAuthor() {
+  const { t, pickField, joinFields } = useI18n()
   const { subjectSlug, authorSlug } = useParams()
   const [activeTab, setActiveTab] = useState('audios')
   const [audios, setAudios] = useState([])
@@ -61,20 +63,23 @@ function SubjectAuthor() {
 
   useEffect(() => {
     if (subject && author) {
-      document.title = `${author.titleMr} – ${subject.titleMr} – श्री समर्थ रामदास`
+      document.title = t('common.documentTitleDashPair', {
+        first: pickField(author, 'title'),
+        second: pickField(subject, 'title'),
+      })
     }
     return () => {
-      document.title = 'श्री समर्थ रामदास - श्री रामदासांचे साहित्य'
+      document.title = t('site.title')
     }
-  }, [subject, author])
+  }, [subject, author, t, pickField])
 
   if (!subject || !author) {
     return (
       <div className={styles.page}>
         <div className={`${styles.content} ${pageUi.content}`} id="subject-author-content">
-          <p className={styles.notFound}>Content not found.</p>
+          <p className={styles.notFound}>{t('common.contentNotFound')}</p>
           <Link to="/subject" className={styles.backLink}>
-            Back to Subject
+            {t('common.backToSubject')}
           </Link>
         </div>
       </div>
@@ -83,15 +88,14 @@ function SubjectAuthor() {
 
   const gridClassName = styles.downloadGrid
   const activeItems = activeTab === 'audios' ? audios : literature
-
-  const playerSubtitle = `${subject.titleMr} · ${author.titleMr}`
+  const playerSubtitle = `${pickField(subject, 'title')} · ${pickField(author, 'title')}`
 
   return (
     <div className={styles.page}>
       <InnerBanner contentId="subject-author-content" />
 
       <div className={`${styles.content} ${pageUi.content}`} id="subject-author-content">
-        <h1 className={styles.pageTitle}>Downloads</h1>
+        <h1 className={styles.pageTitle}>{t('common.downloads')}</h1>
 
         <div className={styles.layout}>
           <div className={styles.mainColumn}>
@@ -103,7 +107,7 @@ function SubjectAuthor() {
                 className={activeTab === 'audios' ? styles.tabActive : styles.tab}
                 onClick={() => setActiveTab('audios')}
               >
-                ध्वनिफीत / Audios
+                {t('common.audios')}
                 {audios.length > 0 && (
                   <span className={styles.tabCount}>{audios.length}</span>
                 )}
@@ -115,7 +119,7 @@ function SubjectAuthor() {
                 className={activeTab === 'literature' ? styles.tabActive : styles.tab}
                 onClick={() => setActiveTab('literature')}
               >
-                वाङ्मय / Literature
+                {t('common.literature')}
                 {literature.length > 0 && (
                   <span className={styles.tabCount}>{literature.length}</span>
                 )}
@@ -124,18 +128,16 @@ function SubjectAuthor() {
 
             <div className={styles.panel} role="tabpanel">
               <p className={styles.breadcrumb}>
-                {subject.titleMr} · {subject.titleEn} → {author.titleMr} · {author.titleEn}
+                {joinFields([subject, author], 'title')}
               </p>
 
               {loading ? (
                 <div className={pageUi.empty}>
-                  <p>साहित्य लोड होत आहे...</p>
-                  <p className={pageUi.emptySub}>Loading downloads...</p>
+                  <p>{t('common.loadingDownloads')}</p>
                 </div>
               ) : error ? (
                 <div className={pageUi.empty}>
-                  <p>साहित्य लोड करता आले नाही.</p>
-                  <p className={pageUi.emptySub}>Could not load downloads. Please try again later.</p>
+                  <p>{t('common.loadDownloadsError')}</p>
                 </div>
               ) : activeItems.length > 0 ? (
                 <div className={gridClassName}>
@@ -154,15 +156,15 @@ function SubjectAuthor() {
               ) : (
                 <p className={styles.emptyMessage}>
                   {activeTab === 'audios'
-                    ? 'No audios available for this subject and author.'
-                    : 'No literature available for this subject and author.'}
+                    ? t('common.noAudiosForPair')
+                    : t('common.noLiteratureForPair')}
                 </p>
               )}
             </div>
           </div>
 
           <aside className={styles.sidebar}>
-            <div className={styles.sidebarHeader}>लेखक / Authors</div>
+            <div className={styles.sidebarHeader}>{t('common.authors')}</div>
             {otherAuthors.length > 0 ? (
               <nav className={styles.sidebarNav} aria-label="Other authors">
                 {otherAuthors.map(({ slug, titleMr, titleEn }) => (
@@ -171,13 +173,13 @@ function SubjectAuthor() {
                     to={getSubjectAuthorUrl(subjectSlug, slug)}
                     className={styles.sidebarLink}
                   >
-                    {titleMr} · {titleEn}
+                    {pickField({ titleMr, titleEn }, 'title')}
                   </Link>
                 ))}
               </nav>
             ) : (
               <p className={styles.sidebarEmpty}>
-                No other authors for {subject.titleMr} · {subject.titleEn}
+                {t('common.noOtherAuthors', { name: pickField(subject, 'title') })}
               </p>
             )}
           </aside>

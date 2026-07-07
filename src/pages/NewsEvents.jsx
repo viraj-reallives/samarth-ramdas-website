@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import InnerBanner from '../components/InnerBanner'
 import pageUi from '../styles/pageUi.module.css'
+import { useI18n } from '../i18n/useI18n'
 import styles from './NewsEvents.module.css'
 
 const monthlyItems = [
@@ -88,6 +89,8 @@ function PdfIcon() {
 }
 
 function DownloadCard({ titleMr, titleEn, index }) {
+  const { t, pickField } = useI18n()
+
   return (
     <article
       className={styles.card}
@@ -95,23 +98,24 @@ function DownloadCard({ titleMr, titleEn, index }) {
     >
       <PdfIcon />
       <div className={styles.cardText}>
-        <p className={styles.titleMr}>{titleMr}</p>
-        <p className={styles.titleEn}>{titleEn}</p>
+        <p className={styles.titleMr}>{pickField({ titleMr, titleEn }, 'title')}</p>
       </div>
       <a href="#" className={styles.downloadButton}>
-        Download File
+        {t('common.download')}
       </a>
     </article>
   )
 }
 
 function NewsEvents() {
+  const { t } = useI18n()
+
   useEffect(() => {
-    document.title = 'वृत्त आणि घटना # News & Events – श्री समर्थ रामदास'
+    document.title = t('pages.newsEvents.documentTitle')
     return () => {
-      document.title = 'श्री समर्थ रामदास - श्री रामदासांचे साहित्य'
+      document.title = t('site.title')
     }
-  }, [])
+  }, [t])
 
   return (
     <div className={styles.page}>

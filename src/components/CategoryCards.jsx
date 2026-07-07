@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { CATEGORY_CARD_IMAGES } from '../data/categoryCardImages'
+import { useI18n } from '../i18n/useI18n'
 import styles from './CategoryCards.module.css'
 
 const categories = [
@@ -84,15 +85,15 @@ const categories = [
 const enterAnimations = ['fromBottomLeft', 'fromBottomRight', 'fromTopLeft', 'fromTopRight']
 
 function CategoryCards() {
+  const { t, pickField } = useI18n()
+
   return (
     <section className={styles.section} aria-label="Category cards">
       <div className={styles.container}>
         <header className={styles.sectionHeader}>
-          <p className={styles.sectionEyebrow}>|| श्री समर्थ वाङ्मय ||</p>
-          <h2 className={styles.sectionTitle}>साहित्य शोधा / Explore Literature</h2>
-          <p className={styles.sectionIntro}>
-            खालील विभाग निवडा — विषय, भाषा, लेखक किंवा रिंगटोन्स.
-          </p>
+          <p className={styles.sectionEyebrow}>{t('home.categoryEyebrow')}</p>
+          <h2 className={styles.sectionTitle}>{t('home.categoryTitle')}</h2>
+          <p className={styles.sectionIntro}>{t('home.categoryIntro')}</p>
         </header>
 
         <div className={styles.grid}>
@@ -131,17 +132,13 @@ function CategoryCards() {
 
                 <div className={styles.cardPanel}>
                   <div className={styles.titles}>
-                    <span className={styles.titleMr}>{titleMr}</span>
-                    <span className={styles.titleEn}>{title}</span>
+                    <span className={styles.titleMr}>
+                      {pickField({ titleMr, titleEn: title }, 'title')}
+                    </span>
                   </div>
-                  <p className={styles.hint}>
-                    <span>{hintMr}</span>
-                    <span className={styles.hintSep}>·</span>
-                    <span>{hintEn}</span>
-                  </p>
+                  <p className={styles.hint}>{pickField({ hintMr, hintEn }, 'hint')}</p>
                   <span className={styles.cta}>
-                    <span className={styles.ctaText}>पहा</span>
-                    <span className={styles.ctaTextEn}>/ Explore</span>
+                    <span className={styles.ctaText}>{t('common.explore')}</span>
                     <span className={styles.ctaArrow} aria-hidden="true">→</span>
                   </span>
                 </div>

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
+import { I18nProvider } from './i18n/I18nProvider'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import PageLoader from './components/PageLoader'
@@ -96,9 +97,11 @@ function AppRoutes() {
 
 function App() {
   return (
-    <BrowserRouter>
-      <AppRoutes />
-    </BrowserRouter>
+    <I18nProvider>
+      <BrowserRouter>
+        <AppRoutes />
+      </BrowserRouter>
+    </I18nProvider>
   )
 }
 

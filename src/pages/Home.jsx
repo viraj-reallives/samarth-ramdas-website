@@ -4,6 +4,7 @@ import HeroSlider from '../components/HeroSlider'
 import SearchBar from '../components/SearchBar'
 import BrowsePathCard from '../components/BrowsePathCard'
 import { CATEGORY_CARD_IMAGE_BY_PATH } from '../data/categoryCardImages'
+import { useI18n } from '../i18n/useI18n'
 import { FiArrowRight } from 'react-icons/fi'
 import styles from './Home.module.css'
 
@@ -35,9 +36,11 @@ const BROWSE_PATHS = [
 ]
 
 function Home() {
+  const { t } = useI18n()
+
   useEffect(() => {
-    document.title = 'श्री समर्थ रामदास - श्री रामदासांचे साहित्य'
-  }, [])
+    document.title = t('site.title')
+  }, [t])
 
   return (
     <>
@@ -47,13 +50,8 @@ function Home() {
         <div className={styles.container}>
           <div className={styles.searchHero}>
             <header className={styles.header}>
-              <p className={styles.mantra}>॥ श्री समर्थ रामदास ॥</p>
-              <p className={styles.subtitle}>
-                एकाच ठिकाणी शोधा — जे माहित आहे ते निवडा, उर्वरित फिल्टर करा.
-              </p>
-              <p className={styles.subtitleEn}>
-                Search in one place — start with what you know, then narrow down.
-              </p>
+              <p className={styles.mantra}>{t('home.mantra')}</p>
+              <p className={styles.subtitle}>{t('home.subtitle')}</p>
             </header>
 
             <div className={styles.searchWrap}>
@@ -61,25 +59,14 @@ function Home() {
             </div>
 
             <Link to="/browse" className={styles.browseCallout}>
-              <span className={styles.browseCalloutText}>
-                <span className={styles.browseCalloutMr}>सर्व साहित्य शोधा</span>
-                <span className={styles.browseCalloutSep} aria-hidden="true">
-                  ·
-                </span>
-                <span className={styles.browseCalloutEn}>Browse all literature</span>
-              </span>
-              <span className={styles.browseCalloutHint}>
-                रिंगटोन्स, दासवाणी आणि इतर संग्रह
-              </span>
+              <span className={styles.browseCalloutText}>{t('home.browseAllLiterature')}</span>
+              <span className={styles.browseCalloutHint}>{t('home.browseHint')}</span>
               <FiArrowRight className={styles.browseCalloutArrow} aria-hidden="true" />
             </Link>
           </div>
 
           <div className={styles.discoveryPanel}>
-            <h2 className={styles.pathHeading}>
-              जे माहित आहे ते निवडा
-              <span className={styles.pathHeadingEn}>Start with what you know</span>
-            </h2>
+            <h2 className={styles.pathHeading}>{t('home.pathHeading')}</h2>
             <div className={styles.pathGrid}>
               {BROWSE_PATHS.map((path) => (
                 <BrowsePathCard key={path.to} layout="stacked" {...path} />
