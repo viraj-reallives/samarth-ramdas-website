@@ -228,7 +228,7 @@ function Browse() {
     <div className={styles.page}>
       <InnerBanner
         contentId="browse-content"
-        image="/assets/inner-banner.jpeg"
+        image="/assets/inner-banner.png"
       />
 
       <div className={`${styles.content} ${pageUi.content}`} id="browse-content">

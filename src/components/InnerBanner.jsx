@@ -2,7 +2,7 @@ import { FiChevronDown } from 'react-icons/fi'
 import { useI18n } from '../i18n/useI18n'
 import styles from './InnerBanner.module.css'
 
-const DEFAULT_BANNER_IMAGE = '/assets/inner-banner.jpeg'
+const DEFAULT_BANNER_IMAGE = '/assets/inner-banner.png'
 const DEFAULT_BANNER_IMAGE_MOBILE = '/assets/inner-banner-mobile.jpeg'
 
 function InnerBanner({

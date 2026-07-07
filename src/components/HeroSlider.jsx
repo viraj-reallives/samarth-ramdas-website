@@ -103,7 +103,26 @@ function HeroSlider() {
               <div className={styles.content}>
                 <div className={styles.contentInner}>
                   <p className={styles.kicker}>{t(`hero.${copyKey}.kicker`)}</p>
-                  <h2 className={styles.title}>{t(`hero.${copyKey}.title`)}</h2>
+                  <h2
+                    className={styles.title}
+                    {...(copyKey === 'slide1' ? { 'aria-label': t('hero.slide1.title') } : {})}
+                  >
+                    {copyKey === 'slide1' ? (
+                      <>
+                        <span className={styles.titleFull}>{t(`hero.${copyKey}.title`)}</span>
+                        <span className={styles.titleMobileLines} aria-hidden="true">
+                          <span className={styles.titleMobileLine}>
+                            {t('hero.slide1.titleLine1')}
+                          </span>
+                          <span className={styles.titleMobileLine}>
+                            {t('hero.slide1.titleLine2')}
+                          </span>
+                        </span>
+                      </>
+                    ) : (
+                      t(`hero.${copyKey}.title`)
+                    )}
+                  </h2>
                   <p className={styles.subtitle}>{t(`hero.${copyKey}.subtitle`)}</p>
                   <Link to={href} className={styles.cta}>
                     <span>{t(`hero.${copyKey}.button`)}</span>

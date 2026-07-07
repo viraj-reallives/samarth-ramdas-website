@@ -50,8 +50,8 @@
   height: 45%;
   background: linear-gradient(
     180deg,
-    rgba(10, 8, 6, 0.55) 0%,
-    rgba(10, 8, 6, 0.2) 55%,
+    rgba(10, 8, 6, 0.47) 0%,
+    rgba(10, 8, 6, 0.17) 55%,
     transparent 100%
   );
   pointer-events: none;
@@ -63,10 +63,10 @@
   z-index: 1;
   background: linear-gradient(
     105deg,
-    rgba(8, 6, 4, 0.78) 0%,
-    rgba(8, 6, 4, 0.45) 42%,
-    rgba(8, 6, 4, 0.25) 68%,
-    rgba(8, 6, 4, 0.5) 100%
+    rgba(8, 6, 4, 0.66) 0%,
+    rgba(8, 6, 4, 0.38) 42%,
+    rgba(8, 6, 4, 0.21) 68%,
+    rgba(8, 6, 4, 0.43) 100%
   );
   pointer-events: none;
 }
@@ -160,6 +160,14 @@
   letter-spacing: 0.01em;
   color: #ffffff;
   text-shadow: 0 4px 28px rgba(0, 0, 0, 0.35);
+}
+
+.titleMobileLines {
+  display: none;
+}
+
+.titleMobileLine {
+  display: block;
 }
 
 .subtitle {
@@ -396,6 +404,20 @@
 
   .contentInner {
     max-width: 100%;
+  }
+
+  .titleFull {
+    display: none;
+  }
+
+  .titleMobileLines {
+    display: block;
+  }
+
+  .title {
+    font-size: clamp(1.65rem, 7.5vw, 2.15rem);
+    line-height: 1.2;
+    margin-bottom: 12px;
   }
 
   .subtitle {
