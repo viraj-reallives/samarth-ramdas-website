@@ -1,58 +1,49 @@
 .logo {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  max-width: min(240px, 100%);
-  line-height: 1;
-  user-select: none;
+  display: block;
+  width: auto;
+  object-fit: contain;
+  object-position: left center;
 }
 
-.logoColor {
-  color: #ff6b00;
+.logoHeader {
+  height: 48px;
+  max-width: min(320px, 52vw);
 }
 
-.logoWhite {
-  color: #ffffff;
-  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.35));
+.logoFooter {
+  height: 104px;
+  max-width: 380px;
 }
 
-.mainTitle {
-  font-family: var(--font-mr);
-  font-size: 1.35rem;
-  font-weight: 700;
-  letter-spacing: 0.01em;
-  white-space: nowrap;
+.logoLoader {
+  height: 128px;
+  max-width: min(420px, 92vw);
 }
 
-.sideBlock {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  padding-left: 12px;
-  border-left: 1px solid currentColor;
-  opacity: 0.9;
+.logoOnDark {
+  filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.28));
 }
 
-.mantra {
-  font-family: var(--font-mr);
-  font-size: 0.58rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  white-space: nowrap;
-}
-
-@media (max-width: 1200px) {
-  .sideBlock {
-    display: none;
-  }
-
-  .mainTitle {
-    font-size: 1.2rem;
+@media (min-width: 1200px) {
+  .logoHeader {
+    height: 52px;
+    max-width: 360px;
   }
 }
 
-@media (max-width: 1024px) {
-  .mainTitle {
-    font-size: 1.1rem;
+@media (max-width: 640px) {
+  .logoFooter {
+    height: 88px;
+    max-width: min(320px, 88vw);
+  }
+
+  .logoHeader {
+    height: 42px;
+    max-width: min(260px, 58vw);
+  }
+
+  .logoLoader {
+    height: 108px;
+    max-width: min(360px, 92vw);
   }
 }

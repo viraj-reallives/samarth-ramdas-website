@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import SiteLogo from './SiteLogo'
 import { useI18n } from '../i18n/useI18n'
 import styles from './PageLoader.module.css'
 
@@ -26,7 +27,7 @@ function PageLoader({ visible }) {
       aria-label={t('pages.loader.loading')}
     >
       <div className={styles.inner}>
-        <img src="/assets/logo.png" alt="" className={styles.logo} aria-hidden="true" />
+        <SiteLogo size="loader" priority decorative className={styles.logo} />
         <div className={styles.spinner} aria-hidden="true" />
         <p className={styles.mantra}>|| जय जय रघुवीर समर्थ ||</p>
         <p className={styles.text}>{t('pages.loader.loading')}</p>

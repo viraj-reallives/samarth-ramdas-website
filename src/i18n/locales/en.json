@@ -227,8 +227,11 @@
     },
     "contact": {
       "title": "Contact",
-      "intro": "Reach us at the addresses below or write to us using the form.",
+      "intro": "Reach us at the address below or write to us using the form.",
       "detailsHeading": "Contact Details",
+      "phoneHeading": "Contact number",
+      "emailLabel": "Email",
+      "formEmailNote": "You can also write directly to",
       "participation": "Participation",
       "feedback": "Feedback",
       "participationHint": "Fill in your details to participate.",

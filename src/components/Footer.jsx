@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom'
-import { contactInfo, contentLinks, exploreLinks } from '../data/navigation'
+import ContactDetails from './ContactDetails'
+import SiteLogo from './SiteLogo'
+import { contentLinks, exploreLinks } from '../data/navigation'
 import { useI18n } from '../i18n/useI18n'
 import styles from './Footer.module.css'
 
@@ -13,7 +15,7 @@ function FooterLink({ href, children }) {
 
 function Footer() {
   const year = new Date().getFullYear()
-  const { t, pickField, locale } = useI18n()
+  const { t, pickField } = useI18n()
 
   return (
     <footer className={styles.footer}>
@@ -23,11 +25,7 @@ function Footer() {
         <div className={styles.grid}>
           <section className={styles.brandColumn}>
             <Link to="/" className={styles.logoLink}>
-              <img
-                src="/assets/logo.png"
-                alt="श्री समर्थ रामदास"
-                className={styles.logo}
-              />
+              <SiteLogo size="footer" />
             </Link>
             <p className={styles.mantra}>{t('site.mantra')}</p>
             <p className={styles.brandText}>{t('footer.brandText')}</p>
@@ -61,21 +59,7 @@ function Footer() {
 
           <section className={styles.column}>
             <h2 className={styles.columnTitle}>{t('footer.contact')}</h2>
-            <div className={styles.contactBlocks}>
-              {contactInfo.map((block) => {
-                const lines = locale === 'mr' ? block.linesMr : block.linesEn
-                return (
-                  <address key={block.id} className={styles.contactBlock}>
-                    <strong className={styles.contactTitle}>{pickField(block, 'title')}</strong>
-                    {lines.map((line) => (
-                      <span key={line} className={styles.contactLine}>
-                        {line}
-                      </span>
-                    ))}
-                  </address>
-                )
-              })}
-            </div>
+            <ContactDetails variant="footer" />
             <Link to="/contact" className={styles.contactButton}>
               {t('footer.contactForm')}
             </Link>

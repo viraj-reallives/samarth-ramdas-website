@@ -9,6 +9,7 @@
       })()
     </script>
     <link rel="icon" type="image/webp" href="/assets/favicon.webp" />
+    <link rel="preload" href="/assets/logo-main.jpeg" as="image" fetchpriority="high" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -22,6 +23,15 @@
   <body>
     <div id="initial-loader" aria-live="polite" aria-label="Website loading">
       <div class="initial-loader-inner">
+        <img
+          src="/assets/logo-main.jpeg"
+          alt="समर्थ व्यासपीठ – रामदास स्वामी विचार फाऊंडेशन"
+          class="initial-loader-logo"
+          width="360"
+          height="120"
+          fetchpriority="high"
+          decoding="sync"
+        />
         <div class="initial-loader-spinner" aria-hidden="true"></div>
         <p class="initial-loader-text">|| जय जय रघुवीर समर्थ ||</p>
         <p class="initial-loader-sub">लोड होत आहे…</p>
@@ -45,6 +55,13 @@
         gap: 16px;
         text-align: center;
         padding: 24px;
+      }
+      .initial-loader-logo {
+        display: block;
+        width: auto;
+        height: 128px;
+        max-width: min(420px, 92vw);
+        object-fit: contain;
       }
       .initial-loader-spinner {
         width: 44px;

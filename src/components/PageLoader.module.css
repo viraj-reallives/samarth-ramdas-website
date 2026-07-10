@@ -33,8 +33,6 @@
 }
 
 .logo {
-  width: 72px;
-  height: auto;
   animation: logoPulse 1.8s ease-in-out infinite;
 }
 

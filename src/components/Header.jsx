@@ -338,7 +338,7 @@ function Header() {
       <div className={styles.mainBar}>
         <div className={styles.mainShell}>
           <Link to="/" className={styles.logoLink} onClick={closeMenus}>
-            <SiteLogo variant="color" />
+            <SiteLogo priority />
           </Link>
 
           <nav className={styles.desktopNav} aria-label="Main navigation">

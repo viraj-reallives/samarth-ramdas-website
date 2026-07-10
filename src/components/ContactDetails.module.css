@@ -1,0 +1,109 @@
+.blocks {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.block {
+  display: flex;
+  gap: 14px;
+  margin: 0;
+  font-style: normal;
+}
+
+.blockCompact {
+  flex-direction: column;
+  gap: 4px;
+}
+
+.icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: #fff3e6;
+  color: #e8661a;
+  font-size: 1.1rem;
+}
+
+.iconCompact {
+  display: none;
+}
+
+.body {
+  min-width: 0;
+}
+
+.title {
+  margin: 0 0 8px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: #2a2018;
+}
+
+.titleCompact {
+  margin: 0 0 4px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--site-text);
+  line-height: 1.45;
+}
+
+.line {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: var(--site-text-muted);
+}
+
+.lineCompact {
+  display: block;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--site-text-muted);
+}
+
+.phoneList {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.phoneLink,
+.emailLink {
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: #c44e0a;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.phoneLinkCompact,
+.emailLinkCompact {
+  font-size: 13px;
+}
+
+.phoneLink:hover,
+.emailLink:hover {
+  color: #e8661a;
+  text-decoration: underline;
+}
+
+.card {
+  padding: 18px 18px 16px;
+  border-radius: 12px;
+  background: var(--site-surface);
+  border: 1px solid #e8dfd3;
+  box-shadow: 0 6px 18px rgba(61, 42, 24, 0.06);
+}
+
+.card .block {
+  gap: 14px;
+}

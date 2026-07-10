@@ -1,17 +1,18 @@
 import { useEffect, useId, useState } from 'react'
+import ContactDetails from '../components/ContactDetails'
 import InnerBanner from '../components/InnerBanner'
 import SimpleCaptcha, { useSimpleCaptcha } from '../components/SimpleCaptcha'
 import pageUi from '../styles/pageUi.module.css'
-import { FiMail, FiMapPin, FiSend, FiUser } from 'react-icons/fi'
+import { FiMail, FiSend, FiUser } from 'react-icons/fi'
 import { WEB3FORMS_ACCESS_KEY, WEB3FORMS_ENDPOINT } from '../config/web3forms'
-import { contactInfo } from '../data/navigation'
+import { contactEmail } from '../data/contact'
 import { useI18n } from '../i18n/useI18n'
 import styles from './Contact.module.css'
 
 const FORM_SUBJECT = 'This is update from samarthramdas400.in website'
 
 function Contact() {
-  const { t, pickField, locale } = useI18n()
+  const { t } = useI18n()
   const [activeTab, setActiveTab] = useState('participation')
   const [status, setStatus] = useState('idle')
   const [statusMessage, setStatusMessage] = useState('')
@@ -90,24 +91,7 @@ function Contact() {
         <div className={styles.layout}>
           <aside className={styles.infoColumn}>
             <h2 className={styles.infoHeading}>{t('pages.contact.detailsHeading')}</h2>
-            {contactInfo.map((block) => {
-              const lines = locale === 'mr' ? block.linesMr : block.linesEn
-              return (
-                <div key={block.id} className={styles.infoCard}>
-                  <span className={styles.infoIcon} aria-hidden="true">
-                    <FiMapPin />
-                  </span>
-                  <div>
-                    <p className={styles.infoTitle}>{pickField(block, 'title')}</p>
-                    {lines.map((line) => (
-                      <p key={line} className={styles.infoLine}>
-                        {line}
-                      </p>
-                    ))}
-                  </div>
-                </div>
-              )
-            })}
+            <ContactDetails />
           </aside>
 
           <div className={styles.formPanel}>
@@ -169,6 +153,11 @@ function Contact() {
                 {activeTab === 'participation'
                   ? t('pages.contact.participationHint')
                   : t('pages.contact.feedbackHint')}
+              </p>
+
+              <p className={styles.formEmailNote}>
+                {t('pages.contact.formEmailNote')}{' '}
+                <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
               </p>
 
               <label className={styles.field}>
