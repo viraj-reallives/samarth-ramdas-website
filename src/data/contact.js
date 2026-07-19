@@ -4,12 +4,14 @@ export const contactAddress = {
   titleEn: 'Contact',
   linesMr: [
     'सुहास क्षीरसागर',
+    'रामदास स्वामी विचार फाउंडेशन',
     'P २०१ , बलवंतपुरम साम्राज्य सोसायटी,',
     'परमहंस नगर , कोथरूड',
     'पुणे ४११०३८',
   ],
   linesEn: [
     'Suhas Kshirsagar',
+    'Ramdas Swami Vichar Foundation',
     'P 201, Balwantpuram Samrajya Society,',
     'Paramhans Nagar, Kothrud',
     'Pune 411038',
