@@ -1,8 +1,8 @@
 export const CATEGORY_CARD_IMAGES = {
-  subject: '/assets/cards/subject.png',
-  author: '/assets/cards/author.png',
-  language: '/assets/cards/language.png',
-  ringtones: '/assets/cards/ringtones.png',
+  subject: '/assets/cards/subject.jpg',
+  author: '/assets/cards/author.jpg',
+  language: '/assets/cards/language.jpg',
+  ringtones: '/assets/cards/ringtones.jpg',
 }
 
 export const CATEGORY_CARD_IMAGE_BY_PATH = {

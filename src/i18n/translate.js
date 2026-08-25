@@ -9,6 +9,14 @@ export const LOCALES = {
 export const DEFAULT_LOCALE = 'mr'
 export const LOCALE_STORAGE_KEY = 'samarth-ramdas-locale'
 
+export function resolveLocale(code) {
+  return LOCALES[code] ? code : DEFAULT_LOCALE
+}
+
+export function privacyPolicyPath(locale) {
+  return `/privacy-policy/${resolveLocale(locale)}`
+}
+
 const catalogs = { en, mr }
 
 function getByPath(obj, path) {

@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { FiChevronDown, FiGlobe } from 'react-icons/fi'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { privacyPolicyPath } from '../i18n/translate'
 import { useI18n } from '../i18n/useI18n'
 import styles from './LanguageSwitcher.module.css'
 
@@ -10,6 +12,8 @@ const OPTIONS = [
 
 function LanguageSwitcher() {
   const { locale, setLocale, t } = useI18n()
+  const location = useLocation()
+  const navigate = useNavigate()
   const [open, setOpen] = useState(false)
   const rootRef = useRef(null)
 
@@ -57,6 +61,9 @@ function LanguageSwitcher() {
                   onClick={() => {
                     setLocale(option.id)
                     setOpen(false)
+                    if (location.pathname.startsWith('/privacy-policy')) {
+                      navigate(privacyPolicyPath(option.id), { replace: true })
+                    }
                   }}
                 >
                   <span className={styles.optionLabel}>{t(option.labelKey)}</span>

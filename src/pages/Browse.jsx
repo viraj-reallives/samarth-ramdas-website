@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Link, useSearchParams } from 'react-router-dom'
+import { NavLink, useSearchParams } from 'react-router-dom'
 import InnerBanner from '../components/InnerBanner'
 import SearchBar from '../components/SearchBar'
 import FilterChips from '../components/FilterChips'
@@ -271,9 +271,15 @@ function Browse() {
               <p className={styles.shortcutLabel}>{t('pages.browse.popular')}</p>
               <div className={styles.shortcutRow}>
                 {popularLibraryLinks.map((link) => (
-                  <Link key={link.href} to={link.href} className={styles.shortcut}>
+                  <NavLink
+                    key={link.href}
+                    to={link.href}
+                    className={({ isActive }) =>
+                      isActive ? `${styles.shortcut} ${styles.shortcutActive}` : styles.shortcut
+                    }
+                  >
                     {pickField(link, 'label')}
-                  </Link>
+                  </NavLink>
                 ))}
               </div>
             </div>

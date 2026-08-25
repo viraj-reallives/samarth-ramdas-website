@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import ContactDetails from './ContactDetails'
 import SiteLogo from './SiteLogo'
 import { contentLinks, exploreLinks } from '../data/navigation'
+import { privacyPolicyPath } from '../i18n/translate'
 import { useI18n } from '../i18n/useI18n'
 import styles from './Footer.module.css'
 
@@ -15,7 +16,7 @@ function FooterLink({ href, children }) {
 
 function Footer() {
   const year = new Date().getFullYear()
-  const { t, pickField } = useI18n()
+  const { t, pickField, locale } = useI18n()
 
   return (
     <footer className={styles.footer}>
@@ -69,7 +70,7 @@ function Footer() {
         <div className={styles.bottomBar}>
           <div className={styles.bottomLeft}>
             <p className={styles.copyright}>{t('footer.copyright', { year })}</p>
-            <Link to="/privacy-policy" className={styles.privacyLink}>
+            <Link to={privacyPolicyPath(locale)} className={styles.privacyLink}>
               {t('footer.privacyPolicy')}
             </Link>
           </div>

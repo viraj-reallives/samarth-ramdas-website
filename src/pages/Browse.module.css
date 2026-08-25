@@ -122,32 +122,53 @@
   border: 1px solid var(--site-border-warm);
   border-radius: 999px;
   background: var(--site-card-bg-alt);
+  color: #c44e0a;
+  font-size: 0.84rem;
+  font-weight: 600;
   text-decoration: none;
   transition:
     background-color 0.2s ease,
-    border-color 0.2s ease;
+    border-color 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.shortcut:visited {
+  color: #c44e0a;
 }
 
 .shortcut:hover {
-  border-color: #e0c4a8;
-  background: var(--site-surface-hover);
+  border-color: #e8661a;
+  background: #fff3e8;
+  color: #e8661a;
 }
 
-.shortcutMr {
-  font-size: 0.84rem;
-  font-weight: 600;
-  color: var(--site-text);
+.shortcut:active {
+  border-color: #c44e0a;
+  background: linear-gradient(to bottom, #f08a2a, #e8661a);
+  color: #ffffff;
 }
 
-.shortcutSep {
-  color: #d4a574;
-  font-size: 0.7rem;
+.shortcut:focus-visible {
+  outline: 2px solid #e8661a;
+  outline-offset: 2px;
 }
 
-.shortcutEn {
-  font-family: var(--font-en);
-  font-size: 0.76rem;
-  color: var(--site-text-faint);
+.shortcutActive {
+  border-color: #e8661a;
+  background: #fff3e8;
+  color: #b84e08;
+  box-shadow: inset 0 0 0 1px rgba(232, 102, 26, 0.18);
+}
+
+.shortcutActive:visited {
+  color: #b84e08;
+}
+
+.shortcutActive:hover {
+  border-color: #e8661a;
+  background: #ffe8d0;
+  color: #c44e0a;
 }
 
 /* ── Collections panel ───────────────────────────────────────── */

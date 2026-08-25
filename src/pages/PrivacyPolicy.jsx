@@ -1,5 +1,7 @@
 import { Fragment, useEffect } from 'react'
+import { Navigate, useParams } from 'react-router-dom'
 import pageUi from '../styles/pageUi.module.css'
+import { LOCALES, privacyPolicyPath } from '../i18n/translate'
 import { useI18n } from '../i18n/useI18n'
 import {
   privacyContactEmail,
@@ -94,15 +96,32 @@ function PolicyBlock({ block }) {
   )
 }
 
+export function PrivacyPolicyRedirect() {
+  const { locale } = useI18n()
+  return <Navigate to={privacyPolicyPath(locale)} replace />
+}
+
 function PrivacyPolicy() {
-  const { t, pickField } = useI18n()
+  const { lang } = useParams()
+  const { t, pickField, setLocale } = useI18n()
+  const isSupportedLang = Boolean(LOCALES[lang])
 
   useEffect(() => {
+    if (!isSupportedLang) return
+    setLocale(lang)
+  }, [lang, isSupportedLang, setLocale])
+
+  useEffect(() => {
+    if (!isSupportedLang) return undefined
     document.title = t('pages.privacyPolicy.documentTitle')
     return () => {
       document.title = t('site.title')
     }
-  }, [t])
+  }, [isSupportedLang, t])
+
+  if (!isSupportedLang) {
+    return <Navigate to={privacyPolicyPath(lang)} replace />
+  }
 
   return (
     <div className={styles.page}>
