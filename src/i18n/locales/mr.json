@@ -148,6 +148,7 @@
     "content": "साहित्य",
     "contact": "संपर्क",
     "contactForm": "संपर्क फॉर्म",
+    "privacyPolicy": "गोपनीयता धोरण",
     "backToTop": "वर जा",
     "copyright": "© {year} Copyright, All Rights Reserved by samarthramdas400.in"
   },
@@ -271,6 +272,12 @@
       "message": "आपण शोधत असलेले पृष्ठ अस्तित्वात नाही किंवा हलवले गेले असू शकते.",
       "backHome": "मुख्यपृष्ठावर परत जा",
       "documentTitle": "४०४ – पृष्ठ सापडले नाही | श्री समर्थ रामदास"
+    },
+    "privacyPolicy": {
+      "title": "गोपनीयता धोरण",
+      "documentTitle": "गोपनीयता धोरण – श्री समर्थ रामदास",
+      "effectiveDate": "प्रभावी दिनांक",
+      "lastUpdated": "शेवटचे अद्यतन"
     },
     "subjectDetail": {
       "intro": "या विषयासाठी लेखक निवडा, नंतर ऑडिओ आणि साहित्य पहा.",

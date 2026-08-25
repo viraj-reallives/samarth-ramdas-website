@@ -148,6 +148,7 @@
     "content": "Content",
     "contact": "Contact",
     "contactForm": "Contact Form",
+    "privacyPolicy": "Privacy Policy",
     "backToTop": "Back to top",
     "copyright": "© {year} Copyright, All Rights Reserved by samarthramdas400.in"
   },
@@ -257,6 +258,12 @@
       "message": "The page you are looking for does not exist or may have been moved.",
       "backHome": "Go to Home",
       "documentTitle": "404 – Page Not Found | Shree Samarth Ramdas"
+    },
+    "privacyPolicy": {
+      "title": "Privacy Policy",
+      "documentTitle": "Privacy Policy – Shree Samarth Ramdas",
+      "effectiveDate": "Effective date",
+      "lastUpdated": "Last updated"
     },
     "subjectDetail": {
       "intro": "Choose an author for this subject, then view audio & literature.",

@@ -20,6 +20,7 @@ import Ringtones from './pages/Ringtones'
 import Audio from './pages/Audio'
 import Daswani from './pages/Daswani'
 import Browse from './pages/Browse'
+import PrivacyPolicy from './pages/PrivacyPolicy'
 import NotFound from './pages/NotFound'
 import { removeInitialHtmlLoader, waitForAppReady } from './utils/appLoader'
 import { scheduleRouteScroll } from './utils/pageScroll'
@@ -86,6 +87,7 @@ function AppRoutes() {
             <Route path="/ringtones" element={<Ringtones />} />
             <Route path="/audio" element={<Audio />} />
             <Route path="/daswani" element={<Daswani />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </main>

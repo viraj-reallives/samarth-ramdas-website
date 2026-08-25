@@ -67,7 +67,12 @@ function Footer() {
         </div>
 
         <div className={styles.bottomBar}>
-          <p className={styles.copyright}>{t('footer.copyright', { year })}</p>
+          <div className={styles.bottomLeft}>
+            <p className={styles.copyright}>{t('footer.copyright', { year })}</p>
+            <Link to="/privacy-policy" className={styles.privacyLink}>
+              {t('footer.privacyPolicy')}
+            </Link>
+          </div>
           <button
             type="button"
             className={styles.backToTop}

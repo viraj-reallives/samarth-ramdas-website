@@ -1,0 +1,139 @@
+.page {
+  background-color: var(--site-surface-alt);
+}
+
+.content {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 56px 48px 72px;
+}
+
+.pageHeader {
+  margin-bottom: 32px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid #e8dfd3;
+}
+
+.pageTitle {
+  margin: 0 0 10px;
+  font-family: var(--sans);
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: #e8661a;
+}
+
+.subtitle {
+  margin: 0 0 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--site-text);
+}
+
+.meta {
+  margin: 0;
+  font-size: 0.86rem;
+  line-height: 1.5;
+  color: var(--site-text-muted);
+}
+
+.metaSep {
+  margin: 0 8px;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.section h2 {
+  margin: 0 0 12px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: #2a2018;
+}
+
+.section p {
+  margin: 0 0 12px;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--site-text-secondary);
+}
+
+.section p:last-child {
+  margin-bottom: 0;
+}
+
+.section ul {
+  margin: 0 0 12px;
+  padding-left: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.section li {
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: var(--site-text-secondary);
+}
+
+.section a {
+  color: #c44e0a;
+  text-decoration: none;
+  font-weight: 600;
+  word-break: break-word;
+}
+
+.section a:hover {
+  color: #e8661a;
+  text-decoration: underline;
+}
+
+.callout {
+  margin: 0 0 12px;
+  padding: 14px 16px;
+  border-left: 3px solid #e8661a;
+  border-radius: 0 10px 10px 0;
+  background: #fff6ee;
+  font-size: 0.98rem;
+  font-weight: 600;
+  line-height: 1.65;
+  color: #2a2018;
+}
+
+.contactBlock {
+  display: block;
+  font-style: normal;
+  padding: 18px 20px;
+  border-radius: 12px;
+  background: var(--site-surface);
+  border: 1px solid #e8dfd3;
+}
+
+.contactBlock p {
+  margin: 0 0 8px;
+}
+
+.contactBlock p:last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+  .content {
+    padding: 32px 24px 56px;
+  }
+
+  .pageTitle {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .content {
+    padding: 28px 16px 48px;
+  }
+}
