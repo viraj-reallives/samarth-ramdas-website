@@ -1,4 +1,5 @@
 import { FiChevronDown } from 'react-icons/fi'
+import { resolveCardImage } from '../data/categoryCardImages'
 import { useI18n } from '../i18n/useI18n'
 import styles from './InnerBanner.module.css'
 
@@ -11,27 +12,41 @@ function InnerBanner({
   image = DEFAULT_BANNER_IMAGE,
   imageMobile,
   imageAlt,
+  visualTheme,
 }) {
-  const { t } = useI18n()
+  const { t, locale } = useI18n()
   const resolvedScrollLabel = scrollLabel ?? t('common.scrollDown')
   const resolvedImageAlt = imageAlt ?? t('site.mantra')
+  const resolvedImage = resolveCardImage(image, locale) ?? DEFAULT_BANNER_IMAGE
   const scrollToContent = () => {
     document.getElementById(contentId)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
-  const mobileImage =
-    imageMobile ?? (image === DEFAULT_BANNER_IMAGE ? DEFAULT_BANNER_IMAGE_MOBILE : null)
+  const isIllustration = Boolean(visualTheme)
+  const mobileImage = isIllustration
+    ? null
+    : imageMobile ?? (image === DEFAULT_BANNER_IMAGE ? DEFAULT_BANNER_IMAGE_MOBILE : null)
 
   return (
-    <div className={styles.banner}>
-      <div className={styles.bannerInner}>
-        {mobileImage ? (
+    <div className={styles.banner} data-visual={isIllustration ? 'illustration' : 'photo'}>
+      <div
+        className={`${styles.bannerInner} ${isIllustration ? styles.illustration : ''}`}
+        data-theme={visualTheme || undefined}
+      >
+        {isIllustration ? (
+          <div
+            className={styles.illustrationArt}
+            style={{ backgroundImage: `url("${resolvedImage}")` }}
+          >
+            <img src={resolvedImage} alt={resolvedImageAlt} className={styles.bannerImage} />
+          </div>
+        ) : mobileImage ? (
           <picture className={styles.bannerPicture}>
             <source media="(max-width: 768px)" srcSet={mobileImage} />
-            <img src={image} alt={resolvedImageAlt} className={styles.bannerImage} />
+            <img src={resolvedImage} alt={resolvedImageAlt} className={styles.bannerImage} />
           </picture>
         ) : (
-          <img src={image} alt={resolvedImageAlt} className={styles.bannerImage} />
+          <img src={resolvedImage} alt={resolvedImageAlt} className={styles.bannerImage} />
         )}
         <div className={styles.bannerOverlay} aria-hidden="true" />
         <button

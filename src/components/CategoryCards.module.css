@@ -120,6 +120,58 @@
   transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+.card[data-visual='illustration'] .cardVisual {
+  background:
+    radial-gradient(ellipse 80% 65% at 50% 36%, var(--card-glow-soft) 0%, transparent 62%),
+    linear-gradient(165deg, var(--card-bg-start) 0%, var(--card-bg-mid) 48%, var(--card-bg-end) 100%);
+}
+
+.card[data-theme='saffron'][data-visual='illustration'] {
+  --card-bg-start: #ead28a;
+  --card-bg-mid: #c4922a;
+  --card-bg-end: #6e4a10;
+  --card-glow-soft: rgba(255, 244, 214, 0.45);
+}
+
+.card[data-theme='teal'][data-visual='illustration'] {
+  --card-bg-start: #7ed4c8;
+  --card-bg-mid: #0f766e;
+  --card-bg-end: #134e4a;
+  --card-glow-soft: rgba(214, 250, 244, 0.45);
+}
+
+.card[data-theme='gold'][data-visual='illustration'] {
+  --card-bg-start: #e8b87a;
+  --card-bg-mid: #a43c24;
+  --card-bg-end: #5c1a16;
+  --card-glow-soft: rgba(255, 228, 200, 0.42);
+}
+
+.card[data-visual='illustration'] .cardImage {
+  object-fit: contain;
+  object-position: center 42%;
+  padding: 56px 22px 92px;
+  box-sizing: border-box;
+  filter: drop-shadow(0 12px 20px rgba(28, 12, 4, 0.32));
+}
+
+.card[data-visual='illustration'] .cardTint {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.08) 0%,
+    transparent 36%
+  );
+}
+
+.card[data-visual='illustration'] .cardOverlay {
+  background: linear-gradient(
+    to top,
+    rgba(12, 8, 5, 0.78) 0%,
+    rgba(12, 8, 5, 0.28) 26%,
+    transparent 58%
+  );
+}
+
 .card:hover .cardImage,
 .card:focus-visible .cardImage {
   transform: scale(1.06);
@@ -416,6 +468,19 @@
 
   .cardImage {
     object-position: var(--card-position-mobile, var(--card-position, center center));
+  }
+
+  .card[data-visual='illustration'] .cardImage {
+    padding: 48px 20px 16px;
+    object-position: center center;
+  }
+
+  .card[data-visual='illustration'] .cardOverlay {
+    background: linear-gradient(
+      to top,
+      rgba(12, 8, 5, 0.28) 0%,
+      transparent 50%
+    );
   }
 
   .cardOverlay {

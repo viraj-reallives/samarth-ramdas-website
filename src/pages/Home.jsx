@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import HeroSlider from '../components/HeroSlider'
 import SearchBar from '../components/SearchBar'
 import BrowsePathCard from '../components/BrowsePathCard'
-import { CATEGORY_CARD_IMAGE_BY_PATH } from '../data/categoryCardImages'
+import { CATEGORY_CARD_IMAGE_BY_PATH, CATEGORY_CARD_THEME_BY_PATH } from '../data/categoryCardImages'
 import { useI18n } from '../i18n/useI18n'
 import { FiArrowRight } from 'react-icons/fi'
 import styles from './Home.module.css'
@@ -16,6 +16,7 @@ const BROWSE_PATHS = [
     descriptionMr: 'दासबोध, मनाचे श्लोक… नंतर लेखक निवडा',
     descriptionEn: 'Dasbodh, Manache Shlok… then choose author',
     image: CATEGORY_CARD_IMAGE_BY_PATH['/subject'],
+    visualTheme: CATEGORY_CARD_THEME_BY_PATH['/subject'],
   },
   {
     to: '/author',
@@ -24,6 +25,7 @@ const BROWSE_PATHS = [
     descriptionMr: 'लेखक निवडा, नंतर विषय निवडा',
     descriptionEn: 'Pick an author, then choose subject',
     image: CATEGORY_CARD_IMAGE_BY_PATH['/author'],
+    visualTheme: CATEGORY_CARD_THEME_BY_PATH['/author'],
   },
   {
     to: '/language',
@@ -32,6 +34,7 @@ const BROWSE_PATHS = [
     descriptionMr: 'मराठी, हिंदी, संस्कृत… नंतर विषय निवडा',
     descriptionEn: 'Marathi, Hindi, Sanskrit… then choose subject',
     image: CATEGORY_CARD_IMAGE_BY_PATH['/language'],
+    visualTheme: CATEGORY_CARD_THEME_BY_PATH['/language'],
   },
 ]
 

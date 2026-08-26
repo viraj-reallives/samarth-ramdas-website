@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { CATEGORY_CARD_IMAGES } from '../data/categoryCardImages'
+import { CATEGORY_CARD_IMAGES, resolveCardImage } from '../data/categoryCardImages'
 import { useI18n } from '../i18n/useI18n'
 import styles from './CategoryCards.module.css'
 
@@ -85,7 +85,7 @@ const categories = [
 const enterAnimations = ['fromBottomLeft', 'fromBottomRight', 'fromTopLeft', 'fromTopRight']
 
 function CategoryCards() {
-  const { t, pickField } = useI18n()
+  const { t, pickField, locale } = useI18n()
 
   return (
     <section className={styles.section} aria-label="Category cards">
@@ -104,12 +104,13 @@ function CategoryCards() {
                 to={href}
                 className={styles.card}
                 data-theme={theme}
+                data-visual={id === 'ringtones' ? 'photo' : 'illustration'}
                 data-enter={enterAnimations[index]}
                 style={{ animationDelay: `${index * 100}ms` }}
               >
                 <div className={styles.cardVisual}>
                   <img
-                    src={image}
+                    src={resolveCardImage(image, locale)}
                     alt=""
                     className={styles.cardImage}
                     style={{

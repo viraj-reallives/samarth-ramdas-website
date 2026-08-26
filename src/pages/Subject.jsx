@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import InnerBanner from '../components/InnerBanner'
-import { CATEGORY_CARD_IMAGES } from '../data/categoryCardImages'
+import { CATEGORY_BANNER_IMAGES, CATEGORY_BANNER_THEMES } from '../data/categoryCardImages'
 import pageUi from '../styles/pageUi.module.css'
 import { Link, useSearchParams } from 'react-router-dom'
 import { FiBookOpen, FiSearch, FiUsers } from 'react-icons/fi'
@@ -170,8 +170,9 @@ function Subject() {
       <InnerBanner
         contentId="subject-content"
         scrollLabel={t('pages.subject.scrollLabel')}
-        image={CATEGORY_CARD_IMAGES.subject}
+        image={CATEGORY_BANNER_IMAGES.subject}
         imageAlt={t('pages.subject.bannerAlt')}
+        visualTheme={CATEGORY_BANNER_THEMES.subject}
       />
 
       <div className={`${styles.content} ${pageUi.content}`} id="subject-content">

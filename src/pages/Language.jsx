@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import InnerBanner from '../components/InnerBanner'
-import { CATEGORY_CARD_IMAGES } from '../data/categoryCardImages'
+import { CATEGORY_BANNER_IMAGES, CATEGORY_BANNER_THEMES } from '../data/categoryCardImages'
 import pageUi from '../styles/pageUi.module.css'
 import { Link } from 'react-router-dom'
 import { FiGlobe, FiSearch } from 'react-icons/fi'
@@ -73,9 +73,10 @@ function Language() {
     <div className={styles.page}>
       <InnerBanner
         contentId="language-content"
-        image={CATEGORY_CARD_IMAGES.language}
+        image={CATEGORY_BANNER_IMAGES.language}
         imageAlt={t('pages.language.bannerAlt')}
         scrollLabel={t('pages.language.scrollLabel')}
+        visualTheme={CATEGORY_BANNER_THEMES.language}
       />
 
       <div className={`${styles.content} ${pageUi.content}`} id="language-content">

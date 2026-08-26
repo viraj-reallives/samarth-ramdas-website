@@ -9,7 +9,7 @@ import AudioPlayerModal from '../components/AudioPlayerModal'
 import { AudioDownloadCard, LiteratureDownloadCard } from '../components/DownloadContentCards'
 import pageUi from '../styles/pageUi.module.css'
 import { browseByLinks, popularLibraryLinks } from '../data/headerNav'
-import { CATEGORY_CARD_IMAGE_BY_PATH } from '../data/categoryCardImages'
+import { CATEGORY_CARD_IMAGE_BY_PATH, CATEGORY_CARD_THEME_BY_PATH } from '../data/categoryCardImages'
 import {
   TYPE_LABELS,
   getCollectionHref,
@@ -263,6 +263,7 @@ function Browse() {
                   descriptionMr={link.hintMr}
                   descriptionEn={link.hintEn}
                   image={CATEGORY_CARD_IMAGE_BY_PATH[link.href]}
+                  visualTheme={CATEGORY_CARD_THEME_BY_PATH[link.href]}
                 />
               ))}
             </div>

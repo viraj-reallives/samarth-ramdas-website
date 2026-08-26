@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import InnerBanner from '../components/InnerBanner'
-import { CATEGORY_CARD_IMAGES } from '../data/categoryCardImages'
+import { CATEGORY_BANNER_IMAGES, CATEGORY_BANNER_THEMES } from '../data/categoryCardImages'
 import pageUi from '../styles/pageUi.module.css'
 import { Link } from 'react-router-dom'
 import { FiSearch, FiUsers } from 'react-icons/fi'
@@ -97,9 +97,10 @@ function Author() {
     <div className={styles.page}>
       <InnerBanner
         contentId="author-content"
-        image={CATEGORY_CARD_IMAGES.author}
+        image={CATEGORY_BANNER_IMAGES.author}
         imageAlt={t('pages.author.bannerAlt')}
         scrollLabel={t('pages.author.scrollLabel')}
+        visualTheme={CATEGORY_BANNER_THEMES.author}
       />
 
       <div className={`${styles.content} ${pageUi.content}`} id="author-content">
